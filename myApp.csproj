@@ -55,6 +55,7 @@
     <Content Include="Account\ChangePasswordSuccess.aspx" />
     <Content Include="Account\Login.aspx" />
     <Content Include="Account\Register.aspx" />
+    <Content Include="Config.xml" />
     <Content Include="Example\winddegreed.htm" />
     <Content Include="Example\xmlsampleweather.xml">
       <SubType>Designer</SubType>
@@ -75,6 +76,10 @@
     <Content Include="HTML\pressure2.htm" />
     <Content Include="HTML\WindRose.htm" />
     <Content Include="HTML\MyWeather.htm" />
+    <Content Include="icons\android\ldpi.png" />
+    <Content Include="icons\android\xhdpi.png" />
+    <Content Include="icons\android\hdpi.png" />
+    <Content Include="icons\android\mdpi.png" />
     <Content Include="images\01d.png" />
     <Content Include="images\02d.png" />
     <Content Include="images\03d.png" />
@@ -103,6 +108,8 @@
     <Content Include="js\jquery.cookie.js" />
     <Content Include="js\jquery.mobile-1.1.1.min.js" />
     <Content Include="js\jquery.ui.touch-punch.min.js" />
+    <Content Include="splash\android\Cala-Sabina.jpg" />
+    <Content Include="splash\android\spiaggia.jpg" />
     <Content Include="stylesheets\bootstrap-responsive.min.css" />
     <Content Include="stylesheets\bootstrap.min.css" />
     <Content Include="stylesheets\jquery.mobile-1.2.0.min.css" />
