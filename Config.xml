@@ -20,11 +20,12 @@
   <!-- allow local pages -->
   <access origin="*" />
 
+  <gap:plugin name="org.apache.cordova.splashscreen" />
 
-  <icon src="icons/android/ldpi.png" gap:platform="android" gap:density="ldpi" />
-  <icon src="icons/android/mdpi.png" gap:platform="android" gap:density="mdpi" />
-  <icon src="icons/android/hdpi.png" gap:platform="android" gap:density="hdpi" />
-  <icon src="icons/android/xhdpi.png" gap:platform="android" gap:density="xhdpi" />
+  <icon src="res/drawable-hdpi/underwear.png" gap:platform="android" gap:density="ldpi" />
+  <icon src="res/drawable-mdpi/underwear.png" gap:platform="android" gap:density="mdpi" />
+  <icon src="res/drawable-ldpi/underwear.png" gap:platform="android" gap:density="hdpi" />
+  <icon src="res/drawable-xhdpi/underwear.png" gap:platform="android" gap:density="xhdpi" />
 
 
   <gap:splash src="splash/android/spiaggia.jpg" gap:platform="android" gap:density="ldpi" />

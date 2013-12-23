@@ -23,6 +23,21 @@
     <!-- Example JavaScript files -->
     <script type="text/javascript" src="js/jquery.cookie.js"></script>
     <!-- Example jQuery code (JavaScript)  -->
+
+     <script type="text/javascript" charset="utf-8" src="res/xml/cordova.xml"></script>
+    <script type="text/javascript" charset="utf-8">
+
+        // Wait for Cordova to load
+        //
+        document.addEventListener("deviceready", onDeviceReady, false);
+
+        // Cordova is ready
+        //
+        function onDeviceReady() {
+            navigator.splashscreen.show();
+        }
+
+    </script>
     <script type="text/javascript">
 
         $(document).ready(function () {

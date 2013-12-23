@@ -108,8 +108,14 @@
     <Content Include="js\jquery.cookie.js" />
     <Content Include="js\jquery.mobile-1.1.1.min.js" />
     <Content Include="js\jquery.ui.touch-punch.min.js" />
+    <Content Include="res\drawable-hdpi\underwear.png" />
+    <Content Include="res\drawable-ldpi\underwear.png" />
+    <Content Include="res\drawable-mdpi\underwear.png" />
+    <Content Include="res\drawable-xhdpi\underwear.png" />
+    <Content Include="res\xml\cordova.xml" />
     <Content Include="splash\android\Cala-Sabina.jpg" />
     <Content Include="splash\android\spiaggia.jpg" />
+    <Content Include="splash\android\underwear.png" />
     <Content Include="stylesheets\bootstrap-responsive.min.css" />
     <Content Include="stylesheets\bootstrap.min.css" />
     <Content Include="stylesheets\jquery.mobile-1.2.0.min.css" />
