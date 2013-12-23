@@ -52,11 +52,20 @@ console.log("Hello World_2");
 console.log("Hello World_3");
             // Load items from cookie
             function loadItemsFromCookie(name) {
-                if ($.cookie(name) != null) {
-                    renderItems($.cookie(name));
+               /* if ($.cookie(name) != null) {
+                   //renderItems( localStorage.getItem("sortbeach")); 
+                   renderItems($.cookie(name));
                 }
                 else {
-                    //alert('No items saved in "' + name + '".');
+                    alert('No items saved in "' + name + '".');
+                }*/
+
+                if (localStorage.getItem("sortbeach") != null) {
+                    renderItems( localStorage.getItem("sortbeach")); 
+                    //renderItems($.cookie(name));
+                }
+                else {
+                    alert('No items saved in localStorage');
                 }
             }
 
@@ -97,6 +106,7 @@ console.log("Hello World_4");
             $('#mybeach_dd .sortable-list').sortable({
                 connectWith: '#mybeach_dd .sortable-list',
                 update: function () {
+                    localStorage.setItem("sortbeach", getItems('#mybeach_dd'));
                     $.cookie('cookie-b', getItems('#mybeach_dd'));
                 }
             });
