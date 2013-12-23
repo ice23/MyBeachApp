@@ -1,0 +1,136 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<title>jQuery: Customizable layout using drag and drop (examples) - 2. Saving and loading items</title>
+	<link rel="stylesheet" type="text/css" href="../stylesheets/style_Sortable.css" media="screen" />
+</head>
+<body >
+
+<div id="center-wrapper">
+
+	<div class="dhe-example-section_" id="MyBeach_P">
+		
+		<div class="dhe-example-section-content_">
+
+			<!-- BEGIN: XHTML for example 2.3 -->
+
+			<div id="mybeach_dd">
+
+				<div class="column left first">
+
+					<ul class="sortable-list">
+						<li class="sortable-item" id="A">Sortable item A</li>
+						<li class="sortable-item" id="B">Sortable item B</li>
+					</ul>
+
+				</div>
+
+				<div class="column left">
+
+					<ul class="sortable-list">
+						<li class="sortable-item" id="C">Sortable item C</li>
+						<li class="sortable-item" id="D">Sortable item D</li>
+					</ul>
+
+				</div>
+
+				<div class="column left">
+
+					<ul class="sortable-list">
+						<li class="sortable-item" id="E">Sortable item E</li>
+					</ul>
+
+				</div>
+
+			</div>
+
+			<div class="clearer">&nbsp;</div>
+
+			<!-- END: XHTML for example 2.3 -->
+
+		</div>
+	</div>
+
+</div>
+
+<!-- Example JavaScript files -->
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.0/jquery-ui.min.js"></script>
+<script type="text/javascript" src="../js/jquery.cookie.js"></script>
+
+<!-- Example jQuery code (JavaScript)  -->
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        loadItemsFromCookie('cookie-b');
+
+        // Get items
+        function getItems(exampleNr) {
+            var columns = [];
+
+            $(exampleNr + ' ul.sortable-list').each(function () {
+                columns.push($(this).sortable('toArray').join(','));
+            });
+
+            return columns.join('|');
+        }
+
+        // Load items from cookie
+        function loadItemsFromCookie(name) {
+            if ($.cookie(name) != null) {
+                renderItems($.cookie(name));
+            }
+            else {
+                alert('No items saved in "' + name + '".');
+            }
+        }
+
+        // Render items
+        function renderItems(items) {
+            var html = '';
+
+            var columns = items.split('|');
+
+            for (var c in columns) {
+                html += '<div class="column left';
+
+                if (c == 0) {
+                    html += ' first';
+                }
+
+                html += '"><ul class="sortable-list">';
+
+                if (columns[c] != '') {
+                    var items = columns[c].split(',');
+
+                    for (var i in items) {
+                        html += '<li class="sortable-item" id="' + items[i] + '">Sortable item ' + items[i] + '</li>';
+                    }
+                }
+
+                html += '</ul></div>';
+            }
+
+            $('#mybeach_dd').html(html);
+            
+        }
+
+
+        // Example 2.3: Save items automaticly
+        $('#mybeach_dd .sortable-list').sortable({
+            connectWith: '#mybeach_dd .sortable-list',
+            update: function () {
+                $.cookie('cookie-b', getItems('#mybeach_dd'));
+            }
+        });
+
+
+
+    });
+
+</script>
+
+
+
+</body>
+</html>

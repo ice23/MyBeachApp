@@ -1,0 +1,214 @@
+﻿<!doctype html>
+<html lang="en" id="greatname.se/marcus/maps/directions_map">
+ <head>
+  <meta charset="utf-8">
+   <title>iPad style layout jQuery mobile 1.0rc1 with Google maps - Google maps jQuery plugin</title>
+   <meta name="keywords" content="iPad style layout jQuery mobile 1.0rc1 Google maps, jQuery, plugin, mobile, iphone, ipad, android, HTML5"/>
+   <meta name="description" content="iPad style layout examples with jQuery mobile 1.0rc1, Google maps and HTML5, based on Google maps V3 plugin for jQuery by @johansall, jQuery UI and jQuery Mobile http://code.google.com/p/jquery-ui-map/"/>
+   <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1"/>
+   <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="translucent black">
+   <meta name="author" content="greatname.se">
+    <meta name="robots" content="all">
+     <link rel="icon" href="http://greatname.se/marcus/maps/m57.png">
+      <link rel="apple-touch-icon" href="http://greatname.se/marcus/maps/m57.png">
+       <link rel="apple-touch-icon" sizes="72x72" href="http://greatname.se/marcus/maps/m72.png"/>
+       <link rel="apple-touch-icon" sizes="114x114" href="http://greatname.se/marcus/maps/m114.png"/>
+       <link href="http://fonts.googleapis.com/css?family=Open Sans&subset=latin" rel="stylesheet" type="text/css">
+       <link rel="stylesheet" href="http://greatname.se/marcus/maps/main-mobile2.css"/>
+       <script src="http://greatname.se/marcus/maps/klass.min.js"></script>
+       <script src="http://greatname.se/marcus/maps/modernizr-2.0.min.js"></script>
+       <script src="http://greatname.se/marcus/maps/respond.min.js"></script>
+       <script type="text/javascript" src="https://www.google.com/jsapi?"></script>
+       <script type="text/javascript">
+           google.load('maps', '3.6', {
+               other_params: 'sensor=false'
+           });
+           google.load('jquery', '1.6.4');
+       </script>
+        <script src="http://code.jquery.com/mobile/1.0/jquery.mobile-1.0.min.js"></script>
+       <script type="text/javascript" src="http://greatname.se/marcus/maps/jquery.ui.map.full.min.js"></script>
+       <script type="text/javascript" src="http://greatname.se/marcus/maps/jquery.ui.map.extensions.js"></script>
+       <script type="text/javascript">
+           $('#directions_map').live("pageshow", function () {
+               $('#map_canvas_1').gmap('refresh');
+               $('#map_canvas_1').gmap('getCurrentPosition', function (position, status) {
+                   if (status === 'OK') {
+                       var latlng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude)
+                       $('#map_canvas_1').gmap('get', 'map').panTo(latlng);
+                       $('#map_canvas_1').gmap('search', {
+                           'location': latlng
+                       }, function (results, status) {
+                           if (status === 'OK') {
+                               $('#from').val(results[0].formatted_address);
+                           }
+                       });
+                   } else {
+                       alert('Unable to get current position');
+                   }
+               });
+
+              
+           });
+
+
+
+           $('#directions_map').live("pagecreate", function () {
+               $('#map_canvas_1').gmap({
+                   'center': '40.56308, 9.34050',
+                   'zoom':8
+               }).bind('init', function (evt, map) {
+//                   var position1 = new google.maps.LatLng(40.56308, 9.34050);
+//                   var content1 = '<b>ciao1</b>';
+//                   $('#map_canvas_1').gmap('addMarker', {
+//                       'position': position1,
+//                       'animation': google.maps.Animation.DROP
+//                   }).click(function () {
+//                       $('#map_canvas_1').gmap('openInfoWindow', {
+//                           'content': content1
+//                       }, this);
+//                   });
+                   var position2 = new google.maps.LatLng(40.53645, 9.36893);
+                   var content2 = '<b>ciao2</b>';
+                   $('#map_canvas_1').gmap('search', { 'address': '41.010508°, 9.585603°' }, function (results) {
+                       alert('Found it spiaggia bianca!');
+                       // Get the map
+                       //var map = $('#map_canvas').gmap('getMap');
+                       // Pan to first result
+                       //map.panTo(results[0].geometry.location);
+                       $('#map_canvas_1').gmap('addMarker', {
+                           'position': results[0].geometry.location,
+                           'animation': google.maps.Animation.DROP
+                       }).click(function () {
+                           $('#map_canvas_1').gmap('openInfoWindow', {
+                               'content': content2
+                           }, this);
+                       });
+                   });
+                   $('#map_canvas_1').gmap('search', { 'address': 'spiaggia di Porto Istana, OT, Italia' }, function (results) {
+                       //alert('Found it!');
+                       // Get the map
+                       //var map = $('#map_canvas').gmap('getMap');
+                       // Pan to first result
+                       //map.panTo(results[0].geometry.location);
+                       $('#map_canvas_1').gmap('addMarker', {
+                           'position': results[0].geometry.location,
+                           'animation': google.maps.Animation.DROP
+                       }).click(function () {
+                           $('#map_canvas_1').gmap('openInfoWindow', {
+                               'content': content2
+                           }, this);
+                       });
+                   });
+               });
+
+               $('#submit').click(function () {
+                   $('#map_canvas_1').gmap('displayDirections', {
+                       'origin': $('#from').val(),
+                       'destination': $('#to').val(),
+                       'travelMode': google.maps.DirectionsTravelMode.Driving
+                   }, {
+                       'panel': document.getElementById('directions')
+                   }, function (response, status) {
+                       if (status === 'OK') {
+                           $('#results').show();
+                       } else {
+                           $('#results').hide();
+                       }
+                   });
+                   return false;
+               });
+           });
+           $('#directions_map').live("pageshow", function () {
+               $('#results').hide();
+           });
+           $(function () {
+               $('body').delegate('.content-secondary .ui-collapsible-content', 'click', function () {
+                   $(this).trigger("collapse")
+               });
+           });
+
+           function setDefaultTransition() {
+               var winwidth = $(window).width(),
+		trans = "slide";
+
+               if (winwidth >= 1000) {
+                   trans = "none";
+               }
+               else if (winwidth >= 650) {
+                   trans = "fade";
+               }
+
+               $.mobile.defaultPageTransition = trans;
+           }
+
+
+           $(function () {
+               setDefaultTransition();
+               $(window).bind("throttledresize", setDefaultTransition);
+           });
+       </script>
+      </head>
+      <body>
+       <div id="directions_map" data-role="page" class="type-interior" data-theme="g">
+<!-- page -->
+        <div data-role="header" data-theme="a">
+<!-- header -->
+         <h1>Get directions</h1>
+         <a href="index.html" rel="external" data-icon="home" data-iconpos="notext" class="ui-btn-right jqm-home">Home</a>
+        </div>
+<!-- /header -->
+        <div data-role="content" class="content-secondary">
+<!-- content-secondary -->
+         <div data-role="collapsible" data-collapsed="true" data-content-theme="g">
+<!-- nav-bar -->
+          <h3>Menu</h3>
+          <ul data-role="listview" data-inset="true" data-theme="c" data-dividertheme="a">
+           <li><a rel="external" href="index.html">About</a></li>
+           <li><a rel="external" href="map_simple.html">Basic map</a></li>
+           <li><a rel="external" href="gps_map.html">Geolocation</a></li>
+           <li data-theme="a"><a rel="external" href="#">Get directions</a></li>
+           <li><a rel="external" href="fusion.html">Fusion Tables</a></li>
+           <li data-icon="star"><a href="http://www.addthis.com/bookmark.php?url=http://greatname.se/marcus/maps&amp;title=iPad%20style%20layout%20jQuery%20mobile%201.0rc1%20Google%20maps%20API%20V3%20Google-UI-map%20plugin" rel="external">Share</a></li>
+          </ul>
+         </div>
+<!-- /nav-bar -->
+         <div id="results" class="ui-listview ui-listview-inset ui-corner-all ui-shadow" style="display:none;margin-left:20px;font-size:80%;">
+<!-- direction results -->
+          <div class="ui-li ui-li-divider ui-btn ui-bar-a ui-corner-top ui-btn-up-undefined">Results</div>
+          <div id="directions"></div>
+          <div class="ui-li ui-li-divider ui-btn ui-bar-a ui-corner-bottom ui-btn-up-undefined"></div>
+         </div>
+<!-- /direction results -->
+        </div>
+<!-- /content-secondary -->
+        <div data-role="content" class="content-primary" style="padding:1em;height:100%;">
+<!-- content-primary -->
+         <div class="ui-bar-c ui-corner-all ui-shadow" style="padding:1em;">
+          <div id="map_canvas_1"></div>
+          <p>
+           <label for="from">From</label>
+           <input id="from" class="ui-bar-c" type="search" value="G&ouml;teborg, Sweden"/>
+          </p>
+          <p>
+           <label for="to">To</label>
+           <input id="to" class="ui-bar-c" type="search" value="Stockholm, Sweden"/>
+          </p>
+          <a id="submit" href="#" data-role="button" data-theme="a" data-icon="search">Get directions</a>
+         </div>
+        </div>
+<!-- /content-primary -->
+       </div>
+<!-- /page -->
+<!-- Google Analytics Code, please remove -->
+<script>
+    var _gaq = [['_setAccount', 'UA-19887300-1'], ['_trackPageview']];
+    (function (d, t) {
+        var g = d.createElement(t), s = d.getElementsByTagName(t)[0]; g.async = 1;
+        g.src = ('https:' == location.protocol ? '//ssl' : '//www') + '.google-analytics.com/ga.js';
+        s.parentNode.insertBefore(g, s)
+    } (document, 'script'));
+</script>
+<!-- /Google Analytics Code-->
+      </body>
+     </html>
