@@ -5,47 +5,49 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="format-detection" content="telephone=no">
-    <link rel="stylesheet" href="../stylesheets/jquery.mobile-1.2.0.min.css" />
-    <script src="../js/jquery-1.7.1.min.js"></script>
-    <script type="text/javascript" src="../js/jquery-ui.min.js"></script>
-    <script src="../js/jquery.mobile-1.2.0.min.js"></script>
+    <link rel="stylesheet" href="stylesheets/jquery.mobile-1.2.0.min.css" />
+    <script src="js/jquery-1.7.1.min.js"></script>
+    <script type="text/javascript" src="js/jqueryui/1.8.0/jquery-ui.min.js"></script>
+    <script src="js/jquery.mobile-1.2.0.min.js"></script>
     <title>OpenWeatherMap. Forecast for Olbia </title>
-    <link rel="shortcut icon" href="../images/list-icon-4.png" />
-    <link rel="apple-touch-icon" href="../images/sun_mini.png" />
-    <link rel="stylesheet" href="../stylesheets/myphone3.css" />
+    <link rel="shortcut icon" href="images/list-icon-4.png" />
+    <link rel="apple-touch-icon" href="images/sun_mini.png" />
+    <link rel="stylesheet" href="stylesheets/myphone3.css" />
     <!-- Open graph -->
-    <meta property="og:site_name" content="Good weather" />
-    <meta property="og:image" content="http://m.openweathermap.org/images/help/main.png" />
     <meta name="keywords" content="weather" />
     <meta name="description" content="" />
     <!-- Open graph -->
-    <link rel="stylesheet" type="text/css" href="../stylesheets/style_Sortable.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/style_Sortable.css" media="screen" />
     <!-- Example JavaScript files -->
-    <script type="text/javascript" src="../js/jquery.cookie.js"></script>
+    <script type="text/javascript" src="js/jquery.cookie.js"></script>
     <!-- Example jQuery code (JavaScript)  -->
     <script type="text/javascript">
 
         $(document).ready(function () {
+		    console.log("Hello World");
             $('#clearcookie').click(function () {
                 $.cookie('cookie-b', null);
 
                 alert('Items cleared');
             });
 
+console.log("Hello World_1");
             //$.cookie('cookie-b', null);
             loadItemsFromCookie('cookie-b');
 
+console.log("Hello World_2");			
             // Get items
             function getItems(exampleNr) {
                 var columns = [];
 
                 $(exampleNr + ' ul.sortable-list').each(function () {
-                    columns.push($(this).sortable('toArray').join(','));
+                    //columns.push($(this).sortable('toArray').join(','));
                 });
 
                 return columns.join('|');
             }
 
+console.log("Hello World_3");
             // Load items from cookie
             function loadItemsFromCookie(name) {
                 if ($.cookie(name) != null) {
@@ -56,6 +58,7 @@
                 }
             }
 
+console.log("Hello World_4");
             // Render items
             function renderItems(items) {
                 var html = '';
@@ -76,7 +79,7 @@
                         var items = columns[c].split(',');
 
                         for (var i in items) {
-                            html += '<li class="sortable-item" id="' + items[i] + '"><a href="#main"><img src="../images/beach/Cala-Sabina.jpg" height=40px width=50px/></a></li>';
+                            html += '<li class="sortable-item" id="' + items[i] + '"><a href="#main"><img src="images/beach/Cala-Sabina.jpg" height=40px width=50px/></a></li>';
                         }
                     }
 
@@ -89,12 +92,12 @@
 
 
             // Example 2.3: Save items automaticly
-            $('#mybeach_dd .sortable-list').sortable({
+           /* $('#mybeach_dd .sortable-list').sortable({
                 connectWith: '#mybeach_dd .sortable-list',
                 update: function () {
                     $.cookie('cookie-b', getItems('#mybeach_dd'));
                 }
-            });
+            });*/
 
 
 
@@ -102,14 +105,15 @@
 
     </script>
     <script type="text/javascript" charset="utf-8">
+	    console.log("Hello World2");
         function get_cookie(name) {
             var matches = document.cookie.match(new RegExp(
 	      "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
 	    ))
-            return matches ? decodeURIComponent(matches[1]) : undefined
+            return matches ? decodeURIComponent(matches[1]) : ''
         }
 
-
+console.log("Hello World3");
         function set_cookie(name, value, expires) {
             if (!expires) {
                 expires = new Date();
@@ -117,34 +121,34 @@
             document.cookie = name + "=" + escape(value) + "; expires=" + expires.toGMTString() + "; path=/";
         }
 
-
+console.log("Hello World4");
         function ShowSuccessMess(mess) {
             $("#alert_body").html(mess);
             $("#alert_title").html('Success');
             $("#lnkDialog").click();
             $.mobile.hidePageLoadingMsg();
         }
-
+console.log("Hello World5");
         function ShowInfoMess(mess) {
             $("#alert_body").html(mess);
             $("#alert_title").html('Message');
             $("#lnkDialog").click();
             $.mobile.hidePageLoadingMsg();
         }
-
+console.log("Hello World6");
         function ShowAlertMess(mess) {
             $("#alert_body").html(mess);
             $("#alert_title").html('Alert');
             $("#lnkDialog").click();
             $.mobile.hidePageLoadingMsg();
         }
-
+console.log("Hello World7");
         function errorHandler(e) {
             alert('a');
             ShowAlertMess(e.status + ' ' + e.statusText);
         }
 
-
+console.log("Hello World8");
         function ParseJson(JSONtext) {
             try {
                 JSONobject = JSON.parse(JSONtext);
@@ -166,22 +170,23 @@
     </script>
 </head>
 <body>
-    <script type="text/javascript" src="../js/gauge.js"></script>
+    <script type="text/javascript" src="js/gauge.js"></script>
     <style type="text/css">
         #test_default, #gauge_pres, #test_medium, #test_small
         {
             border: 1px solid #333;
         }
     </style>
-    <script src="../js/highcharts/highcharts.js"></script>
-    <script src="../js/highcharts/highcharts-more.js"></script>
-    <script src="../api/OpenLayers.js"></script>
-    <script src="../js/highcharts/modules/data.js"></script>
-    <script src="../js/highcharts/modules/exporting.js"></script>
-    <script src="../js/charts_mini.js"></script>
-    <script type="text/javascript" src="../js/googlejs.js"></script>
+    <script src="js/highcharts/highcharts.js"></script>
+    <script src="js/highcharts/highcharts-more.js"></script>
+    <script src="api/OpenLayers.js"></script>
+    <script src="js/highcharts/modules/data.js"></script>
+    <script src="js/highcharts/modules/exporting.js"></script>
+    <script src="js/charts_mini.js"></script>
+    <script type="text/javascript" src="js/googlejs.js"></script>
     <script type="text/javascript" charset="utf-8">
-        var infowindow = null;
+        console.log("Hello World9");
+		var infowindow = null;
         var map = null;
         var imgWindOK = null;
         var imgWindKO = null;
@@ -190,10 +195,11 @@
         var WindDir = '';
         var WindSpeed = 0;
         var Hpa = 0;
-
+console.log("Hello World10");
         var options, gm, gms, testOverflowMin, testOverflowMax, periodicRand;
 
         /*================================== initilize Pressure =================================*/
+console.log("Hello World11");
         function addLoadEvent(func) {
             var oldonload = window.onload;
             if (typeof window.onload != 'function') {
@@ -207,7 +213,7 @@
                 }
             }
         }
-
+console.log("Hello World12");
         addLoadEvent(function () {
 
             // Draw the gauge using custom settings
@@ -231,34 +237,36 @@
         });
         /*================================== initilize Pressure END =================================*/
 
-
+console.log("Hello World13");
         /*================================== initilize MAPS =================================*/
         sites = [
-	['Cala Sabinasdfdsf', 41.010508, 9.585603, 4, 'Cala Sabinsdhswklnfdc jsdfmsdjfjlkds jjsfdskjn sdbfkdsf  jsdflndsjkfkd <br/> ndkfjdjfldslfa', 'SE'],
+	['Cala Sabinasdfdsf', 41.010508, 9.585603, 4, 'Cala Sabinsdhswklnfdc jsdfmsdjfjlkds jjsfdskjn sdbfkdsf  jsdflndsjkfkd <br/> ndkfjdjfldslfa', 'SSW'],
     ['Spiaggia Bianca', 40.990653, 9.591923, 2, 'Spiaggia Bianca.', 'N'],
 	['Porto Istana', 40.894246, 9.615097, 2, 'Porto Istana.', 'N'],
     ['Pittulongu', 40.938642, 9.567375, 2, 'Pittulongu.', 'N'],
 	['Bados', 40.954363, 9.578104, 1, 'Bados', 'N']
 ];
-
+console.log("Hello World14");
         imgWindOK = {
-            url: '../images/face-smile-big.png',
+            url: 'images/face-smile-big.png',
             // This marker is 20 pixels wide by 32 pixels tall.
-            size: new google.maps.Size(40, 50),
+            //size: new google.maps.Size(40, 50),
             // The origin for this image is 0,0.
-            origin: new google.maps.Point(0, 0),
+            //origin: new google.maps.Point(0, 0),
             // The anchor for this image is the base of the flagpole at 0,32.
-            anchor: new google.maps.Point(0, 32)
+            //anchor: new google.maps.Point(0, 32)
         };
+console.log("Hello World15");
         imgWindKO = {
-            url: '../images/face-angry.png',
+            url: 'images/face-angry.png',
             // This marker is 20 pixels wide by 32 pixels tall.
-            size: new google.maps.Size(40, 50),
+            //size: new google.maps.Size(40, 50),
             // The origin for this image is 0,0.
-            origin: new google.maps.Point(0, 0),
+            //origin: new google.maps.Point(0, 0),
             // The anchor for this image is the base of the flagpole at 0,32.
-            anchor: new google.maps.Point(0, 32)
+            //anchor: new google.maps.Point(0, 32)
         };
+console.log("Hello World16");
         shape = {
             coord: [1, 1, 1, 20, 18, 20, 18, 1],
             type: 'poly'
@@ -280,9 +288,9 @@
 
         var time_zone = 1000 * (new Date().getTimezoneOffset()) * (-60);
         var current_city_id;
-
+console.log("Hello World17");
         if (get_cookie('cityid')) current_city_id = get_cookie('cityid');
-
+console.log("Hello World18");
         if ('3172087' != '') {
             current_city_id = 3172087;
         }
@@ -358,7 +366,7 @@
                 var icon_cod = JSONobject.list[i]['weather'][0]['icon'];
 
                 //var img = '<img src="http://openweathermap.org/img/w/' + icon_cod + '.png">';
-                var img = '<img src="../images/' + icon_cod + '.png">';
+                var img = '<img src="images/' + icon_cod + '.png">';
                 var wind = JSONobject.list[i].wind.speed;
                 var pressure = JSONobject.list[i].main.pressure;
                 var cloud = JSONobject.list[i].clouds.all;
@@ -389,7 +397,7 @@
 
 
 
-
+console.log("Hello World19");
         //**************************** getHistoryData ****************************
         function getWindRose() {
             //alert('WindDirect' + WindDir + ' Speed ' + WindSpeed);
@@ -1227,7 +1235,7 @@
 
 
 
-
+console.log("Hello World20");
         function getHistoryData_chart(JSONtext) {
             alert('getHistoryData_chart');
             JSONobject = ParseJson(JSONtext);
@@ -1235,6 +1243,7 @@
             showBarsDouble('chart_container', data);
             $.mobile.hidePageLoadingMsg();
         }
+console.log("Hello World21");
         function getHistoryData_wind(JSONtext) {
             alert('getHistoryData_wind');
             JSONobject = ParseJson(JSONtext);
@@ -1242,6 +1251,8 @@
             showPolarSpeed('chart_container', data);
             $.mobile.hidePageLoadingMsg();
         }
+		
+console.log("Hello World22");
         function getHistoryData_pres(JSONtext) {
             alert('getHistoryData_pres');
             JSONobject = ParseJson(JSONtext);
@@ -1264,7 +1275,7 @@
 		);
             }, 300);
         }
-
+console.log("Hello World23");
         $('#app_install_div').live('vclick', function (event, ui) {
             $(this).hide();
             return false;
@@ -1275,7 +1286,9 @@
 
 
         jQuery(document).ready(function () {
-
+console.log("Hello World24");
+            $('#city_wind_lbl').html('0');
+console.log("Hello World25");
             $("form").submit(function (event) {
                 event.stopPropagation();
                 event.preventDefault();
@@ -1289,7 +1302,7 @@
             });
 
         });
-
+console.log("Hello World25a");
         $('#main').live('pagecreate', function (event, ui) {
             var units = 'metric';
             if (get_cookie('units') == 'imperial') units = 'imperial';
@@ -1305,23 +1318,30 @@
             //el.selectmenu("refresh", true);
         });
 
-
+console.log("Hello World25b");
         $('#main').live('pageshow', function (event, ui) {
-            var units = 'metric';
+console.log("Hello World26");
+            $('#city_wind_lbl').html('0');
+			var units = 'metric';
             if (get_cookie('units') == 'imperial') units = 'imperial';
             //            if ('metric' == 'imperial') units = 'imperial';
             //alert(current_city_id);
+			current_city_id='3172087';
+			$('#city_wind_lbl').html('1');
+			alert(current_city_id);
+console.log("Hello World27");
             //http://api.openweathermap.org/data/2.5/weather?callback=?&id=3172087&units=metric&lang=it
             //http://api.openweathermap.org/data/2.5/weather?callback=?&id=3172087&units=metric
 
             var lang = 'it';
             if (get_cookie('lang') == 'en') lang = 'en';
-
+$('#city_wind_lbl').html('2');
+console.log("Hello World28");
             if (current_city_id)
                 $.getJSON("http://api.openweathermap.org/data/2.5/weather?callback=?&id=" + current_city_id + '&units=' + units, showCurrentCity).error(errorHandler);
             else
                 $.getJSON("http://api.openweathermap.org/data/2.5/weather?callback=?&id=auto" + '&units=' + units, showCurrentCity).error(errorHandler);
-
+console.log("Hello World28b");
         });
 
 
@@ -1487,7 +1507,7 @@
             //        map.setCenter(centre, zoom);
             //        var ls = new OpenLayers.Control.LayerSwitcher({ 'ascending': false });
             //        map.addControl(ls);
-            alert('map' + map);
+            //alert('map' + map);
             map = null;
             var centerMap = new google.maps.LatLng(40.931153, 9.483948);
 
@@ -1574,6 +1594,7 @@
 
 
         function showCurrentCity(d) {
+console.log("Hello World29");
             current_city_id = d.id;
             alert(d.name);
             $('#city_name').html(d.name + ', ' + d.sys.country);
@@ -1687,7 +1708,7 @@
 
             if (d.weather[0]) {
                 //$('li.picture').css('background', "#fff url(http://openweathermap.org/img/w/" + d.weather[0].icon + ".png) no-repeat");
-                $('li.picture').css('background', "#fff url(../images/" + d.weather[0].icon + ".png) no-repeat");
+                $('li.picture').css('background', "#fff url(images/" + d.weather[0].icon + ".png) no-repeat");
                 $('#city_weather').html(d.weather[0].description);
             }
 
@@ -1716,7 +1737,7 @@
                 icon = '';
                 if (list.list[i].weather[0]) {
                     //icon = "http://openweathermap.org/img/w/" + list.list[i].weather[0].icon + ".png";
-                    icon = "../images/" + list.list[i].weather[0].icon + ".png";
+                    icon = "images/" + list.list[i].weather[0].icon + ".png";
                     dat = list.list[i].weather[0].description;
                 }
 
@@ -1745,11 +1766,6 @@
     <!-- city / main page -->
     <div data-role="page" id="main">
         <div id="header" data-role="header" data-theme="a">
-            <h3>
-                City/mainPage
-            </h3>
-            <a href="http://m.OpenWeatherMap.org" data-icon="home" data-iconpos="notext" data-direction="reverse">
-                Main site</a>
             <div class="ui-body-b">
                 <div data-role="navbar" data-iconpos="bottom" data-theme="b">
                     <ul>
@@ -2183,18 +2199,5 @@
         </div>
     </noscript>
 </body>
-<script type="text/javascript">
 
-    var _gaq = _gaq || [];
-    _gaq.push(['_setAccount', 'UA-31601618-1']);
-    _gaq.push(['_setDomainName', 'openweathermap.org']);
-    _gaq.push(['_trackPageview']);
-
-    (function () {
-        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-    })();
-
-</script>
 </html>
