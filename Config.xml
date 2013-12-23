@@ -22,6 +22,7 @@
 
   <gap:plugin name="org.apache.cordova.splashscreen" />
 
+  <gap:splash src="splash.png" />
   <icon src="res/drawable-hdpi/underwear.png" gap:platform="android" gap:density="ldpi" />
   <icon src="res/drawable-mdpi/underwear.png" gap:platform="android" gap:density="mdpi" />
   <icon src="res/drawable-ldpi/underwear.png" gap:platform="android" gap:density="hdpi" />
