@@ -21,7 +21,10 @@
   <access origin="*" />
 
   <gap:plugin name="org.apache.cordova.splashscreen" />
-
+  <feature name="SplashScreen">
+    <param name="android-package" value="org.apache.cordova.splashscreen.SplashScreen" />
+  </feature>
+  
   <gap:splash src="splash.png" />
   <icon src="res/drawable-hdpi/underwear.png" gap:platform="android" gap:density="ldpi" />
   <icon src="res/drawable-mdpi/underwear.png" gap:platform="android" gap:density="mdpi" />

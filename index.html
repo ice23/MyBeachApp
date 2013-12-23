@@ -24,6 +24,7 @@
     <script type="text/javascript" src="js/jquery.cookie.js"></script>
     <!-- Example jQuery code (JavaScript)  -->
 
+     <script type="text/javascript" charset="utf-8" src="phonegap.js"></script>
      <script type="text/javascript" charset="utf-8" src="res/xml/cordova.xml"></script>
     <script type="text/javascript" charset="utf-8">
 
@@ -34,6 +35,7 @@
         // Cordova is ready
         //
         function onDeviceReady() {
+            alert('onDeviceReady');
             navigator.splashscreen.show();
         }
 
@@ -1322,7 +1324,7 @@ console.log("Hello World25");
                 var txt = $('#search-city').attr('value');
                 $.mobile.showPageLoadingMsg();
                 alert('search');
-                $.get('/data/2.1/find/name?q=' + txt + '&type=like&sort=population', showFind).error(errorHandler);
+                $.get('http://api.openweathermap.org//data/2.1/find/name?q=' + txt + '&type=like&sort=population', showFind).error(errorHandler);
 
 
                 return false;
@@ -1359,6 +1361,9 @@ console.log("Hello World26");
 console.log("Hello World27");
             //http://api.openweathermap.org/data/2.5/weather?callback=?&id=3172087&units=metric&lang=it
             //http://api.openweathermap.org/data/2.5/weather?callback=?&id=3172087&units=metric
+             if (navigator != null && navigator.notification != null) {
+                navigator.notification.activityStart("caricamento", "Caricamento notizie in corso...");
+            }
 
             var lang = 'it';
             if (get_cookie('lang') == 'en') lang = 'en';
@@ -1622,6 +1627,9 @@ console.log("Hello World28b");
 
         function showCurrentCity(d) {
 console.log("Hello World29");
+if (navigator != null && navigator.notification != null) {
+                navigator.notification.activityStop();
+            }
             current_city_id = d.id;
             //alert(d.name);
             $('#city_name').html(d.name + ', ' + d.sys.country);
