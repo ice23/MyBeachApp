@@ -1,0 +1,2277 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <link rel="stylesheet" href="stylesheets/jquery.mobile-1.2.0.min.css" />
+    <script src="js/jquery-1.7.1.min.js"></script>
+    <script type="text/javascript" src="js/jquery-ui.min.js"></script>
+    <script src="js/jquery.mobile-1.2.0.min.js"></script>
+    <title>OpenWeatherMap. Forecast for Olbia </title>
+    <link rel="shortcut icon" href="images/list-icon-4.png" />
+    <link rel="apple-touch-icon" href="images/sun_mini.png" />
+    <link rel="stylesheet" href="stylesheets/myphone3.css" />
+    <script src="js/jquery.ui.touch-punch.min.js"></script>
+    <!-- Open graph -->
+    <meta name="keywords" content="weather" />
+    <meta name="description" content="" />
+    <!-- Open graph -->
+    <link rel="stylesheet" type="text/css" href="stylesheets/style_Sortable.css" media="screen" />
+    <!-- Example JavaScript files -->
+    <script type="text/javascript" src="js/jquery.cookie.js"></script>
+    <!-- Example jQuery code (JavaScript)  -->
+    <script type="text/javascript" charset="utf-8" src="phonegap.js"></script>
+    <script type="text/javascript" charset="utf-8" src="res/xml/cordova.xml"></script>
+    <script type="text/javascript" charset="utf-8">
+
+        // Wait for Cordova to load
+        //
+        document.addEventListener("deviceready", onDeviceReady, false);
+
+        // Cordova is ready
+        //
+        function onDeviceReady() {
+            alert('onDeviceReady');
+            navigator.splashscreen.show();
+        }
+
+    </script>
+    <script type="text/javascript">
+       
+    </script>
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            console.log("Hello World");
+            $('#clearcookie').click(function () {
+                $.cookie('cookie-b', null);
+
+                alert('Items cleared');
+            });
+
+            console.log("Hello World_1");
+            //$.cookie('cookie-b', null);
+            loadItemsFromCookie('cookie-b');
+
+            console.log("Hello World_2");
+            // Get items
+            function getItems(exampleNr) {
+                var columns = [];
+
+                $(exampleNr + ' ul.sortable-list').each(function () {
+                    columns.push($(this).sortable('toArray').join(','));
+                });
+
+                return columns.join('|');
+            }
+
+            console.log("Hello World_3");
+            // Load items from cookie
+            function loadItemsFromCookie(name) {
+                /* if ($.cookie(name) != null) {
+                //renderItems( localStorage.getItem("sortbeach")); 
+                renderItems($.cookie(name));
+                }
+                else {
+                alert('No items saved in "' + name + '".');
+                }*/
+
+                if (localStorage.getItem("sortbeach") != null) {
+                    renderItems(localStorage.getItem("sortbeach"));
+                    //renderItems($.cookie(name));
+                }
+                else {
+                    alert('No items saved in localStorage');
+                }
+            }
+
+            console.log("Hello World_4");
+            // Render items
+            function renderItems(items) {
+                var html = '';
+
+                var columns = items.split('|');
+
+                for (var c in columns) {
+                    html += '<div class="column left';
+
+                    if (c == 0) {
+                        html += ' first';
+                    }
+
+                    html += '"><ul class="sortable-list">';
+
+                    if (columns[c] != '') {
+
+                        var items = columns[c].split(',');
+
+                        for (var i in items) {
+                            html += '<li class="sortable-item" id="' + items[i] + '"><a href="#main"><img src="images/beach/Cala-Sabina.jpg" height=40px width=50px/></a></li>';
+                        }
+                    }
+
+                    html += '</ul></div>';
+                }
+
+                $('#mybeach_dd').html(html);
+
+            }
+
+
+            // Example 2.3: Save items automaticly
+            $('#mybeach_dd .sortable-list').sortable({
+                connectWith: '#mybeach_dd .sortable-list',
+                update: function () {
+                    localStorage.setItem("sortbeach", getItems('#mybeach_dd'));
+                    $.cookie('cookie-b', getItems('#mybeach_dd'));
+                }
+            });
+
+
+
+        });
+
+    </script>
+    <script type="text/javascript" charset="utf-8">
+        console.log("Hello World2");
+        function get_cookie(name) {
+            var matches = document.cookie.match(new RegExp(
+	      "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
+	    ))
+            return matches ? decodeURIComponent(matches[1]) : ''
+        }
+
+        console.log("Hello World3");
+        function set_cookie(name, value, expires) {
+            if (!expires) {
+                expires = new Date();
+            }
+            document.cookie = name + "=" + escape(value) + "; expires=" + expires.toGMTString() + "; path=/";
+        }
+
+        console.log("Hello World4");
+        function ShowSuccessMess(mess) {
+            $("#alert_body").html(mess);
+            $("#alert_title").html('Success');
+            $("#lnkDialog").click();
+            $.mobile.hidePageLoadingMsg();
+        }
+        console.log("Hello World5");
+        function ShowInfoMess(mess) {
+            $("#alert_body").html(mess);
+            $("#alert_title").html('Message');
+            $("#lnkDialog").click();
+            $.mobile.hidePageLoadingMsg();
+        }
+        console.log("Hello World6");
+        function ShowAlertMess(mess) {
+            $("#alert_body").html(mess);
+            $("#alert_title").html('Alert');
+            $("#lnkDialog").click();
+            $.mobile.hidePageLoadingMsg();
+        }
+        console.log("Hello World7");
+        function errorHandler(e) {
+            alert('a');
+            ShowAlertMess(e.status + ' ' + e.statusText);
+        }
+
+        console.log("Hello World8");
+        function ParseJson(JSONtext) {
+            try {
+                JSONobject = JSON.parse(JSONtext);
+            } catch (e) {
+                alert('a1');
+                ShowAlertMess('JSON Error');
+                return;
+            }
+
+            if (JSONobject.cod != '200') {
+                alert('a2');
+                ShowAlertMess('Error ' + JSONobject.cod + ' (' + JSONobject.message + ')');
+                return;
+            }
+
+            return JSONobject;
+        }
+
+    </script>
+</head>
+<body>
+    <script type="text/javascript" src="js/gauge.js"></script>
+    <style type="text/css">
+        #test_default, #gauge_pres, #test_medium, #test_small
+        {
+            border: 1px solid #333;
+        }
+    </style>
+    <script src="js/highcharts/highcharts.js"></script>
+    <script src="js/highcharts/highcharts-more.js"></script>
+    <script src="api/OpenLayers.js"></script>
+    <script src="js/highcharts/modules/data.js"></script>
+    <script src="js/highcharts/modules/exporting.js"></script>
+    <script src="js/charts_mini.js"></script>
+    <script type="text/javascript" src="js/googlejs.js"></script>
+    <script type="text/javascript" charset="utf-8">
+        console.log("Hello World9");
+		var infowindow = null;
+        var map = null;
+        var imgWindOK = null;
+        var imgWindKO = null;
+        var sites = null;
+        var shape = null;
+        var WindDir = '';
+        var WindSpeed = 0;
+        var Hpa = 0;
+console.log("Hello World10");
+        var options, gm, gms, testOverflowMin, testOverflowMax, periodicRand;
+
+         $(document).ready(function () {
+            //alert('xmlDoc');
+            $.ajax({
+                type: "GET",
+                url: "spiagge/1.xml",
+                dataType: "xml",
+                success: parseXml
+            });
+
+            sites = [];
+            function parseXml(xmlDoc) {
+                $(xmlDoc).find('spiaggia').each(function () {
+                    var spiaggia = $(this)
+                    var id = spiaggia.attr('id');
+                    var nome = spiaggia.attr('nome');
+                    var lat = spiaggia.attr('lat');
+                    var lon = spiaggia.attr('lon');
+                    var descrizione = spiaggia.find('descrizione').text();
+                    var windNO = spiaggia.find('windNO').text();
+                    //   
+                    var beach=[nome, lat,lon, 1, descrizione,windNO]
+                    //alert(beach);
+                    sites.push(beach);
+                });
+            };
+
+            //var xmlDoc = $.parseXML('spiagge/1.xml');
+
+        });
+
+
+
+
+        /*================================== initilize Pressure =================================*/
+console.log("Hello World11");
+        function addLoadEvent(func) {
+            var oldonload = window.onload;
+            if (typeof window.onload != 'function') {
+                window.onload = func;
+            } else {
+                window.onload = function () {
+                    if (oldonload) {
+                        oldonload();
+                    }
+                    func();
+                }
+            }
+        }
+console.log("Hello World12");
+        addLoadEvent(function () {
+
+            // Draw the gauge using custom settings
+            options = {
+                label: 'Pressure!',
+                unitsLabel: ' hpa',
+                min: 950,
+                max: 1050,
+                majorTicks: 4,
+                minorTicks: 3, // small ticks inside each major tick
+                greenFrom: 1010,
+                greenTo: 1050,
+                yellowFrom: 980,
+                yellowTo: 1010,
+                redFrom: 950,
+                redTo: 980
+            };
+            gm = new Gauge(document.getElementById('gauge_pres'), options);
+            gm.setValue(0);
+
+        });
+        /*================================== initilize Pressure END =================================*/
+
+console.log("Hello World13");
+        /*================================== initilize MAPS =================================*/
+//        sites = [
+//	['Cala Sabinasdfdsf', 41.010508, 9.585603, 4, 'Cala Sabinsdhswklnfdc jsdfmsdjfjlkds jjsfdskjn sdbfkdsf  jsdflndsjkfkd <br/> ndkfjdjfldslfa', 'SSW'],
+//    ['Spiaggia Bianca', 40.990653, 9.591923, 2, 'Spiaggia Bianca.', 'N'],
+//	['Porto Istana', 40.894246, 9.615097, 2, 'Porto Istana.', 'N'],
+//    ['Pittulongu', 40.938642, 9.567375, 2, 'Pittulongu.', 'N'],
+//	['Bados', 40.954363, 9.578104, 1, 'Bados', 'N']
+//];
+
+//   sites = [];
+//    var arr=['Bados', '40.954363', '9.578104', 2, 'Bados',  'N']
+//    sites.push(arr);
+//    arr=['Bados', '41.954363', '9.578104', 1, 'Bados',  'N']
+//    sites.push(arr);
+console.log("Hello World14");
+        imgWindOK = {
+            url: 'images/face-smile-big.png',
+            // This marker is 20 pixels wide by 32 pixels tall.
+            //size: new google.maps.Size(40, 50),
+            // The origin for this image is 0,0.
+            //origin: new google.maps.Point(0, 0),
+            // The anchor for this image is the base of the flagpole at 0,32.
+            //anchor: new google.maps.Point(0, 32)
+        };
+console.log("Hello World15");
+        imgWindKO = {
+            url: 'images/face-angry.png',
+            // This marker is 20 pixels wide by 32 pixels tall.
+            //size: new google.maps.Size(40, 50),
+            // The origin for this image is 0,0.
+            //origin: new google.maps.Point(0, 0),
+            // The anchor for this image is the base of the flagpole at 0,32.
+            //anchor: new google.maps.Point(0, 32)
+        };
+console.log("Hello World16");
+        shape = {
+            coord: [1, 1, 1, 20, 18, 20, 18, 1],
+            type: 'poly'
+        };
+
+        /*================================== initilize MAP END =================================*/
+
+
+
+
+
+
+
+        var lat;
+        if ('40.921371' != '') lat = 40.921371;
+
+        var lng;
+        if ('9.48563' != '') lng = 9.48563;
+
+        var time_zone = 1000 * (new Date().getTimezoneOffset()) * (-60);
+        var current_city_id;
+console.log("Hello World17");
+        if (get_cookie('cityid')) current_city_id = get_cookie('cityid');
+console.log("Hello World18");
+        if ('3172087' != '') {
+            current_city_id = 3172087;
+        }
+
+        // ******************* city functions ***********************
+
+        // **************************** forecast *******************************
+        function getDataForecast(JSONobject) {
+            //JSONobject = ParseJson(JSONtext);
+            //data = JSONobject.list;
+
+            var curdate = new Date() - 45 * 60 * 1000;
+
+            //console.log("time zone" + time_zone);
+            var html = ''
+            var lastday = 0;
+
+            // 
+            var ar_tmin = new Array();
+            var ar_tmax = new Array();
+            min_cur = 500;
+            max_cur = 0;
+
+            rr = new Date(JSONobject.list[0].dt * 1000 + time_zone);
+            lastday = rr.getDate();
+
+            for (var i = 0; i < JSONobject.list.length; i++) {
+                var dt = new Date(JSONobject.list[i].dt * 1000 + time_zone);
+                var day = dt.getDate();
+
+                if (curdate > dt) continue;
+
+                if (day != lastday) {
+                    lastday = day;
+                    ar_tmin.push(min_cur);
+                    ar_tmax.push(max_cur);
+                    max_cur = 0;
+                    min_cur = 500;
+                }
+
+                if (JSONobject.list[i].main.temp < min_cur)
+                    min_cur = JSONobject.list[i].main.temp;
+                if (JSONobject.list[i].main.temp > max_cur)
+                    max_cur = JSONobject.list[i].main.temp;
+                //console.log(JSONobject.list[i].main.temp);
+            }
+            ar_tmin.push(min_cur);
+            ar_tmax.push(max_cur);
+
+            lastday = 0;
+
+            for (var i = 0; i < JSONobject.list.length; i++) {
+
+                var dt = new Date(JSONobject.list[i].dt * 1000 + time_zone);
+
+                if (curdate > dt) continue;
+                var day = dt.getDate();
+                var hr = dt.getHours();
+                if (hr < 10) hr = '0' + hr;
+
+                if (day != lastday) {
+                    if (lastday != 0)
+                        html = html + "</li></ul>";
+                    html = html + "<li><h3>" + dt.toDateString() + "</h3> \
+			<p>Temp. from " + Math.round(ar_tmin.shift()) + " to " +
+				Math.round(ar_tmax.shift()) + "°C</p><ul>";
+                    lastday = day;
+                }
+                var temp = Math.round(JSONobject.list[i].main.temp);
+                var tmin = Math.round(JSONobject.list[i].main.temp_min);
+                var tmax = Math.round(JSONobject.list[i].main.temp_max);
+
+                var icon_cod = JSONobject.list[i]['weather'][0]['icon'];
+
+                //var img = '<img src="http://openweathermap.org/img/w/' + icon_cod + '.png">';
+                var img = '<img src="images/' + icon_cod + '.png">';
+                var wind = JSONobject.list[i].wind.speed;
+                var pressure = JSONobject.list[i].main.pressure;
+                var cloud = JSONobject.list[i].clouds.all;
+
+                var lang = 'it';
+                if (get_cookie('lang') == 'en') lang = 'en';
+                if (lang == 'en') {
+                    html = html + '<li>' + img + '<h1>' + hr + ':00 </h1> <span class="ui-li-count"><h5>' + temp + '°C</h5></span>' +
+'<p><strong>Temp. from ' + tmin + ' to ' + tmax + '°C</strong></p><p> Wind ' + wind +
+' m/s.</p><p> Clouds ' + cloud + ' % ' + pressure + ' hpa</p></li>';
+                }
+                else {
+                    html = html + '<li>' + img + '<h1>' + hr + ':00 </h1> <span class="ui-li-count"><h5>' + temp + '°C</h5></span>' +
+'<p><strong>Temp. from ' + tmin + ' to ' + tmax + '°C</strong></p><p> Vento ' + wind +
+' m/s.</p><p> Clouds ' + cloud + ' % ' + pressure + ' hpa</p></li>';
+                }
+
+            }
+            html = '<ul data-role="listview" id="forecast_list_data">' + html + '</ul>';
+
+            $("#forecast_list_ul").html(html);
+            $("#forecast_list_data").listview();
+
+            $.mobile.hidePageLoadingMsg();
+        };
+
+
+
+
+
+console.log("Hello World19");
+        //**************************** getHistoryData ****************************
+        function getWindRose() {
+            //alert('WindDirect' + WindDir + ' Speed ' + WindSpeed);
+            var tbfreq = '';
+            tbfreq = tbfreq + '<table id="freq" border="0" cellspacing="0" cellpadding="0">'
+            tbfreq = tbfreq + '<tr nowrap bgcolor="#CCCCFF">'
+            tbfreq = tbfreq + '<th colspan="9" class="hdr">Table of Frequencies (percent)</th>'
+            tbfreq = tbfreq + '</tr>'
+            tbfreq = tbfreq + '<tr nowrap bgcolor="#CCCCFF">'
+            tbfreq = tbfreq + '<th class="freq">Direction</th>'
+            tbfreq = tbfreq + '<th class="freq">&lt; 0.5 m/s</th>'
+            tbfreq = tbfreq + '<th class="freq">0.5-2 m/s</th>'
+            tbfreq = tbfreq + '<th class="freq">2-4 m/s</th>'
+            tbfreq = tbfreq + '<th class="freq">4-6 m/s</th>'
+            tbfreq = tbfreq + '<th class="freq">6-8 m/s</th>'
+            tbfreq = tbfreq + '<th class="freq">8-10 m/s</th>'
+            tbfreq = tbfreq + '<th class="freq">Total</th>'
+            tbfreq = tbfreq + '</tr>'
+            tbfreq = tbfreq + '<tr nowrap bgcolor="#DDDDDD">'
+            tbfreq = tbfreq + '<td class="dir">N</td>'
+            if (WindDir == 'N') {
+                if (WindSpeed <= 0.5) {
+                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
+                }
+                else {
+                    tbfreq = tbfreq + '<td class="data">0.00</td>'
+                }
+                if (WindSpeed > 0.5 && WindSpeed <= 2) {
+                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
+                }
+                else {
+                    tbfreq = tbfreq + '<td class="data">0.00</td>'
+                }
+                if (WindSpeed > 4 && WindSpeed <= 6) {
+                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
+                }
+                else {
+                    tbfreq = tbfreq + '<td class="data">0.00</td>'
+                }
+                if (WindSpeed > 6 && WindSpeed <= 8) {
+                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
+                }
+                else {
+                    tbfreq = tbfreq + '<td class="data">0.00</td>'
+                }
+                if (WindSpeed > 10 && WindSpeed <= 10) {
+                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
+                }
+                else {
+                    tbfreq = tbfreq + '<td class="data">0.00</td>'
+                }
+
+            }
+            else {
+                tbfreq = tbfreq + '<td class="data">0.00</td>'
+                tbfreq = tbfreq + '<td class="data">0.00</td>'
+                tbfreq = tbfreq + '<td class="data">0.00</td>'
+                tbfreq = tbfreq + '<td class="data">0.00</td>'
+                tbfreq = tbfreq + '<td class="data">0.00</td>'
+            }
+            tbfreq = tbfreq + '<td class="data">0.00</td>'
+            tbfreq = tbfreq + '<td class="data">0.00</td>'
+            tbfreq = tbfreq + '<td class="data">0.00</td>'
+            tbfreq = tbfreq + '</tr>'
+
+            tbfreq = tbfreq + '<tr nowrap bgcolor="#DDDDDD">'
+            tbfreq = tbfreq + '<td class="dir">NNE</td>'
+            if (WindDir == 'NNE') {
+                if (WindSpeed <= 0.5) {
+                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
+                }
+                else {
+                    tbfreq = tbfreq + '<td class="data">0.00</td>'
+                }
+                if (WindSpeed > 0.5 && WindSpeed <= 2) {
+                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
+                }
+                else {
+                    tbfreq = tbfreq + '<td class="data">0.00</td>'
+                }
+                if (WindSpeed > 4 && WindSpeed <= 6) {
+                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
+                }
+                else {
+                    tbfreq = tbfreq + '<td class="data">0.00</td>'
+                }
+                if (WindSpeed > 6 && WindSpeed <= 8) {
+                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
+                }
+                else {
+                    tbfreq = tbfreq + '<td class="data">0.00</td>'
+                }
+                if (WindSpeed > 10 && WindSpeed <= 10) {
+                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
+                }
+                else {
+                    tbfreq = tbfreq + '<td class="data">0.00</td>'
+                }
+
+            }
+            else {
+                tbfreq = tbfreq + '<td class="data">0.00</td>'
+                tbfreq = tbfreq + '<td class="data">0.00</td>'
+                tbfreq = tbfreq + '<td class="data">0.00</td>'
+                tbfreq = tbfreq + '<td class="data">0.00</td>'
+                tbfreq = tbfreq + '<td class="data">0.00</td>'
+            }
+            tbfreq = tbfreq + '<td class="data">0.00</td>'
+            tbfreq = tbfreq + '<td class="data">0.00</td>'
+            tbfreq = tbfreq + '<td class="data">0.00</td>'
+            tbfreq = tbfreq + '</tr>'
+
+            tbfreq = tbfreq + '<tr nowrap bgcolor="#DDDDDD">'
+            tbfreq = tbfreq + '<td class="dir">NE</td>'
+            if (WindDir == 'NE') {
+                if (WindSpeed <= 0.5) {
+                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
+                }
+                else {
+                    tbfreq = tbfreq + '<td class="data">0.00</td>'
+                }
+                if (WindSpeed > 0.5 && WindSpeed <= 2) {
+                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
+                }
+                else {
+                    tbfreq = tbfreq + '<td class="data">0.00</td>'
+                }
+                if (WindSpeed > 4 && WindSpeed <= 6) {
+                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
+                }
+                else {
+                    tbfreq = tbfreq + '<td class="data">0.00</td>'
+                }
+                if (WindSpeed > 6 && WindSpeed <= 8) {
+                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
+                }
+                else {
+                    tbfreq = tbfreq + '<td class="data">0.00</td>'
+                }
+                if (WindSpeed > 8 && WindSpeed <= 10) {
+                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
+                }
+                else {
+                    tbfreq = tbfreq + '<td class="data">0.00</td>'
+                }
+
+            }
+            else {
+                tbfreq = tbfreq + '<td class="data">0.00</td>'
+                tbfreq = tbfreq + '<td class="data">0.00</td>'
+                tbfreq = tbfreq + '<td class="data">0.00</td>'
+                tbfreq = tbfreq + '<td class="data">0.00</td>'
+                tbfreq = tbfreq + '<td class="data">0.00</td>'
+            }
+            tbfreq = tbfreq + '<td class="data">0.00</td>'
+            tbfreq = tbfreq + '<td class="data">0.00</td>'
+            tbfreq = tbfreq + '<td class="data">0.00</td>'
+            tbfreq = tbfreq + '</tr>'
+            tbfreq = tbfreq + '<tr nowrap bgcolor="#DDDDDD">'
+            tbfreq = tbfreq + '<td class="dir">ENE</td>'
+            if (WindDir == 'ENE') {
+                if (WindSpeed <= 0.5) {
+                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
+                }
+                else {
+                    tbfreq = tbfreq + '<td class="data">0.00</td>'
+                }
+                if (WindSpeed > 0.5 && WindSpeed <= 2) {
+                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
+                }
+                else {
+                    tbfreq = tbfreq + '<td class="data">0.00</td>'
+                }
+                if (WindSpeed > 4 && WindSpeed <= 6) {
+                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
+                }
+                else {
+                    tbfreq = tbfreq + '<td class="data">0.00</td>'
+                }
+                if (WindSpeed > 6 && WindSpeed <= 8) {
+                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
+                }
+                else {
+                    tbfreq = tbfreq + '<td class="data">0.00</td>'
+                }
+                if (WindSpeed > 10 && WindSpeed <= 10) {
+                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
+                }
+                else {
+                    tbfreq = tbfreq + '<td class="data">0.00</td>'
+                }
+
+            }
+            else {
+                tbfreq = tbfreq + '<td class="data">0.00</td>'
+                tbfreq = tbfreq + '<td class="data">0.00</td>'
+                tbfreq = tbfreq + '<td class="data">0.00</td>'
+                tbfreq = tbfreq + '<td class="data">0.00</td>'
+                tbfreq = tbfreq + '<td class="data">0.00</td>'
+            }
+            tbfreq = tbfreq + '<td class="data">0.00</td>'
+            tbfreq = tbfreq + '<td class="data">0.00</td>'
+            tbfreq = tbfreq + '<td class="data">0.00</td>'
+            tbfreq = tbfreq + '</tr>'
+            tbfreq = tbfreq + '<tr nowrap bgcolor="#DDDDDD">'
+            tbfreq = tbfreq + '<td class="dir">E</td>'
+            if (WindDir == 'E') {
+                if (WindSpeed <= 0.5) {
+                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
+                }
+                else {
+                    tbfreq = tbfreq + '<td class="data">0.00</td>'
+                }
+                if (WindSpeed > 0.5 && WindSpeed <= 2) {
+                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
+                }
+                else {
+                    tbfreq = tbfreq + '<td class="data">0.00</td>'
+                }
+                if (WindSpeed > 4 && WindSpeed <= 6) {
+                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
+                }
+                else {
+                    tbfreq = tbfreq + '<td class="data">0.00</td>'
+                }
+                if (WindSpeed > 6 && WindSpeed <= 8) {
+                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
+                }
+                else {
+                    tbfreq = tbfreq + '<td class="data">0.00</td>'
+                }
+                if (WindSpeed > 10 && WindSpeed <= 10) {
+                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
+                }
+                else {
+                    tbfreq = tbfreq + '<td class="data">0.00</td>'
+                }
+
+            }
+            else {
+                tbfreq = tbfreq + '<td class="data">0.00</td>'
+                tbfreq = tbfreq + '<td class="data">0.00</td>'
+                tbfreq = tbfreq + '<td class="data">0.00</td>'
+                tbfreq = tbfreq + '<td class="data">0.00</td>'
+                tbfreq = tbfreq + '<td class="data">0.00</td>'
+            }
+            tbfreq = tbfreq + '<td class="data">0.00</td>'
+            tbfreq = tbfreq + '<td class="data">0.00</td>'
+            tbfreq = tbfreq + '<td class="data">0.00</td>'
+            tbfreq = tbfreq + '</tr>'
+            tbfreq = tbfreq + '<tr nowrap bgcolor="#DDDDDD">'
+            tbfreq = tbfreq + '<td class="dir">ESE</td>'
+            if (WindDir == 'ESE') {
+                if (WindSpeed <= 0.5) {
+                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
+                }
+                else {
+                    tbfreq = tbfreq + '<td class="data">0.00</td>'
+                }
+                if (WindSpeed > 0.5 && WindSpeed <= 2) {
+                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
+                }
+                else {
+                    tbfreq = tbfreq + '<td class="data">0.00</td>'
+                }
+                if (WindSpeed > 4 && WindSpeed <= 6) {
+                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
+                }
+                else {
+                    tbfreq = tbfreq + '<td class="data">0.00</td>'
+                }
+                if (WindSpeed > 6 && WindSpeed <= 8) {
+                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
+                }
+                else {
+                    tbfreq = tbfreq + '<td class="data">0.00</td>'
+                }
+                if (WindSpeed > 10 && WindSpeed <= 10) {
+                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
+                }
+                else {
+                    tbfreq = tbfreq + '<td class="data">0.00</td>'
+                }
+
+            }
+            else {
+                tbfreq = tbfreq + '<td class="data">0.00</td>'
+                tbfreq = tbfreq + '<td class="data">0.00</td>'
+                tbfreq = tbfreq + '<td class="data">0.00</td>'
+                tbfreq = tbfreq + '<td class="data">0.00</td>'
+                tbfreq = tbfreq + '<td class="data">0.00</td>'
+            }
+            tbfreq = tbfreq + '<td class="data">0.00</td>'
+            tbfreq = tbfreq + '<td class="data">0.00</td>'
+            tbfreq = tbfreq + '<td class="data">0.00</td>'
+            tbfreq = tbfreq + '</tr>'
+            tbfreq = tbfreq + '<tr nowrap bgcolor="#DDDDDD">'
+            tbfreq = tbfreq + '<td class="dir">SE</td>'
+            if (WindDir == 'SE') {
+                if (WindSpeed <= 0.5) {
+                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
+                }
+                else {
+                    tbfreq = tbfreq + '<td class="data">0.00</td>'
+                }
+                if (WindSpeed > 0.5 && WindSpeed <= 2) {
+                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
+                }
+                else {
+                    tbfreq = tbfreq + '<td class="data">0.00</td>'
+                }
+                if (WindSpeed > 4 && WindSpeed <= 6) {
+                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
+                }
+                else {
+                    tbfreq = tbfreq + '<td class="data">0.00</td>'
+                }
+                if (WindSpeed > 6 && WindSpeed <= 8) {
+                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
+                }
+                else {
+                    tbfreq = tbfreq + '<td class="data">0.00</td>'
+                }
+                if (WindSpeed > 10 && WindSpeed <= 10) {
+                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
+                }
+                else {
+                    tbfreq = tbfreq + '<td class="data">0.00</td>'
+                }
+
+            }
+            else {
+                tbfreq = tbfreq + '<td class="data">0.00</td>'
+                tbfreq = tbfreq + '<td class="data">0.00</td>'
+                tbfreq = tbfreq + '<td class="data">0.00</td>'
+                tbfreq = tbfreq + '<td class="data">0.00</td>'
+                tbfreq = tbfreq + '<td class="data">0.00</td>'
+            }
+            tbfreq = tbfreq + '<td class="data">0.00</td>'
+            tbfreq = tbfreq + '<td class="data">0.00</td>'
+            tbfreq = tbfreq + '<td class="data">0.00</td>'
+            tbfreq = tbfreq + '</tr>'
+            tbfreq = tbfreq + '<tr nowrap bgcolor="#DDDDDD">'
+            tbfreq = tbfreq + '<td class="dir">SSE</td>'
+            if (WindDir == 'SSE') {
+                if (WindSpeed <= 0.5) {
+                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
+                }
+                else {
+                    tbfreq = tbfreq + '<td class="data">0.00</td>'
+                }
+                if (WindSpeed > 0.5 && WindSpeed <= 2) {
+                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
+                }
+                else {
+                    tbfreq = tbfreq + '<td class="data">0.00</td>'
+                }
+                if (WindSpeed > 4 && WindSpeed <= 6) {
+                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
+                }
+                else {
+                    tbfreq = tbfreq + '<td class="data">0.00</td>'
+                }
+                if (WindSpeed > 6 && WindSpeed <= 8) {
+                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
+                }
+                else {
+                    tbfreq = tbfreq + '<td class="data">0.00</td>'
+                }
+                if (WindSpeed > 10 && WindSpeed <= 10) {
+                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
+                }
+                else {
+                    tbfreq = tbfreq + '<td class="data">0.00</td>'
+                }
+
+            }
+            else {
+                tbfreq = tbfreq + '<td class="data">0.00</td>'
+                tbfreq = tbfreq + '<td class="data">0.00</td>'
+                tbfreq = tbfreq + '<td class="data">0.00</td>'
+                tbfreq = tbfreq + '<td class="data">0.00</td>'
+                tbfreq = tbfreq + '<td class="data">0.00</td>'
+            }
+            tbfreq = tbfreq + '<td class="data">0.00</td>'
+            tbfreq = tbfreq + '<td class="data">0.00</td>'
+            tbfreq = tbfreq + '<td class="data">0.00</td>'
+            tbfreq = tbfreq + '</tr>'
+            tbfreq = tbfreq + '<tr nowrap bgcolor="#DDDDDD">'
+            tbfreq = tbfreq + '<td class="dir">S</td>'
+            if (WindDir == 'S') {
+                if (WindSpeed <= 0.5) {
+                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
+                }
+                else {
+                    tbfreq = tbfreq + '<td class="data">0.00</td>'
+                }
+                if (WindSpeed > 0.5 && WindSpeed <= 2) {
+                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
+                }
+                else {
+                    tbfreq = tbfreq + '<td class="data">0.00</td>'
+                }
+                if (WindSpeed > 4 && WindSpeed <= 6) {
+                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
+                }
+                else {
+                    tbfreq = tbfreq + '<td class="data">0.00</td>'
+                }
+                if (WindSpeed > 6 && WindSpeed <= 8) {
+                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
+                }
+                else {
+                    tbfreq = tbfreq + '<td class="data">0.00</td>'
+                }
+                if (WindSpeed > 10 && WindSpeed <= 10) {
+                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
+                }
+                else {
+                    tbfreq = tbfreq + '<td class="data">0.00</td>'
+                }
+
+            }
+            else {
+                tbfreq = tbfreq + '<td class="data">0.00</td>'
+                tbfreq = tbfreq + '<td class="data">0.00</td>'
+                tbfreq = tbfreq + '<td class="data">0.00</td>'
+                tbfreq = tbfreq + '<td class="data">0.00</td>'
+                tbfreq = tbfreq + '<td class="data">0.00</td>'
+            }
+            tbfreq = tbfreq + '<td class="data">0.00</td>'
+            tbfreq = tbfreq + '<td class="data">0.00</td>'
+            tbfreq = tbfreq + '<td class="data">0.00</td>'
+            tbfreq = tbfreq + '</tr>'
+            tbfreq = tbfreq + '<tr nowrap bgcolor="#DDDDDD">'
+            tbfreq = tbfreq + '<td class="dir">SSW</td>'
+            if (WindDir == 'SSW') {
+                if (WindSpeed <= 0.5) {
+                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
+                }
+                else {
+                    tbfreq = tbfreq + '<td class="data">0.00</td>'
+                }
+                if (WindSpeed > 0.5 && WindSpeed <= 2) {
+                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
+                }
+                else {
+                    tbfreq = tbfreq + '<td class="data">0.00</td>'
+                }
+                if (WindSpeed > 4 && WindSpeed <= 6) {
+                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
+                }
+                else {
+                    tbfreq = tbfreq + '<td class="data">0.00</td>'
+                }
+                if (WindSpeed > 6 && WindSpeed <= 8) {
+                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
+                }
+                else {
+                    tbfreq = tbfreq + '<td class="data">0.00</td>'
+                }
+                if (WindSpeed > 10 && WindSpeed <= 10) {
+                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
+                }
+                else {
+                    tbfreq = tbfreq + '<td class="data">0.00</td>'
+                }
+
+            }
+            else {
+                tbfreq = tbfreq + '<td class="data">0.00</td>'
+                tbfreq = tbfreq + '<td class="data">0.00</td>'
+                tbfreq = tbfreq + '<td class="data">0.00</td>'
+                tbfreq = tbfreq + '<td class="data">0.00</td>'
+                tbfreq = tbfreq + '<td class="data">0.00</td>'
+            }
+            tbfreq = tbfreq + '<td class="data">0.00</td>'
+            tbfreq = tbfreq + '<td class="data">0.00</td>'
+            tbfreq = tbfreq + '<td class="data">0.00</td>'
+            tbfreq = tbfreq + '</tr>'
+            tbfreq = tbfreq + '<tr nowrap bgcolor="#DDDDDD">'
+            tbfreq = tbfreq + '<td class="dir">SW</td>'
+            if (WindDir == 'SW') {
+                if (WindSpeed <= 0.5) {
+                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
+                }
+                else {
+                    tbfreq = tbfreq + '<td class="data">0.00</td>'
+                }
+                if (WindSpeed > 0.5 && WindSpeed <= 2) {
+                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
+                }
+                else {
+                    tbfreq = tbfreq + '<td class="data">0.00</td>'
+                }
+                if (WindSpeed > 4 && WindSpeed <= 6) {
+                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
+                }
+                else {
+                    tbfreq = tbfreq + '<td class="data">0.00</td>'
+                }
+                if (WindSpeed > 6 && WindSpeed <= 8) {
+                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
+                }
+                else {
+                    tbfreq = tbfreq + '<td class="data">0.00</td>'
+                }
+                if (WindSpeed > 10 && WindSpeed <= 10) {
+                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
+                }
+                else {
+                    tbfreq = tbfreq + '<td class="data">0.00</td>'
+                }
+
+            }
+            else {
+                tbfreq = tbfreq + '<td class="data">0.00</td>'
+                tbfreq = tbfreq + '<td class="data">0.00</td>'
+                tbfreq = tbfreq + '<td class="data">0.00</td>'
+                tbfreq = tbfreq + '<td class="data">0.00</td>'
+                tbfreq = tbfreq + '<td class="data">0.00</td>'
+            }
+            tbfreq = tbfreq + '<td class="data">0.00</td>'
+            tbfreq = tbfreq + '<td class="data">0.00</td>'
+            tbfreq = tbfreq + '<td class="data">0.00</td>'
+            tbfreq = tbfreq + '</tr>'
+            tbfreq = tbfreq + '<tr nowrap bgcolor="#DDDDDD">'
+            tbfreq = tbfreq + '<td class="dir">WSW</td>'
+            if (WindDir == 'WSW') {
+                if (WindSpeed <= 0.5) {
+                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
+                }
+                else {
+                    tbfreq = tbfreq + '<td class="data">0.00</td>'
+                }
+                if (WindSpeed > 0.5 && WindSpeed <= 2) {
+                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
+                }
+                else {
+                    tbfreq = tbfreq + '<td class="data">0.00</td>'
+                }
+                if (WindSpeed > 4 && WindSpeed <= 6) {
+                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
+                }
+                else {
+                    tbfreq = tbfreq + '<td class="data">0.00</td>'
+                }
+                if (WindSpeed > 6 && WindSpeed <= 8) {
+                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
+                }
+                else {
+                    tbfreq = tbfreq + '<td class="data">0.00</td>'
+                }
+                if (WindSpeed > 10 && WindSpeed <= 10) {
+                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
+                }
+                else {
+                    tbfreq = tbfreq + '<td class="data">0.00</td>'
+                }
+
+            }
+            else {
+                tbfreq = tbfreq + '<td class="data">0.00</td>'
+                tbfreq = tbfreq + '<td class="data">0.00</td>'
+                tbfreq = tbfreq + '<td class="data">0.00</td>'
+                tbfreq = tbfreq + '<td class="data">0.00</td>'
+                tbfreq = tbfreq + '<td class="data">0.00</td>'
+            }
+            tbfreq = tbfreq + '<td class="data">0.00</td>'
+            tbfreq = tbfreq + '<td class="data">0.00</td>'
+            tbfreq = tbfreq + '<td class="data">0.00</td>'
+            tbfreq = tbfreq + '</tr>'
+            tbfreq = tbfreq + '<tr nowrap bgcolor="#DDDDDD">'
+            tbfreq = tbfreq + '<td class="dir">W</td>'
+            if (WindDir == 'W') {
+                if (WindSpeed <= 0.5) {
+                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
+                }
+                else {
+                    tbfreq = tbfreq + '<td class="data">0.00</td>'
+                }
+                if (WindSpeed > 0.5 && WindSpeed <= 2) {
+                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
+                }
+                else {
+                    tbfreq = tbfreq + '<td class="data">0.00</td>'
+                }
+                if (WindSpeed > 4 && WindSpeed <= 6) {
+                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
+                }
+                else {
+                    tbfreq = tbfreq + '<td class="data">0.00</td>'
+                }
+                if (WindSpeed > 6 && WindSpeed <= 8) {
+                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
+                }
+                else {
+                    tbfreq = tbfreq + '<td class="data">0.00</td>'
+                }
+                if (WindSpeed > 10 && WindSpeed <= 10) {
+                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
+                }
+                else {
+                    tbfreq = tbfreq + '<td class="data">0.00</td>'
+                }
+
+            }
+            else {
+                tbfreq = tbfreq + '<td class="data">0.00</td>'
+                tbfreq = tbfreq + '<td class="data">0.00</td>'
+                tbfreq = tbfreq + '<td class="data">0.00</td>'
+                tbfreq = tbfreq + '<td class="data">0.00</td>'
+                tbfreq = tbfreq + '<td class="data">0.00</td>'
+            }
+            tbfreq = tbfreq + '<td class="data">0.00</td>'
+            tbfreq = tbfreq + '<td class="data">0.00</td>'
+            tbfreq = tbfreq + '<td class="data">0.00</td>'
+            tbfreq = tbfreq + '</tr>'
+            tbfreq = tbfreq + '<tr nowrap bgcolor="#DDDDDD">'
+            tbfreq = tbfreq + '<td class="dir">WNW</td>'
+            if (WindDir == 'WW') {
+                if (WindSpeed <= 0.5) {
+                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
+                }
+                else {
+                    tbfreq = tbfreq + '<td class="data">0.00</td>'
+                }
+                if (WindSpeed > 0.5 && WindSpeed <= 2) {
+                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
+                }
+                else {
+                    tbfreq = tbfreq + '<td class="data">0.00</td>'
+                }
+                if (WindSpeed > 4 && WindSpeed <= 6) {
+                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
+                }
+                else {
+                    tbfreq = tbfreq + '<td class="data">0.00</td>'
+                }
+                if (WindSpeed > 6 && WindSpeed <= 8) {
+                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
+                }
+                else {
+                    tbfreq = tbfreq + '<td class="data">0.00</td>'
+                }
+                if (WindSpeed > 10 && WindSpeed <= 10) {
+                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
+                }
+                else {
+                    tbfreq = tbfreq + '<td class="data">0.00</td>'
+                }
+
+            }
+            else {
+                tbfreq = tbfreq + '<td class="data">0.00</td>'
+                tbfreq = tbfreq + '<td class="data">0.00</td>'
+                tbfreq = tbfreq + '<td class="data">0.00</td>'
+                tbfreq = tbfreq + '<td class="data">0.00</td>'
+                tbfreq = tbfreq + '<td class="data">0.00</td>'
+            }
+            tbfreq = tbfreq + '<td class="data">0.00</td>'
+            tbfreq = tbfreq + '<td class="data">0.00</td>'
+            tbfreq = tbfreq + '<td class="data">0.00</td>'
+            tbfreq = tbfreq + '</tr>'
+            tbfreq = tbfreq + '<tr nowrap bgcolor="#DDDDDD">'
+            tbfreq = tbfreq + '<td class="dir">NW</td>'
+            if (WindDir == 'NW') {
+                if (WindSpeed <= 0.5) {
+                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
+                }
+                else {
+                    tbfreq = tbfreq + '<td class="data">0.00</td>'
+                }
+                if (WindSpeed > 0.5 && WindSpeed <= 2) {
+                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
+                }
+                else {
+                    tbfreq = tbfreq + '<td class="data">0.00</td>'
+                }
+                if (WindSpeed > 4 && WindSpeed <= 6) {
+                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
+                }
+                else {
+                    tbfreq = tbfreq + '<td class="data">0.00</td>'
+                }
+                if (WindSpeed > 6 && WindSpeed <= 8) {
+                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
+                }
+                else {
+                    tbfreq = tbfreq + '<td class="data">0.00</td>'
+                }
+                if (WindSpeed > 10 && WindSpeed <= 10) {
+                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
+                }
+                else {
+                    tbfreq = tbfreq + '<td class="data">0.00</td>'
+                }
+
+            }
+            else {
+                tbfreq = tbfreq + '<td class="data">0.00</td>'
+                tbfreq = tbfreq + '<td class="data">0.00</td>'
+                tbfreq = tbfreq + '<td class="data">0.00</td>'
+                tbfreq = tbfreq + '<td class="data">0.00</td>'
+                tbfreq = tbfreq + '<td class="data">0.00</td>'
+            }
+            tbfreq = tbfreq + '<td class="data">0.00</td>'
+            tbfreq = tbfreq + '<td class="data">0.00</td>'
+            tbfreq = tbfreq + '<td class="data">0.00</td>'
+            tbfreq = tbfreq + '</tr>'
+            tbfreq = tbfreq + '<tr nowrap bgcolor="#DDDDDD">'
+            tbfreq = tbfreq + '<td class="dir">NNW</td>'
+            if (WindDir == 'NNW') {
+                if (WindSpeed <= 0.5) {
+                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
+                }
+                else {
+                    tbfreq = tbfreq + '<td class="data">0.00</td>'
+                }
+                if (WindSpeed > 0.5 && WindSpeed <= 2) {
+                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
+                }
+                else {
+                    tbfreq = tbfreq + '<td class="data">0.00</td>'
+                }
+                if (WindSpeed > 4 && WindSpeed <= 6) {
+                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
+                }
+                else {
+                    tbfreq = tbfreq + '<td class="data">0.00</td>'
+                }
+                if (WindSpeed > 6 && WindSpeed <= 8) {
+                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
+                }
+                else {
+                    tbfreq = tbfreq + '<td class="data">0.00</td>'
+                }
+                if (WindSpeed > 10 && WindSpeed <= 10) {
+                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
+                }
+                else {
+                    tbfreq = tbfreq + '<td class="data">0.00</td>'
+                }
+
+            }
+            else {
+                tbfreq = tbfreq + '<td class="data">0.00</td>'
+                tbfreq = tbfreq + '<td class="data">0.00</td>'
+                tbfreq = tbfreq + '<td class="data">0.00</td>'
+                tbfreq = tbfreq + '<td class="data">0.00</td>'
+                tbfreq = tbfreq + '<td class="data">0.00</td>'
+            }
+            tbfreq = tbfreq + '<td class="data">0.00</td>'
+            tbfreq = tbfreq + '<td class="data">0.00</td>'
+            tbfreq = tbfreq + '<td class="data">0.00</td>'
+            tbfreq = tbfreq + '</tr>'
+            $('#resp').html('');
+            $('#resp').append(tbfreq);
+
+
+            $('#chart_container').highcharts({
+                data: {
+                    table: 'freq',
+                    startRow: 1,
+                    endRow: 17,
+                    endColumn: 7
+                },
+
+                chart: {
+                    polar: true,
+                    type: 'column'
+                },
+
+                title: {
+                    text: 'Ice Wind Rose'
+                },
+
+                subtitle: {
+                    text: '..'
+                },
+
+                pane: {
+                    size: '85%'
+                },
+
+                legend: {
+                    reversed: true,
+                    align: 'right',
+                    verticalAlign: 'top',
+                    y: 100,
+                    layout: 'vertical'
+                },
+
+                xAxis: {
+                    tickmarkPlacement: 'on'
+                },
+
+                yAxis: {
+                    min: 0,
+                    endOnTick: false,
+                    showLastLabel: true,
+                    title: {
+                        text: 'Frequency (%)'
+                    },
+                    labels: {
+                        formatter: function () {
+                            return this.value + '%';
+                        }
+                    }
+                },
+
+                tooltip: {
+                    valueSuffix: '%',
+                    followPointer: true
+                },
+
+                plotOptions: {
+                    series: {
+                        stacking: 'normal',
+                        shadow: false,
+                        groupPadding: 0,
+                        pointPlacement: 'on'
+                    }
+                }
+            });
+            $.mobile.hidePageLoadingMsg();
+        }
+        /*================================== wind ROSE END =================================*/
+
+
+
+
+
+
+
+
+
+console.log("Hello World20");
+        function getHistoryData_chart(JSONtext) {
+            alert('getHistoryData_chart');
+            JSONobject = ParseJson(JSONtext);
+            data = JSONobject.list;
+            showBarsDouble('chart_container', data);
+            $.mobile.hidePageLoadingMsg();
+        }
+console.log("Hello World21");
+        function getHistoryData_wind(JSONtext) {
+            alert('getHistoryData_wind');
+            JSONobject = ParseJson(JSONtext);
+            data = JSONobject.list;
+            showPolarSpeed('chart_container', data);
+            $.mobile.hidePageLoadingMsg();
+        }
+		
+console.log("Hello World22");
+        function getHistoryData_pres(JSONtext) {
+            alert('getHistoryData_pres');
+            JSONobject = ParseJson(JSONtext);
+            data = JSONobject.list;
+            chartDoublePress('chart_container', data);
+            $.mobile.hidePageLoadingMsg();
+        }
+
+        // **************** install *****************
+        function ShowIphoneApp() {
+
+            $('#app_install_div').toggle();
+            setTimeout(function () {
+                window.scrollTo(0, 1);
+            }, 0);
+
+            setTimeout(function () {
+                $('#instructions_dialog').animate(
+                    { top: '420px' }, 1700, 'easeOutBounce'
+		);
+            }, 300);
+        }
+console.log("Hello World23");
+        $('#app_install_div').live('vclick', function (event, ui) {
+            $(this).hide();
+            return false;
+        });
+
+
+        // *************** event handler ************************
+
+
+        jQuery(document).ready(function () {
+console.log("Hello World24");
+            $('#city_wind_lbl').html('0');
+console.log("Hello World25");
+            $("form").submit(function (event) {
+                event.stopPropagation();
+                event.preventDefault();
+                var txt = $('#search-city').attr('value');
+                $.mobile.showPageLoadingMsg();
+                alert('search');
+                $.get('http://api.openweathermap.org//data/2.1/find/name?q=' + txt + '&type=like&sort=population', showFind).error(errorHandler);
+
+
+                return false;
+            });
+
+        });
+console.log("Hello World25a");
+        $('#main').live('pagecreate', function (event, ui) {
+            var units = 'metric';
+            if (get_cookie('units') == 'imperial') units = 'imperial';
+            var el = $('#flip-units');
+            el.val(units).attr('selected', true).siblings('option').removeAttr('selected');
+
+
+            var lang = 'it';
+            if (get_cookie('lang') == 'en') lang = 'en';
+            var el = $('#flip-LANG');
+            el.val(lang).attr('selected', true).siblings('option').removeAttr('selected');
+            // jQM refresh
+            //el.selectmenu("refresh", true);
+        });
+
+console.log("Hello World25b");
+        $('#main').live('pageshow', function (event, ui) {
+console.log("Hello World26");
+            $('#city_wind_lbl').html('0');
+			var units = 'metric';
+            if (get_cookie('units') == 'imperial') units = 'imperial';
+            //            if ('metric' == 'imperial') units = 'imperial';
+            //alert(current_city_id);
+			current_city_id='3172087';
+			$('#city_wind_lbl').html('1');
+			//alert(current_city_id);
+console.log("Hello World27");
+            //http://api.openweathermap.org/data/2.5/weather?callback=?&id=3172087&units=metric&lang=it
+            //http://api.openweathermap.org/data/2.5/weather?callback=?&id=3172087&units=metric
+             if (navigator != null && navigator.notification != null) {
+                navigator.notification.activityStart("caricamento", "Caricamento notizie in corso...");
+            }
+
+            var lang = 'it';
+            if (get_cookie('lang') == 'en') lang = 'en';
+$('#city_wind_lbl').html('2');
+console.log("Hello World28");
+            if (current_city_id)
+                $.getJSON("http://api.openweathermap.org/data/2.5/weather?callback=?&id=" + current_city_id + '&units=' + units, showCurrentCity).error(errorHandler);
+            else
+                $.getJSON("http://api.openweathermap.org/data/2.5/weather?callback=?&id=auto" + '&units=' + units, showCurrentCity).error(errorHandler);
+console.log("Hello World28b");
+        });
+
+
+        $('#dialogpage').live('pageshow', function (event, ui) {
+        });
+
+        $('#chart').live('pageshow', function (event, ui) {
+            //alert('chart.live');
+            // date start
+            $.mobile.showPageLoadingMsg();
+            getWindRose();
+            //            var curd = new Date();
+            //            var d = new Date(curd.getFullYear(), curd.getMonth(), curd.getDate());
+            //            var s = Math.round((d.getTime()) / 1000) - 3600 * 24;
+
+            //            var jsonurl = "http://m.openweathermap.org/data/2.1/history/city/?id=" + current_city_id + "&cnt=80&start=" + s;
+            //alert('jsonurl:' + jsonurl);
+            // $.get(jsonurl, getHistoryData_chart).error(errorHandler);
+        });
+
+
+        $('li #cityfind').live('vclick', function (event, ui) {
+            var r = $(this).attr('href').split('&');
+            if (r[1]) {
+                current_city_id = r[1];
+                expires = new Date();
+                expires.setTime(expires.getTime() + (1000 * 3600 * 24 * 7));
+                set_cookie('cityid', current_city_id, expires);
+
+            }
+        });
+
+
+        $('li #chartch').live('vclick', function (event, ui) {
+
+            $.mobile.showPageLoadingMsg();
+            var curd = new Date();
+            var d = new Date(curd.getFullYear(), curd.getMonth(), curd.getDate());
+            var s = Math.round((d.getTime()) / 1000) - 3600 * 24;
+
+            if ($(this).attr('href') == "#chart&1") {
+                alert('chart&1');
+                var jsonurl = "http://m.openweathermap.org/data/2.1/history/city/?id=" + current_city_id + "&cnt=80&start=" + s;
+                $.get(jsonurl, getHistoryData_chart).error(errorHandler);
+            }
+
+            if ($(this).attr('href') == "#chart&2") {
+                //Wind Rose
+                $('#chart_container').show();
+                $('#gauge_pres').hide();
+                getWindRose();
+
+                //alert('chart&2');
+                //var jsonurl = "http://m.openweathermap.org/data/2.1/history/city/?id=" + current_city_id + "&cnt=80&start=" + s;
+                //$.get(jsonurl, getHistoryData_wind).error(errorHandler);
+            }
+
+            if ($(this).attr('href') == "#chart&3") {
+                $('#chart_container').hide();
+                $('#gauge_pres').show();
+                gm.setValue(Hpa);
+                $.mobile.hidePageLoadingMsg();
+
+                //                var jsonurl = "http://m.openweathermap.org/data/2.1/history/city/?id=" + current_city_id + "&cnt=80&start=" + s;
+                //                $.get(jsonurl, getHistoryData_pres).error(errorHandler);
+            }
+
+        });
+
+
+        $('#forecast').live('pageshow', function (event, ui) {
+            var units = 'metric';
+            if (get_cookie('units') == 'imperial') units = 'imperial';
+
+            var lang = 'it';
+            if (get_cookie('lang') == 'en') units = 'en';
+
+            var myhref = "http://api.openweathermap.org/data/2.5/forecast?callback=?&id=" + current_city_id + '&units=' + units + '&lang=' + lang;
+            $.mobile.showPageLoadingMsg();
+            $.getJSON(myhref, getDataForecast);
+        });
+
+        // Add back button in heder nested list
+        $(':jqmData(url^=forecast)').live('pagebeforecreate',
+  function (event) {
+      $(this).filter(':jqmData(url*=ui-page)').find(':jqmData(role=header)')
+      .prepend('<a href="#" data-rel="back" data-icon="back">Back</a>')
+  });
+
+
+        $('li #install').live('vclick', function (event, ui) {
+            ShowIphoneApp();
+        });
+
+
+        $('#flip-units').live('change', function (event, ui) {
+            var $this = $(this),
+	val = $this.val();
+            expires = new Date();
+            expires.setTime(expires.getTime() + (1000 * 60 * 60 * 24));
+            set_cookie('units', val, expires);
+            window.location.reload();
+        });
+
+        $('#flip-LANG').live('change', function (event, ui) {
+            var $this = $(this),
+	        val = $this.val();
+            expires = new Date();
+            expires.setTime(expires.getTime() + (1000 * 60 * 60 * 24));
+            set_cookie('lang', val, expires);
+            window.location.reload();
+        });
+
+
+        $('#map').live('pageshow', function (event, ui) {
+
+            //        var lat = 40.921371;
+            //        var lon = 9.48563;
+            //        var zoom = 4;
+            //        var opacity = 0.6;
+
+            //        var map = new OpenLayers.Map("mapmap",
+            //	{
+            //	    units: 'm',
+            //	    projection: "EPSG:900913",
+            //	    displayProjection: new OpenLayers.Projection("EPSG:4326")
+            //	});
+
+            //        var mapnik = new OpenLayers.Layer.OSM();
+
+            //        var opencyclemap = new OpenLayers.Layer.XYZ(
+            //		"opencyclemap",
+            //		"http://a.tile3.opencyclemap.org/landscape/${z}/${x}/${y}.png",
+            //		{
+            //		    numZoomLevels: 18,
+            //		    sphericalMercator: true
+            //		}
+            //	);
+
+            //        var precipitation = new OpenLayers.Layer.XYZ(
+            //		"Precipitation",
+            //		"http://${s}.tile.openweathermap.org/map/precipitation/${z}/${x}/${y}.png",
+            //		{
+            //		    isBaseLayer: false,
+            //		    opacity: opacity,
+            //		    sphericalMercator: true
+            //		}
+            //	);
+
+            //        var pressure_cntr = new OpenLayers.Layer.XYZ(
+            //		"Pressure",
+            //		"http://${s}.tile.openweathermap.org/map/pressure_cntr/${z}/${x}/${y}.png",
+            //		{
+            //		    isBaseLayer: false,
+            //		    opacity: opacity,
+            //		    sphericalMercator: true
+            //		}
+            //	);
+
+            //        var centre = new OpenLayers.LonLat(lon, lat).transform(new OpenLayers.Projection("EPSG:4326"),
+            //				new OpenLayers.Projection("EPSG:900913"));
+            //        map.addLayers([mapnik, opencyclemap, precipitation, pressure_cntr]);
+            //        map.setCenter(centre, zoom);
+            //        var ls = new OpenLayers.Control.LayerSwitcher({ 'ascending': false });
+            //        map.addControl(ls);
+            //alert('map' + map);
+            map = null;
+            var centerMap = new google.maps.LatLng(40.931153, 9.483948);
+
+            var myOptions = {
+                zoom: 11,
+                center: centerMap,
+                mapTypeId: google.maps.MapTypeId.ROADMAP
+            }
+
+            map = new google.maps.Map(document.getElementById("mapmap"), myOptions);
+
+            setMarkers(map, sites);
+            infowindow = new google.maps.InfoWindow({
+                content: "loading..."
+            });
+
+            var bikeLayer = new google.maps.BicyclingLayer();
+            bikeLayer.setMap(map);
+
+
+
+
+
+            function setMarkers(map, markers) {
+                //alert('markers.length:' + markers.length);
+                for (var i = 0; i < markers.length; i++) {
+                    var sites = markers[i];
+                    //alert(sites[0]);
+                    var WindDirNo = sites[5];
+
+                    if (WindDir == WindDirNo) {
+                        var siteLatLng = new google.maps.LatLng(sites[1], sites[2]);
+
+                        var marker = new google.maps.Marker({
+                            position: siteLatLng,
+                            map: map,
+                            title: sites[0], 
+                            zIndex: sites[3],
+                            html: sites[4]
+                    , icon: imgWindKO,
+                            shape: shape
+                        });
+
+                        var contentString = "Some content";
+
+                        google.maps.event.addListener(marker, "click", function () {
+                            //alert(this.html);
+                            infowindow.setContent(this.html );
+                            infowindow.open(map, this);
+                        });
+                    }
+                    else {
+                        var siteLatLng = new google.maps.LatLng(sites[1], sites[2]);
+
+                        var marker = new google.maps.Marker({
+                            position: siteLatLng,
+                            map: map,
+                            title: sites[0],
+                            zIndex: sites[3],
+                            html: sites[4] +  '<a href="#MyBeach?id=2">...</a>'
+                    , icon: imgWindOK,
+                            shape: shape
+                        });
+
+                        var contentString = "Some content";
+
+                        google.maps.event.addListener(marker, "click", function () {
+                            //alert(this.html);
+                            infowindow.setContent(this.html);
+                            infowindow.open(map, this);
+                        });
+                    }
+
+                }
+            }
+
+
+
+
+
+
+        });
+
+
+
+        function showCurrentCity(d) {
+console.log("Hello World29");
+if (navigator != null && navigator.notification != null) {
+                navigator.notification.activityStop();
+            }
+            current_city_id = d.id;
+            //alert(d.name);
+            $('#city_name').html(d.name + ', ' + d.sys.country);
+            $('#city_temp').html('Temperature ' + Math.round((d.main.temp) * 100) / 100 + '°C');
+            //	$('#city_temp').html( 'Temperature  17 °C' );
+
+            $("#forecast_title").html("Forecast for " + d.name + ', ' + d.sys.country);
+
+            var dt = new Date(d.dt * 1000);
+            var hr = dt.getHours();
+            if (hr < 10) hr = '0' + hr;
+            var mn = dt.getMinutes();
+            if (mn < 10) mn = '0' + mn;
+            var mon = dt.getMonth() + 1;
+            if (mon < 10) mon = '0' + mon;
+            var day = dt.getDate();
+            if (day < 10) day = '0' + day;
+            var year = dt.getFullYear();
+            $("#date_m").html(year + '.' + mon + '.' + day + ' ' + hr + ':' + mn);
+
+            WindDir = '';
+            /*
+            N        348.75 - 11.25
+            NNE      11.25 - 33.75
+            NE       33.75 - 56.25
+            ENE      56.25 - 78.75
+            E        78.75 - 101.25
+            ESE      101.25 - 123.75
+            SE       123.75 - 146.25
+            SSE      146.25 - 168.75
+            S        168.75 - 191.25
+            SSW      191.25 - 213.75
+            SW       213.75 - 236.25
+            WSW      236.25 - 258.75
+            W        258.75 - 281.25
+            WNW      281.25 - 303.75
+            NW       303.75 - 326.25
+            NNW      326.25 - 348.75
+            */
+            WindSpeed = d.wind.speed;
+            if (d.wind.deg >= 348.75 || d.wind.deg < 11.25) {
+                WindDir = 'N';
+            }
+            if (d.wind.deg >= 11.25 && d.wind.deg < 33.75) {
+                WindDir = 'NNE';
+            }
+            if (d.wind.deg >= 33.75 && d.wind.deg < 56.25) {
+                WindDir = 'NE';
+            }
+            if (d.wind.deg >= 56.25 && d.wind.deg < 78.75) {
+                WindDir = 'ENE';
+            }
+            if (d.wind.deg >= 78.75 && d.wind.deg < 101.25) {
+                WindDir = 'E';
+            }
+            if (d.wind.deg >= 101.25 && d.wind.deg < 123.75) {
+                WindDir = 'ESE';
+            }
+            if (d.wind.deg >= 123.75 && d.wind.deg < 146.25) {
+                WindDir = 'SE';
+            }
+            if (d.wind.deg >= 146.25 && d.wind.deg < 168.75) {
+                WindDir = 'SSE';
+            }
+            if (d.wind.deg >= 168.75 && d.wind.deg < 191.25) {
+                WindDir = 'S';
+            }
+            if (d.wind.deg >= 191.25 && d.wind.deg < 213.75) {
+                WindDir = 'SSW';
+            }
+            if (d.wind.deg >= 213.75 && d.wind.deg < 236.25) {
+                WindDir = 'SW';
+            }
+            if (d.wind.deg >= 236.25 && d.wind.deg < 258.75) {
+                WindDir = 'WSW';
+            }
+            if (d.wind.deg >= 258.75 && d.wind.deg < 281.25) {
+                WindDir = 'W';
+            }
+            if (d.wind.deg >= 281.25 && d.wind.deg < 303.75) {
+                WindDir = 'WW';
+            }
+            if (d.wind.deg >= 303.75 && d.wind.deg < 326.25) {
+                WindDir = 'NW';
+            }
+            if (d.wind.deg >= 348.75 && d.wind.deg < 326.25) {
+                WindDir = 'NW';
+            }
+            //alert(d.wind.deg + '° -->' + WindDir);
+            var lang = 'it';
+            if (get_cookie('lang') == 'en') lang = 'en';
+
+            $('#city_wind').html(d.wind.speed + ' m/s   ' + d.wind.deg + '° (' + WindDir + ')');
+            $('#city_clouds').html(d.clouds.all + ' %');
+            $('#city_pressure').html(d.main.pressure + ' hpa');
+            Hpa = d.main.pressure;
+            $('#city_humidity').html(d.main.humidity + ' %');
+
+            if (lang == 'en') {
+                $('#city_wind_lbl').html('Wind: ');
+                $('#city_clouds_lbl').html('Cloudiness: ');
+                $('#city_pressure_lbl').html('Atmospheric pressure: ');
+                $('#city_humidity_lbl').html('Humidity:');
+            }
+            else {
+                $('#city_wind_lbl').html('Vento: ');
+                $('#city_clouds_lbl').html('Nuvolosità: ');
+                $('#city_pressure_lbl').html('Pressione Atmosferica: ');
+                $('#city_humidity_lbl').html('Umidità:');
+            }
+
+            if (d.weather[0]) {
+                //$('li.picture').css('background', "#fff url(http://openweathermap.org/img/w/" + d.weather[0].icon + ".png) no-repeat");
+                $('li.picture').css('background', "#fff url(images/" + d.weather[0].icon + ".png) no-repeat");
+                $('#city_weather').html(d.weather[0].description);
+            }
+
+
+        }
+
+
+        function showFind(JSONtext) {
+            $("#station_list_ul").hide();
+
+            list = ParseJson(JSONtext);
+
+            var html = ''
+
+            for (var i = 0; i < list.list.length; i++) {
+                dat = '';
+
+                var temp = Math.round((list.list[i].main.temp - 273.15) * 100) / 100;
+
+                var weather = '';
+                if (list.list[i].main.pressure)
+                    weather = weather + 'Pressure: ' + list.list[i].main.pressure + ' hpa. ';
+
+                if (list.list[i].wind && list.list[i].wind.speed)
+                    weather = weather + ' Wind: ' + list.list[i].wind.speed + 'm/c';
+                icon = '';
+                if (list.list[i].weather[0]) {
+                    //icon = "http://openweathermap.org/img/w/" + list.list[i].weather[0].icon + ".png";
+                    icon = "images/" + list.list[i].weather[0].icon + ".png";
+                    dat = list.list[i].weather[0].description;
+                }
+
+                //		html=html+'<li><a id="cityfind" href="#main&'+list.list[i].id+'">' +
+                html = html + '<li><a rel="external" href="http://m.openweathermap.org/city/' + list.list[i].id + '">' +
+		'<img src="' + icon + '" > ' +
+		 '<h1>' + list.list[i].name + ', ' + list.list[i].sys.country + '</h1><p>' + weather + '</p>' +
+		 '<p> ' + dat + '</p><span class="ui-li-count"><b> ' + temp + '&deg;С</b></span></a></li>';
+            }
+
+            html = '<ul id="station_list_ul_data" data-role="listview" data-theme="d" data-inset="true"><li data-role="list-divider">City</li>' + html + '</ul>';
+
+            $("#station_list_ul").html(html);
+
+            $("#station_list_ul_data").listview();
+
+            $("#station_list_ul").fadeIn(1000);
+
+            $.mobile.hidePageLoadingMsg();
+
+        }
+
+
+    </script>
+    <!-- screens -->
+    <!-- city / main page -->
+    <div data-role="page" id="main">
+        <div id="header" data-role="header" data-theme="a">
+            <div class="ui-body-b">
+                <div data-role="navbar" data-iconpos="bottom" data-theme="b">
+                    <ul>
+                        <li><a href="#map" data-icon="star">Map</a></li>
+                        <li><a href="#forecast" data-icon="gear">Forecast</a></li>
+                        <li><a href="#chart" data-icon="star">Wind/Pressure</a></li>
+                        <li><a href="#MyBeach" data-icon="star">Beach</a></li>
+                    </ul>
+                </div>
+                <!-- /navbar -->
+            </div>
+        </div>
+        <!-- /header -->
+        <div data-role="content">
+            <h3 id="city_name">
+            </h3>
+            <ul class="profile">
+                <li class="picture" id="picture_li"></li>
+                <li class="clearfix">
+                    <h2 id="city_temp">
+                    </h2>
+                    <p>
+                        <div id="date_m">
+                        </div>
+                    </p>
+                </li>
+            </ul>
+            <ul class="field">
+                <li>
+                    <h3>
+                        <div id="city_wind_lbl">
+                            Wind</div>
+                    </h3>
+                    <div class="likea" id="city_wind">
+                    </div>
+                </li>
+                <li>
+                    <h3>
+                        <div id="city_clouds_lbl">
+                            Cloudiness
+                        </div>
+                    </h3>
+                    <div class="likea" id="city_clouds">
+                    </div>
+                </li>
+                <li>
+                    <h3>
+                        <div id="city_pressure_lbl">
+                            Atmospheric pressure
+                        </div>
+                    </h3>
+                    <div class="likea" id="city_pressure">
+                    </div>
+                </li>
+                <li>
+                    <h3>
+                        <div id="city_humidity_lbl">
+                            Humidity
+                        </div>
+                    </h3>
+                    <div class="likea" id="city_humidity">
+                    </div>
+                </li>
+                <li>
+                    <div class="likea" id="city_weather">
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <!-- /content -->
+        <div data-role="footer" data-theme="b">
+            <!--          <div data-role="navbar" data-theme="a">
+                <ul>
+                    <li><a href="#main" data-icon="gear" data-theme="a" id="install">Best viewed with a
+                        mobile phone</a> </li>
+                </ul>
+            </div>-->
+            <div data-role="navbar" data-iconpos="bottom" data-theme="b">
+                <ul>
+                    <li><a href="#find" data-icon="search">Find</a></li>
+                    <li><a href="#about" data-icon="info">About</a></li>
+                </ul>
+            </div>
+            <!-- /navbar -->
+            <div data-role="navbar" data-iconpos="bottom" data-theme="b">
+                <ul>
+                    <li><a>
+                        <select name="flip-units" id="flip-units" data-role="slider">
+                            <option value="metric">°C </option>
+                            <option value="imperial">°F </option>
+                        </select>
+                    </a></li>
+                    <li><a>
+                        <select name="flip-LANG" id="flip-LANG" data-role="slider">
+                            <option value="it">Italian </option>
+                            <option value="en">English </option>
+                        </select>
+                    </a></li>
+                </ul>
+            </div>
+            <!-- /navbar -->
+        </div>
+        <!-- /footer -->
+    </div>
+    <!-- /page -->
+    <!-- ======================================================= FIND ================================================= -->
+    <div data-role="page" id="find" data-theme="b">
+        <div id="header" data-role="header" data-theme="b">
+            <h1 id="twi_acc">
+                Find</h1>
+            <a href="#main" data-icon="arrow-l" rel="external" class="ui-btn-left">Back</a>
+        </div>
+        <!-- /header -->
+        <div data-role="content">
+            <form action="#" method="post">
+            <label for="search-city">
+                Search:</label>
+            <input type="search" name="search-city" id="search-city" data-mini1="true" value="" />
+            <button type="submit" data-theme="c" name="submit" value="submit-value">
+                Submit</button>
+            </form>
+            <div id="station_list_ul">
+            </div>
+        </div>
+        <!-- /content -->
+        <div data-role="footer" data-theme="b">
+            <div data-role="navbar" data-iconpos="bottom" data-theme="b">
+                <ul>
+                    <!--<li><a href="#find" data-icon="search">Nearest</a></li>-->
+                    <li><a href="#about" data-icon="info">About</a></li>
+                </ul>
+            </div>
+            <!-- /navbar -->
+        </div>
+        <!-- /footer -->
+    </div>
+    <!-- /find page -->
+    <!-- ======================================================= ABOUT ================================================= -->
+    <!-- page about -->
+    <div data-role="page" id="about">
+        <div id="header" data-role="header" data-theme="b">
+            <h1 id="twi_acc">
+                About</h1>
+            <a href="#main" data-icon="arrow-l" rel="external" class="ui-btn-left">Back</a>
+        </div>
+        <!-- /header -->
+        <div data-role="content">
+        </div>
+        <!-- /content -->
+        <div data-role="footer" data-theme="b">
+            <p>
+                &copy; 2012 Extreme Electronics Ltd.</p>
+        </div>
+        <!-- /footer -->
+    </div>
+    <!-- /page -->
+    <!-- ======================================================= CHART ================================================= -->
+    <!-- Chart screen -->
+    <div data-role="page" id="chart">
+        <div id="header" data-role="header" data-theme="a">
+            <h3>
+                OpenWeatherMap.org</h3>
+            <a href="http://OpenWeatherMap.org" data-icon="home" data-iconpos="notext" data-direction="reverse">
+                Home</a>
+            <div class="ui-body-b">
+                <div data-role="navbar" data-iconpos="bottom" data-theme="b">
+                    <ul>
+                        <li><a href="#main" data-icon="grid">Main</a></li>
+                        <li><a href="#forecast" data-icon="gear">Forecast</a></li>
+                        <li><a href="#chart" data-icon="star" class="ui-btn-active">Wind/Pressure</a></li>
+                    </ul>
+                </div>
+                <!-- /navbar -->
+            </div>
+        </div>
+        <!-- /header -->
+        <div data-role="content">
+            <ul class="data">
+                <li>
+                    <div id="chart_container" style="display: inline; width: 100%; height: 300px; margin: 0 auto">
+                    </div>
+                    <center>
+                        <canvas id="gauge_pres" style="display: none;" width="250" height="250"></canvas>
+                    </center>
+                    <!--<div id="container" style="min-width: 420px; max-width: 600px; height: 400px; margin: 0 auto"></div>-->
+                    <div style="display: none">
+                        <!-- Source: http://or.water.usgs.gov/cgi-bin/grapher/graph_windrose.pl -->
+                        <div id="resp">
+                            Here will be displayed the data from the XML file.</div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div data-role="footer" data-theme="b">
+            <div data-role="navbar" data-iconpos="bottom" data-theme="b">
+                <ul>
+                    <!--<li><a href="#chart&1" id="chartch" data-icon="grid">Chart</a></li>-->
+                    <li><a href="#chart&2" id="chartch" data-icon="grid">Wind</a></li>
+                    <li><a href="#chart&3" id="chartch" data-icon="star">Pressure</a></li>
+                </ul>
+            </div>
+            <!-- /navbar -->
+        </div>
+        <!-- /footer -->
+    </div>
+    <!-- /page -->
+    <!-- end Chart screen -->
+    <!-- ======================================================= ABOUT ================================================= -->
+    <!-- about -->
+    <div data-role="page" id="about">
+        <div id="header" data-role="header" data-theme="b">
+            <h1 id="twi_acc">
+                About</h1>
+            <a href="#main" data-icon="arrow-l" class="ui-btn-left">Back</a>
+        </div>
+        <!-- /header -->
+        <div data-role="content">
+            <h3>
+                <a href="http://OpenWeatherMap.org">OpenWeatherMap.org</a> project</h3>
+            <div class="ui-body ui-body-d">
+                <h4>
+                    About OpenWeatherMap</h4>
+                <p>
+                    <img src="http://m.openweathermap.org/images/wikilogo1.jpg" style="width: 100px;
+                        height: 100px; border-width: 5px;">
+                    OpenWeatherMap is a cartograhpic service that provide weather data in any world
+                    place. <strong>Forecasts and current weather</strong> are calculated on the basis
+                    of "raw" data and processed information from the meteorological stations, as well
+                    as based on global meteorological data centers and scientific laboratories. All
+                    information about weather including precipitation, clouds etc., are displayed as
+                    layers that you can turn on/off and combine to each other. Our data are not limited
+                    by list of large cities and regions. We use interactive maps and you can find the
+                    detailed weather data in any location. For some region we reach accuracy up to 2
+                    km!</p>
+                <p>
+                    All data that OpenWeatherMap provides is corresponds to <strong>Creative Commons By-Attribution
+                        Share-Alike 2.0 license. </strong>
+                </p>
+                <h4>
+                    Main idea and benefits</h4>
+                <p>
+                    OpenWeatherMap is non-commercial project. Everithing is done by enthusiasts team.
+                    Our aim is to make meteorology open and available to everybody.</p>
+                <p>
+                    Data are not depend on any cartographic service. We use OpenStreetMap that is very
+                    close to our spirit.</p>
+                <p>
+                    Data of current weather and forecasts are available for connection to any cartographic
+                    services through API.</p>
+                <p>
+                    The screen with selected region and weather layers can be saved for all next visits
+                    of the web site, and the link to the view can be sent to friends or colleagues.
+                    Settings can be changed at any time.
+                </p>
+                <h4>
+                    To developers</h4>
+                <p>
+                    API section stores information about weather layers connection into any cartographic
+                    services. <a href="http://openweathermap.org/wiki/Main_Page">see more..</a></p>
+            </div>
+        </div>
+        <!-- /content -->
+        <div data-role="footer" data-theme="b">
+            <p>
+                &copy; 2012 Extreme Electronics Ltd.</p>
+        </div>
+        <!-- /footer -->
+    </div>
+    <!-- /page about -->
+    <!-- ======================================================= MyBeach ================================================= -->
+    <!-- about -->
+    <div data-role="page" id="MyBeach">
+        <div id="Div2" data-role="header" data-theme="b">
+            <h1 id="H1">
+                MyBeach</h1>
+            <a href="#main" data-icon="arrow-l" class="ui-btn-left">Back</a>
+        </div>
+        <!-- /header -->
+        <div data-role="content">
+            <h3>
+                My prefers Beach</h3>
+            <div class="ui-body ui-body-d">
+                <div id="center-wrapper">
+                    <div class="dhe-example-section_" id="MyBeach_P">
+                        <div class="dhe-example-section-content_">
+                            <!-- BEGIN: XHTML for example 2.3 -->
+                            <div id="mybeach_dd">
+                                <div class="column left first">
+                                    <ul class="sortable-list">
+                                        <li class="sortable-item" id="A">beach 1</li>
+                                        <li class="sortable-item" id="B">beach 2</li>
+                                    </ul>
+                                </div>
+                                <div class="column left">
+                                    <ul class="sortable-list">
+                                        <li class="sortable-item" id="C">beach 3</li>
+                                        <li class="sortable-item" id="D">beach 4</li>
+                                    </ul>
+                                </div>
+                                <div class="column left">
+                                    <ul class="sortable-list">
+                                        <li class="sortable-item" id="E">beach 5</li>
+                                        <li class="sortable-item" id="F">beach 6</li>
+                                        <li class="sortable-item" id="G">beach 6</li>
+                                        <li class="sortable-item" id="H">beach 8</li>
+                                        <li class="sortable-item" id="I">beach 9</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="clearer">
+                                &nbsp;</div>
+                            <!-- END: XHTML for example 2.3 -->
+                        </div>
+                    </div>
+                </div>
+                <p>
+                    <input type="submit" class="input-button" id="clearcookie" value="clearcookie_" /></p>
+            </div>
+        </div>
+        <!-- /content -->
+        <div data-role="footer" data-theme="b">
+            <p>
+                Footer</p>
+        </div>
+        <!-- /footer -->
+    </div>
+    <!-- /page about -->
+    <!-- ======================================================= MAP ================================================= -->
+    <!-- Map screen -->
+    <div data-role="page" id="map">
+        <div id="header" data-role="header" data-theme="a">
+            <h3>
+                OpenWeatherMap.org</h3>
+            <a href="/" data-icon="home" data-iconpos="notext" data-direction="reverse">Home</a>
+            <div class="ui-body-b">
+                <div data-role="navbar" data-iconpos="bottom" data-theme="b">
+                    <ul>
+                        <li><a href="#main" data-icon="grid">Main</a></li>
+                        <li><a href="#forecast" data-icon="gear" class="ui-btn-active">Forecast</a></li>
+                        <li><a href="#chart" data-icon="star">Wind/Pressure</a></li>
+                    </ul>
+                </div>
+                <!-- /navbar -->
+            </div>
+        </div>
+        <!-- /header -->
+        <div data-role="content">
+            <div id="mapmap" style="width: 100%; height: 320px;">
+            </div>
+        </div>
+        <!-- /content -->
+    </div>
+    <!-- /page -->
+    <!-- Map -->
+    <!-- ======================================================= DIALOG ================================================= -->
+    <!-- dialog -->
+    <div data-role="page" id="dialogpage">
+        <div id="header" data-role="header" data-theme="b">
+            <h1 id="alert_title">
+                Message</h1>
+        </div>
+        <!-- /header -->
+        <div data-role="content">
+            <div id="alert_body">
+            </div>
+            <a href="#main" data-icon="arrow-l" rel="external" data-role="button">OK</a>
+        </div>
+        <!-- /content -->
+    </div>
+    <!-- /page -->
+    <!-- dialog -->
+    <a href="#dialogpage" id="lnkDialog" data-rel="dialog" data-transition="pop" style='display: none;'>
+    </a>
+    <!-- ======================================================= FORECAST ================================================= -->
+    <!-- forecast screen -->
+    <div data-role="page" id="forecast">
+        <div id="header" data-role="header" data-theme="a">
+            <h3>
+                OpenWeatherMap.org</h3>
+            <a href="/" data-icon="home" data-iconpos="notext" data-direction="reverse">Home</a>
+            <div class="ui-body-b">
+                <div data-role="navbar" data-iconpos="bottom" data-theme="b">
+                    <ul>
+                        <li><a href="#main" data-icon="grid">Main</a></li>
+                        <li><a href="#forecast" data-icon="gear" class="ui-btn-active">Forecast</a></li>
+                        <li><a href="#chart" data-icon="star">History</a></li>
+                    </ul>
+                </div>
+                <!-- /navbar -->
+            </div>
+        </div>
+        <!-- /header -->
+        <div data-role="content">
+            <h3>
+                <div id="forecast_title">
+                </div>
+            </h3>
+            <div id='forecast_list_ul'>
+            </div>
+        </div>
+        <!-- /content -->
+    </div>
+    <!-- /page -->
+    <!-- forecast -->
+    <script type="text/javascript">
+        (function (d, w, c) {
+            (w[c] = w[c] || []).push(function () {
+                try {
+                    w.yaCounter23364583 = new Ya.Metrika({ id: 23364583,
+                        trackLinks: true
+                    });
+                } catch (e) { }
+            });
+
+            var n = d.getElementsByTagName("script")[0],
+        s = d.createElement("script"),
+        f = function () { n.parentNode.insertBefore(s, n); };
+            s.type = "text/javascript";
+            s.async = true;
+            s.src = (d.location.protocol == "https:" ? "https:" : "http:") + "//mc.yandex.ru/metrika/watch.js";
+
+            if (w.opera == "[object Opera]") {
+                d.addEventListener("DOMContentLoaded", f, false);
+            } else { f(); }
+        })(document, window, "yandex_metrika_callbacks");
+    </script>
+    <noscript>
+        <div>
+            <img src="//mc.yandex.ru/watch/23364583" style="position: absolute; left: -9999px;"
+                alt="" />
+        </div>
+    </noscript>
+</body>
+</html>

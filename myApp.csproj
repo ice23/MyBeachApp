@@ -55,7 +55,10 @@
     <Content Include="Account\ChangePasswordSuccess.aspx" />
     <Content Include="Account\Login.aspx" />
     <Content Include="Account\Register.aspx" />
-    <Content Include="Config.xml" />
+    <Content Include="Config.xml">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="index.html" />
     <Content Include="Example\winddegreed.htm" />
     <Content Include="Example\xmlsampleweather.xml">
       <SubType>Designer</SubType>
@@ -65,6 +68,7 @@
     <Content Include="HTML\beachlist.htm" />
     <Content Include="HTML\directions_map.htm" />
     <Content Include="HTML\es_widget.htm" />
+    <Content Include="HTML\menuslide.htm" />
     <Content Include="HTML\MyBeach.htm" />
     <Content Include="HTML\MyBeachDD.htm" />
     <Content Include="HTML\MyGFusionMap.htm" />
@@ -74,6 +78,8 @@
     <Content Include="HTML\POI.htm" />
     <Content Include="HTML\Pressure1.htm" />
     <Content Include="HTML\pressure2.htm" />
+    <Content Include="HTML\templatefish.htm" />
+    <Content Include="HTML\templatemonster.htm" />
     <Content Include="HTML\WindRose.htm" />
     <Content Include="HTML\MyWeather.htm" />
     <Content Include="icons\android\ldpi.png" />
@@ -93,7 +99,7 @@
     <Content Include="images\list-icon-3.png" />
     <Content Include="images\list-icon-4.png" />
     <Content Include="images\sun_mini.png" />
-    <Content Include="index.html" />
+    <Content Include="index_.html" />
     <Content Include="indexAnd.htm" />
     <Content Include="jquery.xdomainajax.js" />
     <Content Include="js\charts.js" />
@@ -113,6 +119,7 @@
     <Content Include="res\drawable-mdpi\underwear.png" />
     <Content Include="res\drawable-xhdpi\underwear.png" />
     <Content Include="res\xml\cordova.xml" />
+    <Content Include="spiagge\1.xml" />
     <Content Include="splash\android\Cala-Sabina.jpg" />
     <Content Include="splash\android\spiaggia.jpg" />
     <Content Include="splash\android\underwear.png" />
@@ -182,7 +189,7 @@
         <WebProjectProperties>
           <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>65526</DevelopmentServerPort>
+          <DevelopmentServerPort>62321</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
           <IISUrl>
           </IISUrl>
