@@ -58,7 +58,9 @@
     <Content Include="Config.xml">
       <SubType>Designer</SubType>
     </Content>
+    <Content Include="HTML\templateshit.htm" />
     <Content Include="index.html" />
+    <Content Include="indexMonster.html" />
     <Content Include="Example\winddegreed.htm" />
     <Content Include="Example\xmlsampleweather.xml">
       <SubType>Designer</SubType>
@@ -112,6 +114,8 @@
     <Content Include="js\jquery-1.7.1.min.js" />
     <Content Include="js\jquery-ui.min.js" />
     <Content Include="js\jquery.cookie.js" />
+    <Content Include="js\jquery.cycle.all.js" />
+    <Content Include="js\jquery.easing.JS" />
     <Content Include="js\jquery.mobile-1.1.1.min.js" />
     <Content Include="js\jquery.ui.touch-punch.min.js" />
     <Content Include="res\drawable-hdpi\underwear.png" />
@@ -125,7 +129,10 @@
     <Content Include="splash\android\underwear.png" />
     <Content Include="stylesheets\bootstrap-responsive.min.css" />
     <Content Include="stylesheets\bootstrap.min.css" />
+    <Content Include="stylesheets\jqm-docs.css" />
+    <Content Include="stylesheets\jquery.mobile-1.1.1.min.css" />
     <Content Include="stylesheets\jquery.mobile-1.2.0.min.css" />
+    <Content Include="stylesheets\main.css" />
     <Content Include="stylesheets\myphone3.css" />
     <Content Include="stylesheets\style_Sortable.css" />
     <Content Include="Styles\Site.css" />
