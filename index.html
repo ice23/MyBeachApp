@@ -23,7 +23,8 @@
     </script>
     <script src="js/jqm-docs.js"></script>
     <script src="js/jquery.mobile-1.1.1.js"></script>
-    <script src="js/new-swipe.js"></script>
+     
+    <!--<script src="js/new-swipe.js"></script>
     <style>
         #collist ul li.Ship li.first, .sortmen ul li.Ship li.lur-1
         {
@@ -34,20 +35,184 @@
             margin-top: 17px;
         }
     </style>
-    <link rel="stylesheet" type="text/css" href="stylesheets/jquery.countdown.css" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/jquery.countdown.css" />-->
+
+
+
+ <!--   <script type="text/javascript" src="http://tech.sarathdr.com/slider/js/jquery-1.7.1.min.js"></script>-->
+    <script type="text/javascript" src="http://tech.sarathdr.com/slider/js/jquery.cycle.all.js"></script>
+    <script type="text/javascript" src="http://tech.sarathdr.com/slider/js/jquery.easing.js"></script>
+    <script type="text/javascript" src="http://tech.sarathdr.com/slider/js/new-swipe.js"></script>
+   <!-- <link rel="stylesheet" type="text/css" href="http://tech.sarathdr.com/slider/css/styles.css" />-->
+       <script>
+
+           $(document).ready(function () {
+
+               /* Swipe Variables */
+               $.fn.cycle.transitions.scrollHorzTouch = function ($cont, $slides, opts) {
+                   $cont.css('overflow', 'hidden').width();
+                   opts.before.push(function (curr, next, opts, fwd) {
+
+                       if (opts.rev)
+                           fwd = !fwd;
+
+                       positionNext = $(next).position();
+                       positionCurr = $(curr).position();
+
+                       $.fn.cycle.commonReset(curr, next, opts);
+                       if ((positionNext.left > 0 && fwd) || (positionNext.left < 0 && !fwd)) {
+                           opts.cssBefore.left = positionNext.left;
+                       }
+                       else {
+                           opts.cssBefore.left = fwd ? (next.cycleW - 1) : (1 - next.cycleW);
+                       }
+                       if ((positionCurr.left > 0 && fwd) || (positionCurr.left < 0 && !fwd)) {
+                           opts.animOut.left = positionCurr.left;
+                       }
+                       else {
+                           opts.animOut.left = fwd ? -curr.cycleW : curr.cycleW;
+                       }
+
+                   });
+                   opts.cssFirst.left = 0;
+                   opts.cssBefore.top = 0;
+                   opts.animIn.left = 0;
+                   opts.animOut.top = 0;
+               };
+               var currenSlide = null;
+               var slideNumber = 0;
+               var currentLeft = 0;
+               var leftStart = 0;
+               var sliderExpr;
+               var slideFlag = false;
+
+               $('#rotating-item-wrapper').cycle({
+                   fx: 'scrollHorzTouch',
+                   timeout: 1000,
+                   pager: '#nav',
+                   speedIn: 400,
+                   speedOut: 400,
+                   slideExpr: 'img',
+                   next: '#nextBt',
+                   prev: '#prevBt',
+                   before: beforeSlide,
+                   after: afterSlide,
+                   startingSlide: 0
+
+
+               });
+
+
+
+               $('#rotating-item-wrapper').swipe({ swipeMoving: function (pageX) {
+
+                   if (slideFlag) return;
+
+                   var newLeft = currentLeft - pageX;
+
+                   currenSlide.css('left', newLeft + 'px');
+
+                   var $slides = $(sliderExpr, $('#rotating-item-wrapper'));
+                   var scrollSlide;
+
+                   nextSlideLeft = newLeft > 0 ? newLeft - currenSlide.width() : newLeft + currenSlide.width();
+                   flag = newLeft > 0 ? -1 : 1;
+                   scrollSlide = slideNumber + flag;
+                   if (scrollSlide < 0 || scrollSlide > ($slides.length - 1)) {
+                       scrollSlide = scrollSlide < 0 ? $slides.length - 1 : 0;
+                   }
+
+                   $slides.eq(scrollSlide).css('left', nextSlideLeft + 'px');
+                   $slides.eq(scrollSlide).show();
+               },
+                   swipeLeft: function () { $('#rotating-item-wrapper').cycle('next'); },
+                   swipeRight: function () { $('#rotating-item-wrapper').cycle('prev'); }
+
+
+               });
+
+
+               // Call this function before the slide start
+               function beforeSlide(curr, next, opt) {
+                   sliderExpr = opt.slideExpr;
+                   slideFlag = true;
+               }
+
+               // Call this function after the slide start
+               function afterSlide(curr, next, opt) {
+                   currenSlide = $(next);
+                   slideNumber = opt.currSlide;
+                   currentLeft = $(next).position().left;
+                   slideFlag = false;
+               }
+
+
+           });
+
+
+
+    </script>
+
+
+
+  <!--  <link rel="stylesheet"  href="http://demos.jquerymobile.com/1.3.0-beta.1/css/themes/default/jquery.mobile-1.3.0-beta.1.css">
+	<link rel="stylesheet" href="http://demos.jquerymobile.com/1.3.0-beta.1/docs/demos/_assets/css/jqm-demos.css">-->
+    
+  	<!-- Included Bootstrap CSS Files -->
+	<link rel="stylesheet" href="http://www.responsivewebmobile.com/app/webroot/rwm_slide_panel/js/bootstrap/css/bootstrap.min.css" />
+	<link rel="stylesheet" href="http://www.responsivewebmobile.com/app/webroot/rwm_slide_panel/js/bootstrap/css/bootstrap-responsive.min.css" />
+
+	<!-- Includes FontAwesome -->
+	<link rel="stylesheet" href="http://www.responsivewebmobile.com/app/webroot/rwm_slide_panel/css/font-awesome/css/font-awesome.min.css" />
+
+	<!-- SlidePanel Css -->	
+	<link rel="stylesheet" href="http://www.responsivewebmobile.com/app/webroot/rwm_slide_panel/js/jquery.slidepanel/css/stylesheet.css" />
+
+
+	<script src="http://www.responsivewebmobile.com/app/webroot/rwm_slide_panel/js/bootstrap/js/bootstrap.min.js"></script>
+	
+	<!-- SlidePanel jQuery -->
+	<script src="http://www.responsivewebmobile.com/app/webroot/rwm_slide_panel/js/jquery.slidepanel/js/jquery.slidepanel.js"></script>
+
+	<script type="text/javascript">
+	    $(document).ready(function () {
+	        $.SlidePanel();
+	    });
+	</script>
 </head>
 <body class="NewHomePage Subsite1 Home">
     <div data-role="page" class="type-index">
+        <div data-role="header" style="z-index:99999" data-theme="f">
+			<div id="slidein-panel">
+		        <!-- SlidePanel Button Container -->
+		        <div id="slidein-panel-container">
+			        <a id="slidein-panel-btn" href="#"><i class="icon-list">____________</i></a>
+		        </div>
+		        <!-- /SlidePanel Button Container -->
+
+		        <!-- SlidePanel Content -->
+		        <ul>
+			        <li><a href="#"><i class="icon-gear"></i>&nbsp; Settings</a></li>
+			        <li><a href="#"><i class="icon-music"></i>&nbsp; Music</a></li>
+			        <li><a href="#"><i class="icon-facetime-video"></i>&nbsp; Video</a></li>
+			        <li><a href="#"><i class="icon-cloud-upload"></i>&nbsp; Cloud</a></li>
+			        <li><a href="#"><i class="icon-bell-alt"></i>&nbsp; Alarm</a></li>
+			        <li><a href="#"><i class="icon-comment"></i>&nbsp; Comment</a></li>
+			        <li><a href="#"><i class="icon-envelope"></i>&nbsp; Inbox</a></li>
+			        <li><a href="#"><i class="icon-bookmark"></i>&nbsp; Bookmarks</a></li>	
+			        <li><a href="#"><i class="icon-off"></i>&nbsp; Logout</a></li>
+		        </ul>
+		        <!-- /SlidePanel Content -->
+	        </div>
+		</div>
+ 
+
+
+
         <div class="banner" data-role="header" role="banner" data-theme="c">
             <div class="wrapban">
-                <a class="prs" data-theme="c" data-role="button" data-inline="true" href="tel:1.888.445.7936 "
-                    id="bll">boh</a> <span class="logo">
-                        <div data-role="navbar_"  id="nav-bar">
-                            <ul >
-                                <li id="men"><a id="A1" href="javascript:void(0);">
-                                </a></li>
-                            </ul>
-                        </div>
+                 <span class="logo">
+                      
                     </span><a class="prs" data-theme="c" data-role="button" data-inline="true" href="#"
                         id="blr">boh</a>
             </div>
@@ -180,35 +345,28 @@
                 display: block;
             }
         </style>
-        <div id="butonix">
-            <span rel="">
-                <h1>Cala Sabina0</h1>
-                <a id="lmore" data-role="button" data-inline="true" data-ajax="false" href="#">
-                    Learn More</a> </span><span rel="">
-                        <h1>
-                            Cala Sabina1</h1>
-                        <a id="lmore" data-role="button" data-inline="true" data-ajax="false" href="#">
-                            Learn More</a> </span><span rel="">
-                                <h1>
-                                    Cala Sabina2</h1>
-                                <a id="lmore" data-role="button" data-inline="true" data-ajax="false" href="#">
-                                    Learn More</a> </span><span rel="">
-                                        <h1>
-                                           Cala Sabina3</h1>
-                                        <a id="lmore" data-role="button" data-inline="true" data-ajax="false" href="#">
-                                            Learn More</a> </span>
-            <div id="rotating-item-wrapper">
-                <a href="#" data-ajax="false">
-                    <img class="rotating-item swipe" alt="" src="images/beach/imagestest.jpg" /></a>
-                <a href="#" data-ajax="false">
-                    <img class="rotating-item swipe" alt="" src="images/beach/imagestest2.jpg" /></a>
-                <a href="#" data-ajax="false">
-                    <img class="rotating-item swipe" alt="" src="images/beach/imagestest3.jpg" /></a>
-                <a href="#" data-ajax="false">
-                    <img class="rotating-item swipe" alt="" src="images/beach/imagestest4.jpg" /></a>
-                <div id="nav">
+        <div id="butonix_">
+             <div id="wrapper" style="height:120px">
+                <div id="rotating-item-wrapper">
+                    <a href="javascript:void(0);">
+                        <img class="rotating-item swipe" alt="" src="http://tech.sarathdr.com/slider/images/image-1.jpg" /></a>
+                    <a href="javascript:void(0);">
+                        <img class="rotating-item swipe" alt="" src="http://tech.sarathdr.com/slider/images/image-2.jpg" /></a>
+                    <a href="javascript:void(0);">
+                        <img class="rotating-item swipe" alt="" src="http://tech.sarathdr.com/slider/images/image-3.jpg" /></a>
+                    <a href="javascript:void(0);">
+                        <img class="rotating-item swipe" alt="" src="http://tech.sarathdr.com/slider/images/image-4.jpg" /></a>
+                    <div  id="nav" style="visibility:hidden">
+                    </div>
+                    <div id="next" style="opacity: 1;">
+                        <a id="nextBt" href="#"></a>
+                    </div>
+                    <div id="previous" style="opacity: 1;">
+                        <a id="prevBt" href="#"></a>
+                    </div>
                 </div>
             </div>
+     
         </div>
         <div data-role="content" id="home-ct">
             <ul data-role="listview" data-inset="true">
