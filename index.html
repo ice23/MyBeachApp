@@ -155,24 +155,20 @@
 
 
 
-  <!--  <link rel="stylesheet"  href="http://demos.jquerymobile.com/1.3.0-beta.1/css/themes/default/jquery.mobile-1.3.0-beta.1.css">
-	<link rel="stylesheet" href="http://demos.jquerymobile.com/1.3.0-beta.1/docs/demos/_assets/css/jqm-demos.css">-->
     
   	<!-- Included Bootstrap CSS Files -->
-	<link rel="stylesheet" href="http://www.responsivewebmobile.com/app/webroot/rwm_slide_panel/js/bootstrap/css/bootstrap.min.css" />
-	<link rel="stylesheet" href="http://www.responsivewebmobile.com/app/webroot/rwm_slide_panel/js/bootstrap/css/bootstrap-responsive.min.css" />
 
 	<!-- Includes FontAwesome -->
-	<link rel="stylesheet" href="http://www.responsivewebmobile.com/app/webroot/rwm_slide_panel/css/font-awesome/css/font-awesome.min.css" />
+	<link rel="stylesheet" href="stylesheets/menu/font-awesome.min.css" />
 
 	<!-- SlidePanel Css -->	
-	<link rel="stylesheet" href="http://www.responsivewebmobile.com/app/webroot/rwm_slide_panel/js/jquery.slidepanel/css/stylesheet.css" />
+	<link rel="stylesheet" href="stylesheets/menu/stylesheet.css" />
 
 
-	<script src="http://www.responsivewebmobile.com/app/webroot/rwm_slide_panel/js/bootstrap/js/bootstrap.min.js"></script>
+	<script src="js/menu/bootstrap.min.js"></script>
 	
 	<!-- SlidePanel jQuery -->
-	<script src="http://www.responsivewebmobile.com/app/webroot/rwm_slide_panel/js/jquery.slidepanel/js/jquery.slidepanel.js"></script>
+	<script src="js/menu/jquery.slidepanel.js"></script>
 
 	<script type="text/javascript">
 	    $(document).ready(function () {
@@ -182,11 +178,25 @@
 </head>
 <body class="NewHomePage Subsite1 Home">
     <div data-role="page" class="type-index">
-        <div data-role="header" style="z-index:99999" data-theme="f">
-			<div id="slidein-panel">
+     
+		
+		
+ 
+
+
+
+        <div class="banner" data-role="header" role="banner" data-theme="c">
+            <div class="wrapban">
+                 <span class="logo">
+                      
+                    </span><a class="prs" data-theme="c" data-role="button" data-inline="true" href="#"
+                        id="blr">boh</a>
+            </div>
+        </div>
+        	<div id="slidein-panel"  style="z-index:99999">
 		        <!-- SlidePanel Button Container -->
 		        <div id="slidein-panel-container">
-			        <a id="slidein-panel-btn" href="#"><i class="icon-list">____________</i></a>
+			        <a id="slidein-panel-btn" href="#"><i class="icon-list"><i></a>
 		        </div>
 		        <!-- /SlidePanel Button Container -->
 
@@ -204,19 +214,6 @@
 		        </ul>
 		        <!-- /SlidePanel Content -->
 	        </div>
-		</div>
- 
-
-
-
-        <div class="banner" data-role="header" role="banner" data-theme="c">
-            <div class="wrapban">
-                 <span class="logo">
-                      
-                    </span><a class="prs" data-theme="c" data-role="button" data-inline="true" href="#"
-                        id="blr">boh</a>
-            </div>
-        </div>
         <!-- /navbar -->
         <div data-role="collapsible" data-collapsed="false" id="collist" class="sortmen">
             <ul>
