@@ -9,21 +9,21 @@
 		var status = 'close';
 
 		//initialize the panel show/hide button 
-        $('#slidein-panel-btn').css({'position': 'absolute', 'top': 0, 'right':-$('#slidein-panel-btn').outerWidth()+'px'});
+		$("a[class^='slidein-panel-btn']").css({ 'position': 'absolute', 'top': 0, 'right': -$("a[class^='slidein-panel-btn']").outerWidth() + 'px' });
 
         //initialize the panel
-        $('#slidein-panel').css({'position': 'absolute', 'top': 0, 'left': -$('#slidein-panel').outerWidth(), 'height': $(window).height()});
+		$("div[class$='slidein-panel']").css({ 'position': 'absolute', 'top': 0, 'left': -$("div[class$='slidein-panel']").outerWidth(), 'height': $(window).height() });
 
         //show and hide the panel depending on status
-		$('#slidein-panel-btn').click(
+        $("a[class^='slidein-panel-btn']").click(
 			function() {
 				if(status == 'close') {
 					status = 'open';
-					$('#slidein-panel').animate({'left':0});
+					$("div[class$='slidein-panel']").animate({'left':0});
 				}
 				else if(status == 'open') {
 					status = 'close';
-					$('#slidein-panel').animate({'left':-$('#slidein-panel').outerWidth()});
+					$("div[class$='slidein-panel']").animate({'left':-$("div[class$='slidein-panel']").outerWidth()});
 				}
 			}
 		);
