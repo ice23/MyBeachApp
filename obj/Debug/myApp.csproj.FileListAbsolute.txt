@@ -1,5 +1,0 @@
-D:\MyDocuments\Lavoro\__My Work__\MHTL\Project\myApp\myApp\bin\myApp.dll
-D:\MyDocuments\Lavoro\__My Work__\MHTL\Project\myApp\myApp\bin\myApp.pdb
-D:\MyDocuments\Lavoro\__My Work__\MHTL\Project\myApp\myApp\obj\Debug\myApp.dll
-D:\MyDocuments\Lavoro\__My Work__\MHTL\Project\myApp\myApp\obj\Debug\myApp.pdb
-D:\MyDocuments\Lavoro\__My Work__\MHTL\Project\myApp\myApp\obj\Debug\myApp.csprojResolveAssemblyReference.cache
