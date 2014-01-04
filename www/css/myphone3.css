@@ -1,0 +1,317 @@
+
+	/***** List (base) ******/
+	
+	ul {
+		color: black;
+		background: #fff;
+		border: 1px solid #B4B4B4;
+		font: bold 17px Ubuntu, Helvetica;
+		padding: 0;	   
+		margin: 0px 0px 17px 0;
+		-webkit-border-radius: 8px;
+		-moz-border-radius: 8px;
+		-o-border-radius: 8px;
+		-ie-border-radius: 8px;
+		border-radius: 8px;
+	}
+	ul li {
+		color: #666;
+		border-top: 1px solid #B4B4B4;
+		list-style-type: none;	
+		padding: 10px 10px 10px 10px;
+	}
+	/* when you have a first LI item on any list */
+	
+	li:first-child {	
+		border-top: 0;
+		-webkit-border-top-left-radius: 8px;
+		-webkit-border-top-right-radius: 8px;
+		-moz-border-top-left-radius: 8px;
+		-moz-border-top-right-radius: 8px;
+		-o-border-top-left-radius: 8px;
+		-o-border-top-right-radius: 8px;
+		-ie-border-top-left-radius: 8px;
+		-ie-border-top-right-radius: 8px;
+		border-top-left-radius: 8px;
+		border-top-right-radius: 8px;
+	}
+	li:last-child {	
+		-webkit-border-bottom-left-radius: 8px;
+		-webkit-border-bottom-right-radius: 8px;
+		-moz-border-top-left-radius: 8px;
+		-moz-border-top-right-radius: 8px;
+		-o-border-top-left-radius: 8px;
+		-o-border-top-right-radius: 8px;
+		-ie-border-top-left-radius: 8px;
+		-ie-border-top-right-radius: 8px;
+		border-top-left-radius: 8px;
+		border-top-right-radius: 8px;
+	}
+	/* universal arrows */				
+	ul li.arrow {
+		background-image: url(../images/chevron.png);
+		background-position: right center;
+		background-repeat: no-repeat;
+	}
+	#plastic ul li.arrow, #metal ul li.arrow {
+		background-image: url(../images/chevron_dg.png);
+		background-position: right center;
+		background-repeat: no-repeat;
+	}
+	/* universal links on list */
+	
+	/* standard mini-label */
+	ul li small {
+		color: #369;
+		font: 17px Ubuntu, Helvetica;
+		text-align: right;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+		overflow: hidden;
+		display: block;
+		width: 23%;
+		float: right;
+		padding: 3px 0px;
+	}
+	ul li.arrow small {
+		padding: 0 15px;
+	}
+	
+	ul li small.counter {
+		font-size: 14px !important;
+		line-height: 12px !important;
+/*		font-weight: bold; */
+		background: rgb(154,159,170);
+		color: #fff;
+		-webkit-border-radius: 11px;
+		-moz-border-radius: 11px;
+		-o-border-radius: 11px;
+		-ie-border-radius: 11px;
+		border-radius: 11px;
+		padding: 4px 10px 5px 10px;
+		display: inline !important;
+		width: auto;
+		margin-top: 2px;
+	}
+	ul li.arrow small.counter {
+		margin-right: 15px;
+	}
+	/* resize without labels */
+	ul li.arrow a {
+		width: 95%;
+	}
+	/* with labels */
+	ul li small + a {
+		width: 75%;
+	}
+	ul li.arrow small + a {
+		width: 70%;
+	}
+	/* images */
+	ul li.img {
+		padding-left: 115px;
+	}
+	ul li.img a.img {
+		background: url(../images/standard-img.png) no-repeat;
+		display: inline-block;
+		width: 100px;
+		height: 75px;
+		margin: -10px 0 -20px -115px;
+		float: left;
+	}
+
+/***** FORMS *****/
+/* fields list */
+	ul.form {
+	}		
+	ul.form li {
+		padding: 7px 10px;
+	}
+	ul.form li.error { border: 2px solid red; }			
+	ul.form li.error + li.error { border-top: 0; }
+	ul.form li:hover { background: #fff; }
+	ul li input[type="text"], ul li input[type="password"], ul li textarea, ul li select {
+		color: #777;
+		background: #fff url(../.png); /* this is a hack due the default input shadow that iphones uses on textfields */
+		border: 0;				
+		font: normal 17px Ubuntu, Helvetica;
+		padding: 0;
+		display: inline-block;
+		margin-left: 0px;
+		width: 100%;
+		-webkit-appearance: textarea;
+		-moz-appearance: textarea;
+		-o-appearance: textarea;
+		-ie-appearance: textarea;
+		appearance: textarea;
+	}
+	ul li textarea {
+		height: 120px;
+		padding: 0;
+		text-indent: -2px;
+	}
+	ul li select {
+		text-indent: 0px;
+		background: transparent url(../images/chevron.png) no-repeat 103% 3px;
+		-webkit-appearance: textfield;
+		-moz-appearance: textfield;
+		-o-appearance: textfield;
+		-ie-appearance: textfield;
+		appearance: textfield;
+		margin-left: -6px;
+		width: 104%;
+	}
+	ul li input[type="checkbox"], ul li input[type="radio"] {
+		margin: 0;
+		color: rgb(50,79,133);
+		padding: 10px 10px;
+	}
+	ul li input[type="checkbox"]:after, ul li input[type="radio"]:after {
+		content: attr(title);
+		font: 17px Ubuntu, Helvetica;
+		display: block;
+		width: 246px;
+		margin: -12px 0 0 17px;
+	}
+	/**** INFORMATION FIELDS ****/
+	ul.data li h4 {
+		margin: 10px 0 5px 0;
+	}
+	ul.data li p {
+		text-align: left;
+		font-size: 14px;
+		line-height: 18px;
+		font-weight: normal;
+		margin: 0;
+	}
+	ul.data li p + p { margin-top: 10px; }
+	ul.data li {
+		background: none;
+		padding: 15px 10px;
+		color: #222;
+	}
+	ul.data li a {
+		display: inline;
+		color: #2E3744;
+		text-decoration: underline;
+	}
+	ul.field li small {
+		position: absolute;
+		right: 25px;
+		margin-top: 3px;
+		z-index: 3;
+	}
+	ul.field li h3 {
+		color: rgb(76,86,108);
+		width: 25%;
+		font-size: 13px;
+		line-height: 18px;
+		margin: 0 10px 0 0;
+		float: left;
+		text-align: right;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+		padding: 0;
+	}
+	ul.field li a {
+		font-size: 13px;
+		line-height: 18px;
+		overflow: visible;
+		white-space: normal;
+		display: inline-block;
+		width: 60%;
+		padding: 0;
+		margin: 0 0 0 0;
+		vertical-align: top;
+	}
+
+	ul.field li .likea {
+		font-size: 13px;
+		line-height: 18px;
+		overflow: visible;
+		white-space: normal;
+		display: inline-block;
+		width: 60%;
+		padding: 0;
+		margin: 0 0 0 0;
+		vertical-align: top;
+	}
+
+	ul.field li big {
+		font-size: 13px;
+		line-height: 18px;
+		font-weight: normal;
+		overflow: visible;
+		white-space: normal;
+		display: inline-block;
+		width: 60%;
+	}
+	ul.field li small {
+		font-size: 13px;
+		font-weight: bold;
+	}
+
+	/* this is for profiling */
+	ul.profile {
+		border: 0;
+		background: none;
+		clear: both;
+		min-height: 62px;
+		position: relative;
+	}
+
+	ul.profile li {
+		border: 1px solid #B4B4B4;
+		width: 62px;
+		height: 62px;
+		-webkit-border-radius: 4px;
+		-moz-border-radius: 4px;
+		-o-border-radius: 4px;
+		-ie-border-radius: 4px;
+		border-radius: 4px;
+		-webkit-box-sizing: border-box; 
+		-moz-box-sizing: border-box; 
+		-o-box-sizing: border-box; 
+		-ie-box-sizing: border-box; 
+		box-sizing: border-box;
+		float: left;
+	}
+	li.picture img {
+		border: 1px solid #B4B4B4;
+		width: 62px;
+		height: 62px;
+		float: left;
+
+	}
+
+	ul.profile li + li {
+		border: 0;
+		background: none;
+		width: 70%;
+	}
+	ul.profile li + li h2, ul.profile li + li p {
+		color: rgb(46,55,68);
+		text-shadow: #fff 0 1px 0;
+		margin: 0;
+	}
+	ul.profile li + li h2 {
+		font: bold 18px/22px Ubuntu, Helvetica;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+		overflow: hidden;
+	}
+	ul.profile li + li p {
+		font: 14px/18px Ubuntu, Helvetica;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+		overflow: hidden;
+	}
+	/* any A element inside this kind of field list will scale 62x62 */
+	ul.profile li a {
+		display: block;
+		width: 62px;
+		height: 62px;
+		color: transparent;
+	}
+

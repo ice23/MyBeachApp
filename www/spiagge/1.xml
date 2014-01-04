@@ -1,0 +1,184 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<spiagge>
+  <spiaggia id="1" nome="Spiaggia Ira" lat="41.026752" lon="9.532471" prov="Olbia (OT)">
+    <descrizione ds="-"> L’arenile si distende subito a ovest di Porto Rotondo (Olbia). 
+    </descrizione>
+    <windNO>N</windNO>
+    <drive></drive>
+    <foto></foto>
+    <parcheggio></parcheggio>
+    <disabili></disabili>
+    <bar></bar>
+    <xbambini></xbambini>
+    <surf></surf>
+    <attrezzata></attrezzata>
+  </spiaggia>
+  <spiaggia id="2" nome="Spiaggia Marinella" lat="41.003807" lon="9.554616" prov="Olbia (OT)">
+    <descrizione ds="-">desc1</descrizione>
+    <windNO>N</windNO>
+    <drive></drive>
+    <foto></foto>
+    <parcheggio></parcheggio>
+    <disabili></disabili>
+    <bar></bar>
+    <xbambini></xbambini>
+    <surf></surf>
+    <attrezzata></attrezzata>
+  </spiaggia>
+  <spiaggia id="3" nome="Spiaggia Marana" lat="41.005337" lon="9.562323" prov="Olbia (OT)">
+    <descrizione ds="-">desc1</descrizione>
+    <windNO>N</windNO>
+    <drive></drive>
+    <foto></foto>
+    <parcheggio></parcheggio>
+    <disabili></disabili>
+    <bar></bar>
+    <xbambini></xbambini>
+    <surf></surf>
+    <attrezzata></attrezzata>
+  </spiaggia>
+  <spiaggia id="3" nome="Terza Spiaggia" lat="41.003648" lon="9.611824" prov="Golfo Aranci (OT)">
+    <descrizione ds="-">desc1</descrizione>
+    <windNO>N</windNO>
+    <drive></drive>
+    <foto></foto>
+    <parcheggio></parcheggio>
+    <disabili></disabili>
+    <bar></bar>
+    <xbambini></xbambini>
+    <surf></surf>
+    <attrezzata></attrezzata>
+  </spiaggia>
+  <spiaggia id="4" nome="Cala Moresca" lat="40.98753" lon="9.646747" prov="Golfo Aranci (OT)">
+    <descrizione ds="-">desc1</descrizione>
+    <windNO>N</windNO>
+    <drive></drive>
+    <foto></foto>
+    <parcheggio></parcheggio>
+    <disabili></disabili>
+    <bar></bar>
+    <xbambini></xbambini>
+    <surf></surf>
+    <attrezzata></attrezzata>
+  </spiaggia>
+  <spiaggia id="5" nome="Cala Sassari" lat="40.988327" lon="9.585667" prov="Golfo Aranci (OT)">
+    <descrizione ds="-">desc1</descrizione>
+    <windNO>N</windNO>
+    <drive></drive>
+    <foto></foto>
+    <parcheggio></parcheggio>
+    <disabili></disabili>
+    <bar></bar>
+    <xbambini></xbambini>
+    <surf></surf>
+    <attrezzata></attrezzata>
+  </spiaggia>
+  <spiaggia id="6" nome="Cala Sos Aranzos" lat="40.97565" lon="9.582757" prov="Golfo Aranci (OT)">
+    <descrizione ds="-">desc1</descrizione>
+    <windNO>N</windNO>
+    <drive></drive>
+    <foto></foto>
+    <parcheggio></parcheggio>
+    <disabili></disabili>
+    <bar></bar>
+    <xbambini></xbambini>
+    <surf></surf>
+    <attrezzata></attrezzata>
+  </spiaggia>
+  <spiaggia id="7" nome="Cala Banana" lat="40.960997" lon="9.585486" prov="Golfo Aranci (OT)">
+    <descrizione ds="-">desc1</descrizione>
+    <windNO>N</windNO>
+    <drive></drive>
+    <foto></foto>
+    <parcheggio></parcheggio>
+    <disabili></disabili>
+    <bar></bar>
+    <xbambini></xbambini>
+    <surf></surf>
+    <attrezzata></attrezzata>
+  </spiaggia>
+  <spiaggia id="8" nome="Spiaggia Bados" lat="40.954381" lon="9.578161" prov="Olbia (OT)">
+    <descrizione ds="-">desc1</descrizione>
+    <windNO>N</windNO>
+    <drive></drive>
+    <foto></foto>
+    <parcheggio></parcheggio>
+    <disabili></disabili>
+    <bar></bar>
+    <xbambini></xbambini>
+    <surf></surf>
+    <attrezzata></attrezzata>
+  </spiaggia>
+  <spiaggia id="9" nome="Spiaggia Pittulongu" lat="40.939151" lon="9.567412" prov="Olbia (OT)">
+    <descrizione ds="-">desc1</descrizione>
+    <windNO>N</windNO>
+    <drive></drive>
+    <foto></foto>
+    <parcheggio></parcheggio>
+    <disabili></disabili>
+    <bar></bar>
+    <xbambini></xbambini>
+    <surf></surf>
+    <attrezzata></attrezzata>
+  </spiaggia>
+  <spiaggia id="10" nome="Spiaggia Saline" lat="40.903582" lon="9.576359" prov="Olbia (OT)">
+    <descrizione ds="-">desc1</descrizione>
+    <windNO>N</windNO>
+    <drive></drive>
+    <foto></foto>
+    <parcheggio></parcheggio>
+    <disabili></disabili>
+    <bar></bar>
+    <xbambini></xbambini>
+    <surf></surf>
+    <attrezzata></attrezzata>
+  </spiaggia>
+  <spiaggia id="11" nome="Spiaggia Porto Istana" lat="40.894071" lon="9.615225" prov="Olbia (OT)">
+    <descrizione ds="-">desc1</descrizione>
+    <windNO>N</windNO>
+    <drive></drive>
+    <foto></foto>
+    <parcheggio></parcheggio>
+    <disabili></disabili>
+    <bar></bar>
+    <xbambini></xbambini>
+    <surf></surf>
+    <attrezzata></attrezzata>
+  </spiaggia>
+  <spiaggia id="12" nome="Spiaggia Punta Don Diego" lat="40.87568" lon="9.655253" prov="Loiri (OT)">
+    <descrizione ds="-">desc1</descrizione>
+    <windNO>N</windNO>
+    <drive></drive>
+    <foto></foto>
+    <parcheggio></parcheggio>
+    <disabili></disabili>
+    <bar></bar>
+    <xbambini></xbambini>
+    <surf></surf>
+    <attrezzata></attrezzata>
+  </spiaggia>
+  <spiaggia id="13" nome="Spiaggia di Spalmatore" lat="40.893178" lon="9.678679" prov="Olbia (OT)">
+    <descrizione ds="-">desc1</descrizione>
+    <windNO>N</windNO>
+    <drive></drive>
+    <foto></foto>
+    <parcheggio></parcheggio>
+    <disabili></disabili>
+    <bar></bar>
+    <xbambini></xbambini>
+    <surf></surf>
+    <attrezzata></attrezzata>
+  </spiaggia>
+  <spiaggia id="14" nome="Spiaggia Porto Taverna" lat="40.858475" lon="9.654087" prov="Loiri (OT)">
+    <descrizione ds="-">desc1</descrizione>
+    <windNO>N</windNO>
+    <drive></drive>
+    <foto></foto>
+    <parcheggio></parcheggio>
+    <disabili></disabili>
+    <bar></bar>
+    <xbambini></xbambini>
+    <surf></surf>
+    <attrezzata></attrezzata>
+  </spiaggia>
+</spiagge>
