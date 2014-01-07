@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="format-detection" content="telephone=no" />
-    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
+<!--    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />-->
     <link rel="stylesheet" type="text/css" href="css/index.css" />
     <title>Sardinia Beach Finder</title>
     <link rel="stylesheet" href="css/jquery.mobile-1.1.1.min.css" />
@@ -13,6 +13,43 @@
     <script src="js/jquery.cycle.all.js"></script>
     <script src="js/jquery.easing.js"></script>
     <script>
+        document.addEventListener("deviceready", onDeviceReady, false);
+
+        var isDeviceOnline = 'NO';
+        function onDeviceReady() {
+            isDeviceOnline = 'NO';
+            alert('check connection');
+            checkConnection();
+        }
+
+        function alertDismissed() {
+            // do something
+        }
+
+
+        function checkConnection() {
+            alert('check networkState');
+            var networkState = navigator.network.connection.type;
+            var states = {};
+            states[Connection.UNKNOWN] = 'Unknown connection';
+            states[Connection.ETHERNET] = 'Ethernet connection';
+            states[Connection.WIFI] = 'WiFi connection';
+            states[Connection.CELL_2G] = 'Cell 2G connection';
+            states[Connection.CELL_3G] = 'Cell 3G connection';
+            states[Connection.CELL_4G] = 'Cell 4G connection';
+            states[Connection.NONE] = 'No network connection';
+            if (states[networkState] != states[Connection.NONE]) {
+                isDeviceOnline = 'YES';
+            }
+            navigator.notification.alert(
+                'You are the winner!',  // message
+                alertDismissed,         // callback
+                'Game Over',            // title
+                'Done'                  // buttonName
+            );
+            alert('Connection type: ' + states[networkState]);
+        }
+
         $(document).bind("mobileinit", function (event) {
             $.extend($.mobile.zoom, { locked: true, enabled: false });
         });
@@ -160,6 +197,7 @@
     <script type="text/javascript" charset="utf-8">
 
         document.addEventListener("deviceready", onDeviceReady, false);
+
         var isDeviceOnline='NO';
         function onDeviceReady() {
             isDeviceOnline='NO';
@@ -312,9 +350,9 @@ console.log("Hello World10");
                 });
             };
 
-            alert('showAlert...');
-            showAlert();
-            alert('...showAlert');
+            //alert('showAlert...');
+            //showAlert();
+            //alert('...showAlert');
             //var xmlDoc = $.parseXML('spiagge/1.xml');
 
         });
