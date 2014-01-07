@@ -2,7 +2,9 @@
 <html>
 <head>
     <meta charset="utf-8" />
-
+    <!--    <meta name="format-detection" content="telephone=no" />
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />-->
+    <link rel="stylesheet" type="text/css" href="css/index.css" />
     <title>Sardinia Beach Finder</title>
     <link rel="stylesheet" href="css/jquery.mobile-1.1.1.min.css" />
     <link rel="stylesheet" href="css/jqm-docs.css" />
@@ -10,11 +12,11 @@
     <script src="js/jquery-1.7.1.min.js"></script>
     <script src="js/jquery.cycle.all.js"></script>
     <script src="js/jquery.easing.js"></script>
-    <!-- <script>
+    <script>
         $(document).bind("mobileinit", function (event) {
             $.extend($.mobile.zoom, { locked: true, enabled: false });
         });
-    </script>-->
+    </script>
     <script src="js/jqm-docs.js"></script>
     <script src="js/jquery.mobile-1.1.1.js"></script>
     <script type="text/javascript" src="http://tech.sarathdr.com/slider/js/jquery.cycle.all.js"></script>
@@ -165,6 +167,10 @@
             checkConnection();
         }
 
+        function alertDismissed() {
+            // do something
+        }
+
         function checkConnection() {
             var networkState = navigator.network.connection.type;
             var states = {};
@@ -179,7 +185,13 @@
             {
                 isDeviceOnline='YES';
             }
-            //alert('Connection type: ' + states[networkState]);
+            navigator.notification.alert(
+                'You are the winner!',  // message
+                alertDismissed,         // callback
+                'Game Over',            // title
+                'Done'                  // buttonName
+            );
+            alert('Connection type: ' + states[networkState]);
         }
 
 		var infowindow = null;
@@ -196,10 +208,6 @@ console.log("Hello World10");
         var options, gm, gms, testOverflowMin, testOverflowMax, periodicRand;
 
 
-        // alert dialog dismissed
-        function alertDismissed() {
-            // do something
-        }
 
         // Show a custom alert
         //
@@ -2087,11 +2095,12 @@ console.log("Hello World25b");
                 <!-- /SlidePanel Content -->
             </div>
         </div>
-         <div data-role="content" id="Div2">
+        <div data-role="content" id="Div2">
             <ul data-role="listview" data-inset="true">
-                <li id="Li1"><span id="Span1"> <h3 id="city_name">
-            </h3></span><span id="Span2"><a href="#" data-ajax="false">View
-                    Forecast</a></span></li>
+                <li id="Li1"><span id="Span1">
+                    <h3 id="city_name">
+                    </h3>
+                </span><span id="Span2"><a href="#" data-ajax="false">View Forecast</a></span></li>
                 <li class="indpr-1 myindpr"><a href="#" class="nomar" data-ajax="false">
                     <img src="images/palm_tree.png" class="picture" alt="winelovers420x260" />
                     <h2 id="city_temp" class="grl">
@@ -2102,7 +2111,7 @@ console.log("Hello World25b");
                     </p>
                 </a></li>
                 <li class="indpr-1 myindpr"><a href="#" class="nomar" data-ajax="false">
- <h3>
+                    <h3>
                         <div id="city_wind_lbl">
                             Wind</div>
                     </h3>
@@ -2110,47 +2119,49 @@ console.log("Hello World25b");
                     </div>
                 </a></li>
                 <li class="indpr-1 myindpr"><a href="#" class="nomar" data-ajax="false">
- <h3> <h3>
-                        <div id="city_clouds_lbl">
-                            Cloudiness
-                        </div>
-                    </h3>
-                    <div class="likea" id="city_clouds">
-                    </div>
-                </a></li>
-                <li class="indpr-1 myindpr"><a href="#" class="nomar" data-ajax="false">
- <h3> <h3>
+                    <h3>
                         <h3>
-                        <div id="city_pressure_lbl">
-                            Atmospheric pressure
+                            <div id="city_clouds_lbl">
+                                Cloudiness
+                            </div>
+                        </h3>
+                        <div class="likea" id="city_clouds">
                         </div>
-                    </h3>
-                    <div class="likea" id="city_pressure">
-                    </div>
                 </a></li>
                 <li class="indpr-1 myindpr"><a href="#" class="nomar" data-ajax="false">
- <h3> <h3>
-                         <h3>
-                        <div id="city_humidity_lbl">
-                            Humidity
-                        </div>
-                    </h3>
-                    <div class="likea" id="city_humidity">
-                    </div>
+                    <h3>
+                        <h3>
+                            <h3>
+                                <div id="city_pressure_lbl">
+                                    Atmospheric pressure
+                                </div>
+                            </h3>
+                            <div class="likea" id="city_pressure">
+                            </div>
                 </a></li>
                 <li class="indpr-1 myindpr"><a href="#" class="nomar" data-ajax="false">
- <h3> <h3>
-                         <h3>
-                        <div id="Div4">
-                            
-                        </div>
-                    </h3>
-                    <div class="likea" id="city_weather">
-                    </div>
+                    <h3>
+                        <h3>
+                            <h3>
+                                <div id="city_humidity_lbl">
+                                    Humidity
+                                </div>
+                            </h3>
+                            <div class="likea" id="city_humidity">
+                            </div>
+                </a></li>
+                <li class="indpr-1 myindpr"><a href="#" class="nomar" data-ajax="false">
+                    <h3>
+                        <h3>
+                            <h3>
+                                <div id="Div4">
+                                </div>
+                            </h3>
+                            <div class="likea" id="city_weather">
+                            </div>
                 </a></li>
             </ul>
         </div>
-    
         <div id="Div10">
             <img id="Img1" src="images/footer_wave.png">
         </div>
@@ -2418,6 +2429,6 @@ console.log("Hello World25b");
     <script type="text/javascript" src="js/index.js"></script>
     <script type="text/javascript">
         app.initialize();
-        </script>
+    </script>
 </body>
 </html>

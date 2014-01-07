@@ -1,0 +1,4 @@
+D:\MyDocuments\Lavoro\__My Work__\MHTL\Project\SardiniaBeachFinder\SardiniaBeachFinder\bin\SardiniaBeachFinder.dll
+D:\MyDocuments\Lavoro\__My Work__\MHTL\Project\SardiniaBeachFinder\SardiniaBeachFinder\bin\SardiniaBeachFinder.pdb
+D:\MyDocuments\Lavoro\__My Work__\MHTL\Project\SardiniaBeachFinder\SardiniaBeachFinder\obj\Debug\SardiniaBeachFinder.dll
+D:\MyDocuments\Lavoro\__My Work__\MHTL\Project\SardiniaBeachFinder\SardiniaBeachFinder\obj\Debug\SardiniaBeachFinder.pdb
