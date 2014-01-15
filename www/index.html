@@ -416,11 +416,9 @@ console.log("Hello World16");
         };
 
         $('#main').live('pageshow', function (event, ui) {
-        alert(isDeviceOnline);
+               alert(isDeviceOnline);
 
-                if (navigator != null && navigator.notification != null) {
-                        navigator.notification.activityStart("caricamento", "Caricamento mappa in corso...");
-                }
+               
                  $("div[class$='slidein-panel']").animate({'left':-$("div[class$='slidein-panel']").outerWidth()});
                  status = 'close';
 
@@ -607,11 +605,11 @@ console.log("Hello World16");
             map = null;
            if(isDeviceOnline=='YES')
            {
-                if (navigator != null && navigator.notification != null) {
-                        navigator.notification.activityStart("caricamento", "Caricamento mappa in corso...");
-                }
+//                if (navigator != null && navigator.notification != null) {
+//                        navigator.notification.activityStart("caricamento", "Caricamento mappa in corso...");
+//                }
                 var centerMap = new google.maps.LatLng(40.931153, 9.483948);
-            
+                alert('centerMap: ' +centerMap);
                 var myOptions = {
                     zoom: 11,
                     center: centerMap,
@@ -620,7 +618,8 @@ console.log("Hello World16");
 
             
                 map = new google.maps.Map(document.getElementById("mapmap"), myOptions);
-            
+                alert('map: ' +map);
+
                 setMarkers(map, sites);
                 infowindow = new google.maps.InfoWindow({
                     content: "loading..."
@@ -643,7 +642,7 @@ console.log("Hello World16");
 
 
             function setMarkers(map, markers) {
-                //alert('markers.length:' + markers.length);
+                alert('markers.length:' + markers.length);
                 for (var i = 0; i < markers.length; i++) {
                     var sites = markers[i];
                     //alert(sites[0]);
