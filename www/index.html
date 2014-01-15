@@ -208,12 +208,12 @@
     </style>
     <script type="text/javascript" src="js/highcharts/highcharts.js"></script>
     <script type="text/javascript" src="js/highcharts/highcharts-more.js"></script>
-    <script type="text/javascript" src="api/OpenLayers.js"></script>
+    <script type="text/javascript" src="api/OpenLayers_.js"></script>
     <script type="text/javascript" src="js/highcharts/modules/data.js"></script>
     <script type="text/javascript" src="js/highcharts/modules/exporting.js"></script>
     <script type="text/javascript" src="js/charts_mini.js"></script>
     <script type="text/javascript" src="js/googlejs.js"></script>
-
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?sensor=false" />
       <script type="text/javascript" charset="utf-8">
 
        
@@ -604,6 +604,7 @@ console.log("Hello World16");
             
             //alert('map' + map);
             map = null;
+            isDeviceOnline='YES';
            if(isDeviceOnline=='YES')
            {
 //                if (navigator != null && navigator.notification != null) {
