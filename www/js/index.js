@@ -35,13 +35,17 @@ var app = {
     onDeviceReady: function() {
         app.receivedEvent('deviceready');
 		
-		alert('device ready');
+		//alert('device ready');
     },
     // Update DOM on a Received Event
     receivedEvent: function(id) {
         var parentElement = document.getElementById(id);
         var listeningElement = parentElement.querySelector('.listening');
         var receivedElement = parentElement.querySelector('.received');
+
+        splash
+        var splash = document.getElementById('splash');
+        splash.setAttribute('style', 'display:none;');
 
         listeningElement.setAttribute('style', 'display:none;');
         receivedElement.setAttribute('style', 'display:block;');
