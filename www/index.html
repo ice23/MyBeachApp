@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <!--
     Licensed to the Apache Software Foundation (ASF) under one
     or more contributor license agreements.  See the NOTICE file
@@ -202,14 +202,1723 @@
     </style>
     <script type="text/javascript" src="js/highcharts/highcharts.js"></script>
     <script type="text/javascript" src="js/highcharts/highcharts-more.js"></script>
-    <script type="text/javascript" src="api/OpenLayers.js"></script>
     <script type="text/javascript" src="js/highcharts/modules/data.js"></script>
     <script type="text/javascript" src="js/highcharts/modules/exporting.js"></script>
     <script type="text/javascript" src="js/charts_mini.js"></script>
     <script type="text/javascript" src="js/googlejs.js"></script>
+
+      <script type="text/javascript" charset="utf-8">
+
+       
+		var infowindow = null;
+        var map = null;
+        var imgWindOK = null;
+        var imgWindKO = null;
+        var sites = null;
+        var status = 'close';
+        var shape = null;
+        var WindDir = '';
+        var WindSpeed = 0;
+        var Hpa = 0;
+console.log("Hello World10");
+        var options, gm, gms, testOverflowMin, testOverflowMax, periodicRand;
+
+
+
+       
+
+        function get_cookie(name) {
+            var matches = document.cookie.match(new RegExp(
+	      "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
+	    ))
+            return matches ? decodeURIComponent(matches[1]) : ''
+        }
+
+        console.log("Hello World3");
+        function set_cookie(name, value, expires) {
+            if (!expires) {
+                expires = new Date();
+            }
+            document.cookie = name + "=" + escape(value) + "; expires=" + expires.toGMTString() + "; path=/";
+        }
+
+        console.log("Hello World4");
+        function ShowSuccessMess(mess) {
+            $("#alert_body").html(mess);
+            $("#alert_title").html('Success');
+            $("#lnkDialog").click();
+            $.mobile.hidePageLoadingMsg();
+        }
+        console.log("Hello World5");
+        function ShowInfoMess(mess) {
+            $("#alert_body").html(mess);
+            $("#alert_title").html('Message');
+            $("#lnkDialog").click();
+            $.mobile.hidePageLoadingMsg();
+        }
+        console.log("Hello World6");
+        function ShowAlertMess(mess) {
+            $("#alert_body").html(mess);
+            $("#alert_title").html('Alert');
+            $("#lnkDialog").click();
+            $.mobile.hidePageLoadingMsg();
+        }
+        console.log("Hello World7");
+        function errorHandler(e) {
+            alert('a');
+            ShowAlertMess(e.status + ' ' + e.statusText);
+        }
+
+
+         function ParseJson(JSONtext) {
+            try {
+                JSONobject = JSON.parse(JSONtext);
+            } catch (e) {
+                alert('a1');
+                ShowAlertMess('JSON Error');
+                return;
+            }
+
+            if (JSONobject.cod != '200') {
+                alert('a2');
+                ShowAlertMess('Error ' + JSONobject.cod + ' (' + JSONobject.message + ')');
+                return;
+            }
+
+            return JSONobject;
+        }
+
+       
+
+         $(document).ready(function () {
+
+            
+            $.ajax({
+                type: "GET",
+                url: "spiagge/1.xml",
+                dataType: "xml",
+                success: parseXml
+            });
+
+            sites = [];
+            function parseXml(xmlDoc) {
+                $(xmlDoc).find('spiaggia').each(function () {
+                    var spiaggia = $(this)
+                    var id = spiaggia.attr('id');
+                    var nome = spiaggia.attr('nome');
+                    var lat = spiaggia.attr('lat');
+                    var lon = spiaggia.attr('lon');
+                    var descrizione = spiaggia.find('descrizione').text();
+                    var windNO = spiaggia.find('windNO').text();
+                    //   
+                    var beach=[nome, lat,lon, 1, descrizione,windNO]
+                    //alert(beach);
+                    sites.push(beach);
+                });
+            };
+
+            //alert('showAlert...');
+            //showAlert();
+            //alert('...showAlert');
+            //var xmlDoc = $.parseXML('spiagge/1.xml');
+
+        });
+
+//          $('#meteo').live('pagecreate', function (event, ui) {
+//            alert('meteo');
+////            var units = 'metric';
+////            if (get_cookie('units') == 'imperial') units = 'imperial';
+////            var el = $('#flip-units');
+////            el.val(units).attr('selected', true).siblings('option').removeAttr('selected');
+
+
+////            var lang = 'it';
+////            if (get_cookie('lang') == 'en') lang = 'en';
+////            var el = $('#flip-LANG');
+////            el.val(lang).attr('selected', true).siblings('option').removeAttr('selected');
+//            alert('meteo end');
+//        });
+
+
+
+        /*================================== initilize Pressure =================================*/
+console.log("Hello World11");
+        function addLoadEvent(func) {
+            var oldonload = window.onload;
+            if (typeof window.onload != 'function') {
+                window.onload = func;
+            } else {
+                window.onload = function () {
+                    if (oldonload) {
+                        oldonload();
+                    }
+                    func();
+                }
+            }
+        }
+console.log("Hello World12");
+        addLoadEvent(function () {
+
+            // Draw the gauge using custom settings
+            options = {
+                label: 'Pressure!',
+                unitsLabel: ' hpa',
+                min: 950,
+                max: 1050,
+                majorTicks: 4,
+                minorTicks: 3, // small ticks inside each major tick
+                greenFrom: 1010,
+                greenTo: 1050,
+                yellowFrom: 980,
+                yellowTo: 1010,
+                redFrom: 950,
+                redTo: 980
+            };
+            gm = new Gauge(document.getElementById('gauge_pres'), options);
+            gm.setValue(0);
+
+        });
+        /*================================== initilize Pressure END =================================*/
+
+console.log("Hello World13");
+        /*================================== initilize MAPS =================================*/
+
+console.log("Hello World14");
+        imgWindOK = {
+            url: 'images/face-smile-big.png',
+            // This marker is 20 pixels wide by 32 pixels tall.
+            //size: new google.maps.Size(40, 50),
+            // The origin for this image is 0,0.
+            //origin: new google.maps.Point(0, 0),
+            // The anchor for this image is the base of the flagpole at 0,32.
+            //anchor: new google.maps.Point(0, 32)
+        };
+console.log("Hello World15");
+        imgWindKO = {
+            url: 'images/face-angry.png',
+            // This marker is 20 pixels wide by 32 pixels tall.
+            //size: new google.maps.Size(40, 50),
+            // The origin for this image is 0,0.
+            //origin: new google.maps.Point(0, 0),
+            // The anchor for this image is the base of the flagpole at 0,32.
+            //anchor: new google.maps.Point(0, 32)
+        };
+console.log("Hello World16");
+        shape = {
+            coord: [1, 1, 1, 20, 18, 20, 18, 1],
+            type: 'poly'
+        };
+
+        $('#main').live('pageshow', function (event, ui) {
+                 $("div[class$='slidein-panel']").animate({'left':-$("div[class$='slidein-panel']").outerWidth()});
+                 status = 'close';
+
+        });
+
+
+        $('#meteo').live('pageshow', function (event, ui) {
+
+            
+            $("div[class$='slidein-panel']").animate({'left':-$("div[class$='slidein-panel']").outerWidth()});
+            status = 'close';
+
+            isDeviceOnline='YES';
+             if(isDeviceOnline=='YES')
+            {
+             
+                $('#city_wind_lbl').html('0');
+			    var units = 'metric';
+                if (get_cookie('units') == 'imperial') units = 'imperial';
+                //            if ('metric' == 'imperial') units = 'imperial';
+                //alert(current_city_id);
+			    current_city_id='3172087';
+			    $('#city_wind_lbl').html('1');
+			    //alert(current_city_id);
+
+                //http://api.openweathermap.org/data/2.5/weather?callback=?&id=3172087&units=metric&lang=it
+                //http://api.openweathermap.org/data/2.5/weather?callback=?&id=3172087&units=metric
+
+           
+                var lang = 'it';
+                if (get_cookie('lang') == 'en') lang = 'en';
+                $('#city_wind_lbl').html('2');
+
+                // alert(current_city_id + '1');
+                if (current_city_id)
+                    $.getJSON("http://api.openweathermap.org/data/2.5/weather?callback=?&id=" + current_city_id + '&units=' + units, showCurrentCity).error(errorHandler);
+                else
+                    $.getJSON("http://api.openweathermap.org/data/2.5/weather?callback=?&id=auto" + '&units=' + units, showCurrentCity).error(errorHandler);
+            }
+            else
+            {
+                alert('no connection');
+            }
+
+
+
+            function showCurrentCity(d) {
+
+
+            current_city_id = d.id;
+            alert(d.name);
+            $('#city_name').html(d.name + ', ' + d.sys.country);
+            $('#city_temp').html('Temperature ' + Math.round((d.main.temp) * 100) / 100 + '°C');
+            //	$('#city_temp').html( 'Temperature  17 °C' );
+
+            $("#forecast_title").html("Forecast for " + d.name + ', ' + d.sys.country);
+
+            var dt = new Date(d.dt * 1000);
+            var hr = dt.getHours();
+            if (hr < 10) hr = '0' + hr;
+            var mn = dt.getMinutes();
+            if (mn < 10) mn = '0' + mn;
+            var mon = dt.getMonth() + 1;
+            if (mon < 10) mon = '0' + mon;
+            var day = dt.getDate();
+            if (day < 10) day = '0' + day;
+            var year = dt.getFullYear();
+            $("#date_m").html(year + '.' + mon + '.' + day + ' ' + hr + ':' + mn);
+
+            WindDir = '';
+            /*
+            N        348.75 - 11.25
+            NNE      11.25 - 33.75
+            NE       33.75 - 56.25
+            ENE      56.25 - 78.75
+            E        78.75 - 101.25
+            ESE      101.25 - 123.75
+            SE       123.75 - 146.25
+            SSE      146.25 - 168.75
+            S        168.75 - 191.25
+            SSW      191.25 - 213.75
+            SW       213.75 - 236.25
+            WSW      236.25 - 258.75
+            W        258.75 - 281.25
+            WNW      281.25 - 303.75
+            NW       303.75 - 326.25
+            NNW      326.25 - 348.75
+            */
+            WindSpeed = d.wind.speed;
+            if (d.wind.deg >= 348.75 || d.wind.deg < 11.25) {
+                WindDir = 'N';
+            }
+            if (d.wind.deg >= 11.25 && d.wind.deg < 33.75) {
+                WindDir = 'NNE';
+            }
+            if (d.wind.deg >= 33.75 && d.wind.deg < 56.25) {
+                WindDir = 'NE';
+            }
+            if (d.wind.deg >= 56.25 && d.wind.deg < 78.75) {
+                WindDir = 'ENE';
+            }
+            if (d.wind.deg >= 78.75 && d.wind.deg < 101.25) {
+                WindDir = 'E';
+            }
+            if (d.wind.deg >= 101.25 && d.wind.deg < 123.75) {
+                WindDir = 'ESE';
+            }
+            if (d.wind.deg >= 123.75 && d.wind.deg < 146.25) {
+                WindDir = 'SE';
+            }
+            if (d.wind.deg >= 146.25 && d.wind.deg < 168.75) {
+                WindDir = 'SSE';
+            }
+            if (d.wind.deg >= 168.75 && d.wind.deg < 191.25) {
+                WindDir = 'S';
+            }
+            if (d.wind.deg >= 191.25 && d.wind.deg < 213.75) {
+                WindDir = 'SSW';
+            }
+            if (d.wind.deg >= 213.75 && d.wind.deg < 236.25) {
+                WindDir = 'SW';
+            }
+            if (d.wind.deg >= 236.25 && d.wind.deg < 258.75) {
+                WindDir = 'WSW';
+            }
+            if (d.wind.deg >= 258.75 && d.wind.deg < 281.25) {
+                WindDir = 'W';
+            }
+            if (d.wind.deg >= 281.25 && d.wind.deg < 303.75) {
+                WindDir = 'WW';
+            }
+            if (d.wind.deg >= 303.75 && d.wind.deg < 326.25) {
+                WindDir = 'NW';
+            }
+            if (d.wind.deg >= 348.75 && d.wind.deg < 326.25) {
+                WindDir = 'NW';
+            }
+            //alert(d.wind.deg + '° -->' + WindDir);
+            var lang = 'it';
+            if (get_cookie('lang') == 'en') lang = 'en';
+
+            $('#city_wind').html(d.wind.speed + ' m/s   ' + d.wind.deg + '° (' + WindDir + ')');
+            $('#city_clouds').html(d.clouds.all + ' %');
+            $('#city_pressure').html(d.main.pressure + ' hpa');
+            Hpa = d.main.pressure;
+            $('#city_humidity').html(d.main.humidity + ' %');
+
+            if (lang == 'en') {
+                $('#city_wind_lbl').html('Wind: ');
+                $('#city_clouds_lbl').html('Cloudiness: ');
+                $('#city_pressure_lbl').html('Atmospheric pressure: ');
+                $('#city_humidity_lbl').html('Humidity:');
+            }
+            else {
+                $('#city_wind_lbl').html('Vento: ');
+                $('#city_clouds_lbl').html('Nuvolosità: ');
+                $('#city_pressure_lbl').html('Pressione Atmosferica: ');
+                $('#city_humidity_lbl').html('Umidità:');
+            }
+
+            if (d.weather[0]) {
+                //$('li.picture').css('background', "#fff url(http://openweathermap.org/img/w/" + d.weather[0].icon + ".png) no-repeat");
+                $('img.picture').attr("src","images/" + d.weather[0].icon + ".png");
+                //$('img.picture').css('background', "#fff url(images/" + d.weather[0].icon + ".png) no-repeat");
+                $('#city_weather').html(d.weather[0].description);
+            }
+
+
+        }
+
+        });
+
+
+        $('#gmap').live('pageshow', function (event, ui) {
+            
+            $("div[class$='slidein-panel']").animate({'left':-$("div[class$='slidein-panel']").outerWidth()});
+            status = 'close';
+
+            
+            //alert('map' + map);
+            map = null;
+           if(isDeviceOnline=='YES')
+           {
+                if (navigator != null && navigator.notification != null) {
+                        navigator.notification.activityStart("caricamento", "Caricamento mappa in corso...");
+                }
+                var centerMap = new google.maps.LatLng(40.931153, 9.483948);
+            
+                var myOptions = {
+                    zoom: 11,
+                    center: centerMap,
+                    mapTypeId: google.maps.MapTypeId.ROADMAP
+                }
+
+            
+                map = new google.maps.Map(document.getElementById("mapmap"), myOptions);
+            
+                setMarkers(map, sites);
+                infowindow = new google.maps.InfoWindow({
+                    content: "loading..."
+                });
+            
+                var bikeLayer = new google.maps.BicyclingLayer();
+                bikeLayer.setMap(map);
+
+
+                if (navigator != null && navigator.notification != null) {
+                    navigator.notification.activityStop();
+                }
+            }
+            else
+            {
+                alert('no Connection');
+            }
+
+
+
+
+            function setMarkers(map, markers) {
+                //alert('markers.length:' + markers.length);
+                for (var i = 0; i < markers.length; i++) {
+                    var sites = markers[i];
+                    //alert(sites[0]);
+                    var WindDirNo = sites[5];
+
+                    if (WindDir == WindDirNo) {
+                        var siteLatLng = new google.maps.LatLng(sites[1], sites[2]);
+
+                        var marker = new google.maps.Marker({
+                            position: siteLatLng,
+                            map: map,
+                            title: sites[0], 
+                            zIndex: sites[3],
+                            html: sites[4]
+                    , icon: imgWindKO,
+                            shape: shape
+                        });
+
+                        var contentString = "Some content";
+
+                        google.maps.event.addListener(marker, "click", function () {
+                            //alert(this.html);
+                            infowindow.setContent(this.html );
+                            infowindow.open(map, this);
+                        });
+                    }
+                    else {
+                        var siteLatLng = new google.maps.LatLng(sites[1], sites[2]);
+
+                        var marker = new google.maps.Marker({
+                            position: siteLatLng,
+                            map: map,
+                            title: sites[0],
+                            zIndex: sites[3],
+                            html: sites[4] +  '<a href="#MyBeach?id=2">...</a>'
+                    , icon: imgWindOK,
+                            shape: shape
+                        });
+
+                        var contentString = "Some content";
+
+                        google.maps.event.addListener(marker, "click", function () {
+                            //alert(this.html);
+                            infowindow.setContent(this.html);
+                            infowindow.open(map, this);
+                        });
+                    }
+
+                }
+            }
+
+
+
+
+
+
+        });
+
+        /*================================== initilize MAP END =================================*/
+
+
+
+
+
+
+
+        var lat;
+        if ('40.921371' != '') lat = 40.921371;
+
+        var lng;
+        if ('9.48563' != '') lng = 9.48563;
+
+        var time_zone = 1000 * (new Date().getTimezoneOffset()) * (-60);
+        var current_city_id;
+console.log("Hello World17");
+        if (get_cookie('cityid')) current_city_id = get_cookie('cityid');
+console.log("Hello World18");
+        if ('3172087' != '') {
+            current_city_id = 3172087;
+        }
+
+        // ******************* city functions ***********************
+
+        // **************************** forecast *******************************
+        function getDataForecast(JSONobject) {
+            //JSONobject = ParseJson(JSONtext);
+            //data = JSONobject.list;
+
+            var curdate = new Date() - 45 * 60 * 1000;
+
+            //console.log("time zone" + time_zone);
+            var html = ''
+            var lastday = 0;
+
+            // 
+            var ar_tmin = new Array();
+            var ar_tmax = new Array();
+            min_cur = 500;
+            max_cur = 0;
+
+            rr = new Date(JSONobject.list[0].dt * 1000 + time_zone);
+            lastday = rr.getDate();
+
+            for (var i = 0; i < JSONobject.list.length; i++) {
+                var dt = new Date(JSONobject.list[i].dt * 1000 + time_zone);
+                var day = dt.getDate();
+
+                if (curdate > dt) continue;
+
+                if (day != lastday) {
+                    lastday = day;
+                    ar_tmin.push(min_cur);
+                    ar_tmax.push(max_cur);
+                    max_cur = 0;
+                    min_cur = 500;
+                }
+
+                if (JSONobject.list[i].main.temp < min_cur)
+                    min_cur = JSONobject.list[i].main.temp;
+                if (JSONobject.list[i].main.temp > max_cur)
+                    max_cur = JSONobject.list[i].main.temp;
+                //console.log(JSONobject.list[i].main.temp);
+            }
+            ar_tmin.push(min_cur);
+            ar_tmax.push(max_cur);
+
+            lastday = 0;
+
+            for (var i = 0; i < JSONobject.list.length; i++) {
+
+                var dt = new Date(JSONobject.list[i].dt * 1000 + time_zone);
+
+                if (curdate > dt) continue;
+                var day = dt.getDate();
+                var hr = dt.getHours();
+                if (hr < 10) hr = '0' + hr;
+
+                if (day != lastday) {
+                    if (lastday != 0)
+                        html = html + "</li></ul>";
+                    html = html + "<li><h3>" + dt.toDateString() + "</h3> \
+			<p>Temp. from " + Math.round(ar_tmin.shift()) + " to " +
+				Math.round(ar_tmax.shift()) + "°C</p><ul>";
+                    lastday = day;
+                }
+                var temp = Math.round(JSONobject.list[i].main.temp);
+                var tmin = Math.round(JSONobject.list[i].main.temp_min);
+                var tmax = Math.round(JSONobject.list[i].main.temp_max);
+
+                var icon_cod = JSONobject.list[i]['weather'][0]['icon'];
+
+                //var img = '<img src="http://openweathermap.org/img/w/' + icon_cod + '.png">';
+                var img = '<img src="images/' + icon_cod + '.png">';
+                var wind = JSONobject.list[i].wind.speed;
+                var pressure = JSONobject.list[i].main.pressure;
+                var cloud = JSONobject.list[i].clouds.all;
+
+                var lang = 'it';
+                if (get_cookie('lang') == 'en') lang = 'en';
+                if (lang == 'en') {
+                    html = html + '<li>' + img + '<h1>' + hr + ':00 </h1> <span class="ui-li-count"><h5>' + temp + '°C</h5></span>' +
+'<p><strong>Temp. from ' + tmin + ' to ' + tmax + '°C</strong></p><p> Wind ' + wind +
+' m/s.</p><p> Clouds ' + cloud + ' % ' + pressure + ' hpa</p></li>';
+                }
+                else {
+                    html = html + '<li>' + img + '<h1>' + hr + ':00 </h1> <span class="ui-li-count"><h5>' + temp + '°C</h5></span>' +
+'<p><strong>Temp. from ' + tmin + ' to ' + tmax + '°C</strong></p><p> Vento ' + wind +
+' m/s.</p><p> Clouds ' + cloud + ' % ' + pressure + ' hpa</p></li>';
+                }
+
+            }
+            html = '<ul data-role="listview" id="forecast_list_data">' + html + '</ul>';
+
+            $("#forecast_list_ul").html(html);
+            $("#forecast_list_data").listview();
+
+            $.mobile.hidePageLoadingMsg();
+        };
+
+
+
+
+
+
+        /*================================== wind ROSE END =================================*/
+
+
+
+
+
+
+
+
+
+console.log("Hello World20");
+        function getHistoryData_chart(JSONtext) {
+            alert('getHistoryData_chart');
+            JSONobject = ParseJson(JSONtext);
+            data = JSONobject.list;
+            showBarsDouble('chart_container', data);
+            $.mobile.hidePageLoadingMsg();
+        }
+console.log("Hello World21");
+        function getHistoryData_wind(JSONtext) {
+            alert('getHistoryData_wind');
+            JSONobject = ParseJson(JSONtext);
+            data = JSONobject.list;
+            showPolarSpeed('chart_container', data);
+            $.mobile.hidePageLoadingMsg();
+        }
+		
+console.log("Hello World22");
+        function getHistoryData_pres(JSONtext) {
+            alert('getHistoryData_pres');
+            JSONobject = ParseJson(JSONtext);
+            data = JSONobject.list;
+            chartDoublePress('chart_container', data);
+            $.mobile.hidePageLoadingMsg();
+        }
+
+        // **************** install *****************
+        function ShowIphoneApp() {
+
+            $('#app_install_div').toggle();
+            setTimeout(function () {
+                window.scrollTo(0, 1);
+            }, 0);
+
+            setTimeout(function () {
+                $('#instructions_dialog').animate(
+                    { top: '420px' }, 1700, 'easeOutBounce'
+		);
+            }, 300);
+        }
+console.log("Hello World23");
+        $('#app_install_div').live('vclick', function (event, ui) {
+            $(this).hide();
+            return false;
+        });
+
+
+        // *************** event handler ************************
+
+
+        jQuery(document).ready(function () {
+console.log("Hello World24");
+            $('#city_wind_lbl').html('0');
+console.log("Hello World25");
+            $("form").submit(function (event) {
+                event.stopPropagation();
+                event.preventDefault();
+                var txt = $('#search-city').attr('value');
+                $.mobile.showPageLoadingMsg();
+                alert('search');
+                $.get('http://api.openweathermap.org//data/2.1/find/name?q=' + txt + '&type=like&sort=population', showFind).error(errorHandler);
+
+
+                return false;
+            });
+
+        });
+console.log("Hello World25a");
+           
+//        $('#main').live('pagecreate', function (event, ui) {
+//            alert('main');
+//            var units = 'metric';
+//            if (get_cookie('units') == 'imperial') units = 'imperial';
+//            var el = $('#flip-units');
+//            el.val(units).attr('selected', true).siblings('option').removeAttr('selected');
+
+
+//            var lang = 'it';
+//            if (get_cookie('lang') == 'en') lang = 'en';
+//            var el = $('#flip-LANG');
+//            el.val(lang).attr('selected', true).siblings('option').removeAttr('selected');
+//            // jQM refresh
+//            //el.selectmenu("refresh", true);
+//        });
+
+console.log("Hello World25b");
+        
+
+
+        $('#dialogpage').live('pageshow', function (event, ui) {
+        });
+
+        $('#chart').live('pageshow', function (event, ui) {
+            
+             $("div[class$='slidein-panel']").animate({'left':-$("div[class$='slidein-panel']").outerWidth()});
+            status = 'close';
+
+            // date start
+            $.mobile.showPageLoadingMsg();
+            getWindRose();
+            //            var curd = new Date();
+            //            var d = new Date(curd.getFullYear(), curd.getMonth(), curd.getDate());
+            //            var s = Math.round((d.getTime()) / 1000) - 3600 * 24;
+
+            //            var jsonurl = "http://m.openweathermap.org/data/2.1/history/city/?id=" + current_city_id + "&cnt=80&start=" + s;
+            //alert('jsonurl:' + jsonurl);
+            // $.get(jsonurl, getHistoryData_chart).error(errorHandler);
+        });
+
+
+        $('li #cityfind').live('vclick', function (event, ui) {
+            var r = $(this).attr('href').split('&');
+            if (r[1]) {
+                current_city_id = r[1];
+                expires = new Date();
+                expires.setTime(expires.getTime() + (1000 * 3600 * 24 * 7));
+                set_cookie('cityid', current_city_id, expires);
+
+            }
+        });
+
+
+        $('li #chartch').live('vclick', function (event, ui) {
+
+            $.mobile.showPageLoadingMsg();
+            var curd = new Date();
+            var d = new Date(curd.getFullYear(), curd.getMonth(), curd.getDate());
+            var s = Math.round((d.getTime()) / 1000) - 3600 * 24;
+
+            if ($(this).attr('href') == "#chart&1") {
+                alert('chart&1');
+                var jsonurl = "http://m.openweathermap.org/data/2.1/history/city/?id=" + current_city_id + "&cnt=80&start=" + s;
+                $.get(jsonurl, getHistoryData_chart).error(errorHandler);
+            }
+
+            if ($(this).attr('href') == "#chart&2") {
+                //Wind Rose
+                $('#chart_container').show();
+                $('#gauge_pres').hide();
+                getWindRose();
+
+                //alert('chart&2');
+                //var jsonurl = "http://m.openweathermap.org/data/2.1/history/city/?id=" + current_city_id + "&cnt=80&start=" + s;
+                //$.get(jsonurl, getHistoryData_wind).error(errorHandler);
+            }
+
+            if ($(this).attr('href') == "#chart&3") {
+                $('#chart_container').hide();
+                $('#gauge_pres').show();
+                gm.setValue(Hpa);
+                $.mobile.hidePageLoadingMsg();
+
+                //                var jsonurl = "http://m.openweathermap.org/data/2.1/history/city/?id=" + current_city_id + "&cnt=80&start=" + s;
+                //                $.get(jsonurl, getHistoryData_pres).error(errorHandler);
+            }
+
+        });
+
+
+        $('#forecast').live('pageshow', function (event, ui) {
+             $("div[class$='slidein-panel']").animate({'left':-$("div[class$='slidein-panel']").outerWidth()});
+            status = 'close';
+
+            var units = 'metric';
+            if (get_cookie('units') == 'imperial') units = 'imperial';
+
+            var lang = 'it';
+            if (get_cookie('lang') == 'en') units = 'en';
+
+            var myhref = "http://api.openweathermap.org/data/2.5/forecast?callback=?&id=" + current_city_id + '&units=' + units + '&lang=' + lang;
+            $.mobile.showPageLoadingMsg();
+            $.getJSON(myhref, getDataForecast);
+        });
+
+        // Add back button in heder nested list
+        $(':jqmData(url^=forecast)').live('pagebeforecreate',
+  function (event) {
+      $(this).filter(':jqmData(url*=ui-page)').find(':jqmData(role=header)')
+      .prepend('<a href="#" data-rel="back" data-icon="back">Back</a>')
+  });
+
+
+        $('li #install').live('vclick', function (event, ui) {
+            ShowIphoneApp();
+        });
+
+
+        $('#flip-units').live('change', function (event, ui) {
+            var $this = $(this),
+	val = $this.val();
+            expires = new Date();
+            expires.setTime(expires.getTime() + (1000 * 60 * 60 * 24));
+            set_cookie('units', val, expires);
+            window.location.reload();
+        });
+
+        $('#flip-LANG').live('change', function (event, ui) {
+            var $this = $(this),
+	        val = $this.val();
+            expires = new Date();
+            expires.setTime(expires.getTime() + (1000 * 60 * 60 * 24));
+            set_cookie('lang', val, expires);
+            window.location.reload();
+        });
+
+
+        
+
+
+
+        
+
+
+        function showFind(JSONtext) {
+            $("#station_list_ul").hide();
+
+            list = ParseJson(JSONtext);
+
+            var html = ''
+
+            for (var i = 0; i < list.list.length; i++) {
+                dat = '';
+
+                var temp = Math.round((list.list[i].main.temp - 273.15) * 100) / 100;
+
+                var weather = '';
+                if (list.list[i].main.pressure)
+                    weather = weather + 'Pressure: ' + list.list[i].main.pressure + ' hpa. ';
+
+                if (list.list[i].wind && list.list[i].wind.speed)
+                    weather = weather + ' Wind: ' + list.list[i].wind.speed + 'm/c';
+                icon = '';
+                if (list.list[i].weather[0]) {
+                    //icon = "http://openweathermap.org/img/w/" + list.list[i].weather[0].icon + ".png";
+                    icon = "images/" + list.list[i].weather[0].icon + ".png";
+                    dat = list.list[i].weather[0].description;
+                }
+
+                //		html=html+'<li><a id="cityfind" href="#main&'+list.list[i].id+'">' +
+                html = html + '<li><a rel="external" href="http://m.openweathermap.org/city/' + list.list[i].id + '">' +
+		'<img src="' + icon + '" > ' +
+		 '<h1>' + list.list[i].name + ', ' + list.list[i].sys.country + '</h1><p>' + weather + '</p>' +
+		 '<p> ' + dat + '</p><span class="ui-li-count"><b> ' + temp + '&deg;С</b></span></a></li>';
+            }
+
+            html = '<ul id="station_list_ul_data" data-role="listview" data-theme="d" data-inset="true"><li data-role="list-divider">City</li>' + html + '</ul>';
+
+            $("#station_list_ul").html(html);
+
+            $("#station_list_ul_data").listview();
+
+            $("#station_list_ul").fadeIn(1000);
+
+            $.mobile.hidePageLoadingMsg();
+
+        }
+
+
+
+        console.log("Hello World19");
+        //**************************** getHistoryData ****************************
+        function getWindRose() {
+            //alert('WindDirect' + WindDir + ' Speed ' + WindSpeed);
+            var tbfreq = '';
+            tbfreq = tbfreq + '<table id="freq" border="0" cellspacing="0" cellpadding="0">'
+            tbfreq = tbfreq + '<tr nowrap bgcolor="#CCCCFF">'
+            tbfreq = tbfreq + '<th colspan="9" class="hdr">Table of Frequencies (percent)</th>'
+            tbfreq = tbfreq + '</tr>'
+            tbfreq = tbfreq + '<tr nowrap bgcolor="#CCCCFF">'
+            tbfreq = tbfreq + '<th class="freq">Direction</th>'
+            tbfreq = tbfreq + '<th class="freq">&lt; 0.5 m/s</th>'
+            tbfreq = tbfreq + '<th class="freq">0.5-2 m/s</th>'
+            tbfreq = tbfreq + '<th class="freq">2-4 m/s</th>'
+            tbfreq = tbfreq + '<th class="freq">4-6 m/s</th>'
+            tbfreq = tbfreq + '<th class="freq">6-8 m/s</th>'
+            tbfreq = tbfreq + '<th class="freq">8-10 m/s</th>'
+            tbfreq = tbfreq + '<th class="freq">Total</th>'
+            tbfreq = tbfreq + '</tr>'
+            tbfreq = tbfreq + '<tr nowrap bgcolor="#DDDDDD">'
+            tbfreq = tbfreq + '<td class="dir">N</td>'
+            if (WindDir == 'N') {
+                if (WindSpeed <= 0.5) {
+                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
+                }
+                else {
+                    tbfreq = tbfreq + '<td class="data">0.00</td>'
+                }
+                if (WindSpeed > 0.5 && WindSpeed <= 2) {
+                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
+                }
+                else {
+                    tbfreq = tbfreq + '<td class="data">0.00</td>'
+                }
+                if (WindSpeed > 4 && WindSpeed <= 6) {
+                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
+                }
+                else {
+                    tbfreq = tbfreq + '<td class="data">0.00</td>'
+                }
+                if (WindSpeed > 6 && WindSpeed <= 8) {
+                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
+                }
+                else {
+                    tbfreq = tbfreq + '<td class="data">0.00</td>'
+                }
+                if (WindSpeed > 10 && WindSpeed <= 10) {
+                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
+                }
+                else {
+                    tbfreq = tbfreq + '<td class="data">0.00</td>'
+                }
+
+            }
+            else {
+                tbfreq = tbfreq + '<td class="data">0.00</td>'
+                tbfreq = tbfreq + '<td class="data">0.00</td>'
+                tbfreq = tbfreq + '<td class="data">0.00</td>'
+                tbfreq = tbfreq + '<td class="data">0.00</td>'
+                tbfreq = tbfreq + '<td class="data">0.00</td>'
+            }
+            tbfreq = tbfreq + '<td class="data">0.00</td>'
+            tbfreq = tbfreq + '<td class="data">0.00</td>'
+            tbfreq = tbfreq + '<td class="data">0.00</td>'
+            tbfreq = tbfreq + '</tr>'
+
+            tbfreq = tbfreq + '<tr nowrap bgcolor="#DDDDDD">'
+            tbfreq = tbfreq + '<td class="dir">NNE</td>'
+            if (WindDir == 'NNE') {
+                if (WindSpeed <= 0.5) {
+                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
+                }
+                else {
+                    tbfreq = tbfreq + '<td class="data">0.00</td>'
+                }
+                if (WindSpeed > 0.5 && WindSpeed <= 2) {
+                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
+                }
+                else {
+                    tbfreq = tbfreq + '<td class="data">0.00</td>'
+                }
+                if (WindSpeed > 4 && WindSpeed <= 6) {
+                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
+                }
+                else {
+                    tbfreq = tbfreq + '<td class="data">0.00</td>'
+                }
+                if (WindSpeed > 6 && WindSpeed <= 8) {
+                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
+                }
+                else {
+                    tbfreq = tbfreq + '<td class="data">0.00</td>'
+                }
+                if (WindSpeed > 10 && WindSpeed <= 10) {
+                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
+                }
+                else {
+                    tbfreq = tbfreq + '<td class="data">0.00</td>'
+                }
+
+            }
+            else {
+                tbfreq = tbfreq + '<td class="data">0.00</td>'
+                tbfreq = tbfreq + '<td class="data">0.00</td>'
+                tbfreq = tbfreq + '<td class="data">0.00</td>'
+                tbfreq = tbfreq + '<td class="data">0.00</td>'
+                tbfreq = tbfreq + '<td class="data">0.00</td>'
+            }
+            tbfreq = tbfreq + '<td class="data">0.00</td>'
+            tbfreq = tbfreq + '<td class="data">0.00</td>'
+            tbfreq = tbfreq + '<td class="data">0.00</td>'
+            tbfreq = tbfreq + '</tr>'
+
+            tbfreq = tbfreq + '<tr nowrap bgcolor="#DDDDDD">'
+            tbfreq = tbfreq + '<td class="dir">NE</td>'
+            if (WindDir == 'NE') {
+                if (WindSpeed <= 0.5) {
+                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
+                }
+                else {
+                    tbfreq = tbfreq + '<td class="data">0.00</td>'
+                }
+                if (WindSpeed > 0.5 && WindSpeed <= 2) {
+                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
+                }
+                else {
+                    tbfreq = tbfreq + '<td class="data">0.00</td>'
+                }
+                if (WindSpeed > 4 && WindSpeed <= 6) {
+                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
+                }
+                else {
+                    tbfreq = tbfreq + '<td class="data">0.00</td>'
+                }
+                if (WindSpeed > 6 && WindSpeed <= 8) {
+                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
+                }
+                else {
+                    tbfreq = tbfreq + '<td class="data">0.00</td>'
+                }
+                if (WindSpeed > 8 && WindSpeed <= 10) {
+                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
+                }
+                else {
+                    tbfreq = tbfreq + '<td class="data">0.00</td>'
+                }
+
+            }
+            else {
+                tbfreq = tbfreq + '<td class="data">0.00</td>'
+                tbfreq = tbfreq + '<td class="data">0.00</td>'
+                tbfreq = tbfreq + '<td class="data">0.00</td>'
+                tbfreq = tbfreq + '<td class="data">0.00</td>'
+                tbfreq = tbfreq + '<td class="data">0.00</td>'
+            }
+            tbfreq = tbfreq + '<td class="data">0.00</td>'
+            tbfreq = tbfreq + '<td class="data">0.00</td>'
+            tbfreq = tbfreq + '<td class="data">0.00</td>'
+            tbfreq = tbfreq + '</tr>'
+            tbfreq = tbfreq + '<tr nowrap bgcolor="#DDDDDD">'
+            tbfreq = tbfreq + '<td class="dir">ENE</td>'
+            if (WindDir == 'ENE') {
+                if (WindSpeed <= 0.5) {
+                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
+                }
+                else {
+                    tbfreq = tbfreq + '<td class="data">0.00</td>'
+                }
+                if (WindSpeed > 0.5 && WindSpeed <= 2) {
+                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
+                }
+                else {
+                    tbfreq = tbfreq + '<td class="data">0.00</td>'
+                }
+                if (WindSpeed > 4 && WindSpeed <= 6) {
+                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
+                }
+                else {
+                    tbfreq = tbfreq + '<td class="data">0.00</td>'
+                }
+                if (WindSpeed > 6 && WindSpeed <= 8) {
+                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
+                }
+                else {
+                    tbfreq = tbfreq + '<td class="data">0.00</td>'
+                }
+                if (WindSpeed > 10 && WindSpeed <= 10) {
+                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
+                }
+                else {
+                    tbfreq = tbfreq + '<td class="data">0.00</td>'
+                }
+
+            }
+            else {
+                tbfreq = tbfreq + '<td class="data">0.00</td>'
+                tbfreq = tbfreq + '<td class="data">0.00</td>'
+                tbfreq = tbfreq + '<td class="data">0.00</td>'
+                tbfreq = tbfreq + '<td class="data">0.00</td>'
+                tbfreq = tbfreq + '<td class="data">0.00</td>'
+            }
+            tbfreq = tbfreq + '<td class="data">0.00</td>'
+            tbfreq = tbfreq + '<td class="data">0.00</td>'
+            tbfreq = tbfreq + '<td class="data">0.00</td>'
+            tbfreq = tbfreq + '</tr>'
+            tbfreq = tbfreq + '<tr nowrap bgcolor="#DDDDDD">'
+            tbfreq = tbfreq + '<td class="dir">E</td>'
+            if (WindDir == 'E') {
+                if (WindSpeed <= 0.5) {
+                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
+                }
+                else {
+                    tbfreq = tbfreq + '<td class="data">0.00</td>'
+                }
+                if (WindSpeed > 0.5 && WindSpeed <= 2) {
+                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
+                }
+                else {
+                    tbfreq = tbfreq + '<td class="data">0.00</td>'
+                }
+                if (WindSpeed > 4 && WindSpeed <= 6) {
+                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
+                }
+                else {
+                    tbfreq = tbfreq + '<td class="data">0.00</td>'
+                }
+                if (WindSpeed > 6 && WindSpeed <= 8) {
+                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
+                }
+                else {
+                    tbfreq = tbfreq + '<td class="data">0.00</td>'
+                }
+                if (WindSpeed > 10 && WindSpeed <= 10) {
+                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
+                }
+                else {
+                    tbfreq = tbfreq + '<td class="data">0.00</td>'
+                }
+
+            }
+            else {
+                tbfreq = tbfreq + '<td class="data">0.00</td>'
+                tbfreq = tbfreq + '<td class="data">0.00</td>'
+                tbfreq = tbfreq + '<td class="data">0.00</td>'
+                tbfreq = tbfreq + '<td class="data">0.00</td>'
+                tbfreq = tbfreq + '<td class="data">0.00</td>'
+            }
+            tbfreq = tbfreq + '<td class="data">0.00</td>'
+            tbfreq = tbfreq + '<td class="data">0.00</td>'
+            tbfreq = tbfreq + '<td class="data">0.00</td>'
+            tbfreq = tbfreq + '</tr>'
+            tbfreq = tbfreq + '<tr nowrap bgcolor="#DDDDDD">'
+            tbfreq = tbfreq + '<td class="dir">ESE</td>'
+            if (WindDir == 'ESE') {
+                if (WindSpeed <= 0.5) {
+                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
+                }
+                else {
+                    tbfreq = tbfreq + '<td class="data">0.00</td>'
+                }
+                if (WindSpeed > 0.5 && WindSpeed <= 2) {
+                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
+                }
+                else {
+                    tbfreq = tbfreq + '<td class="data">0.00</td>'
+                }
+                if (WindSpeed > 4 && WindSpeed <= 6) {
+                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
+                }
+                else {
+                    tbfreq = tbfreq + '<td class="data">0.00</td>'
+                }
+                if (WindSpeed > 6 && WindSpeed <= 8) {
+                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
+                }
+                else {
+                    tbfreq = tbfreq + '<td class="data">0.00</td>'
+                }
+                if (WindSpeed > 10 && WindSpeed <= 10) {
+                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
+                }
+                else {
+                    tbfreq = tbfreq + '<td class="data">0.00</td>'
+                }
+
+            }
+            else {
+                tbfreq = tbfreq + '<td class="data">0.00</td>'
+                tbfreq = tbfreq + '<td class="data">0.00</td>'
+                tbfreq = tbfreq + '<td class="data">0.00</td>'
+                tbfreq = tbfreq + '<td class="data">0.00</td>'
+                tbfreq = tbfreq + '<td class="data">0.00</td>'
+            }
+            tbfreq = tbfreq + '<td class="data">0.00</td>'
+            tbfreq = tbfreq + '<td class="data">0.00</td>'
+            tbfreq = tbfreq + '<td class="data">0.00</td>'
+            tbfreq = tbfreq + '</tr>'
+            tbfreq = tbfreq + '<tr nowrap bgcolor="#DDDDDD">'
+            tbfreq = tbfreq + '<td class="dir">SE</td>'
+            if (WindDir == 'SE') {
+                if (WindSpeed <= 0.5) {
+                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
+                }
+                else {
+                    tbfreq = tbfreq + '<td class="data">0.00</td>'
+                }
+                if (WindSpeed > 0.5 && WindSpeed <= 2) {
+                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
+                }
+                else {
+                    tbfreq = tbfreq + '<td class="data">0.00</td>'
+                }
+                if (WindSpeed > 4 && WindSpeed <= 6) {
+                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
+                }
+                else {
+                    tbfreq = tbfreq + '<td class="data">0.00</td>'
+                }
+                if (WindSpeed > 6 && WindSpeed <= 8) {
+                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
+                }
+                else {
+                    tbfreq = tbfreq + '<td class="data">0.00</td>'
+                }
+                if (WindSpeed > 10 && WindSpeed <= 10) {
+                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
+                }
+                else {
+                    tbfreq = tbfreq + '<td class="data">0.00</td>'
+                }
+
+            }
+            else {
+                tbfreq = tbfreq + '<td class="data">0.00</td>'
+                tbfreq = tbfreq + '<td class="data">0.00</td>'
+                tbfreq = tbfreq + '<td class="data">0.00</td>'
+                tbfreq = tbfreq + '<td class="data">0.00</td>'
+                tbfreq = tbfreq + '<td class="data">0.00</td>'
+            }
+            tbfreq = tbfreq + '<td class="data">0.00</td>'
+            tbfreq = tbfreq + '<td class="data">0.00</td>'
+            tbfreq = tbfreq + '<td class="data">0.00</td>'
+            tbfreq = tbfreq + '</tr>'
+            tbfreq = tbfreq + '<tr nowrap bgcolor="#DDDDDD">'
+            tbfreq = tbfreq + '<td class="dir">SSE</td>'
+            if (WindDir == 'SSE') {
+                if (WindSpeed <= 0.5) {
+                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
+                }
+                else {
+                    tbfreq = tbfreq + '<td class="data">0.00</td>'
+                }
+                if (WindSpeed > 0.5 && WindSpeed <= 2) {
+                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
+                }
+                else {
+                    tbfreq = tbfreq + '<td class="data">0.00</td>'
+                }
+                if (WindSpeed > 4 && WindSpeed <= 6) {
+                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
+                }
+                else {
+                    tbfreq = tbfreq + '<td class="data">0.00</td>'
+                }
+                if (WindSpeed > 6 && WindSpeed <= 8) {
+                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
+                }
+                else {
+                    tbfreq = tbfreq + '<td class="data">0.00</td>'
+                }
+                if (WindSpeed > 10 && WindSpeed <= 10) {
+                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
+                }
+                else {
+                    tbfreq = tbfreq + '<td class="data">0.00</td>'
+                }
+
+            }
+            else {
+                tbfreq = tbfreq + '<td class="data">0.00</td>'
+                tbfreq = tbfreq + '<td class="data">0.00</td>'
+                tbfreq = tbfreq + '<td class="data">0.00</td>'
+                tbfreq = tbfreq + '<td class="data">0.00</td>'
+                tbfreq = tbfreq + '<td class="data">0.00</td>'
+            }
+            tbfreq = tbfreq + '<td class="data">0.00</td>'
+            tbfreq = tbfreq + '<td class="data">0.00</td>'
+            tbfreq = tbfreq + '<td class="data">0.00</td>'
+            tbfreq = tbfreq + '</tr>'
+            tbfreq = tbfreq + '<tr nowrap bgcolor="#DDDDDD">'
+            tbfreq = tbfreq + '<td class="dir">S</td>'
+            if (WindDir == 'S') {
+                if (WindSpeed <= 0.5) {
+                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
+                }
+                else {
+                    tbfreq = tbfreq + '<td class="data">0.00</td>'
+                }
+                if (WindSpeed > 0.5 && WindSpeed <= 2) {
+                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
+                }
+                else {
+                    tbfreq = tbfreq + '<td class="data">0.00</td>'
+                }
+                if (WindSpeed > 4 && WindSpeed <= 6) {
+                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
+                }
+                else {
+                    tbfreq = tbfreq + '<td class="data">0.00</td>'
+                }
+                if (WindSpeed > 6 && WindSpeed <= 8) {
+                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
+                }
+                else {
+                    tbfreq = tbfreq + '<td class="data">0.00</td>'
+                }
+                if (WindSpeed > 10 && WindSpeed <= 10) {
+                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
+                }
+                else {
+                    tbfreq = tbfreq + '<td class="data">0.00</td>'
+                }
+
+            }
+            else {
+                tbfreq = tbfreq + '<td class="data">0.00</td>'
+                tbfreq = tbfreq + '<td class="data">0.00</td>'
+                tbfreq = tbfreq + '<td class="data">0.00</td>'
+                tbfreq = tbfreq + '<td class="data">0.00</td>'
+                tbfreq = tbfreq + '<td class="data">0.00</td>'
+            }
+            tbfreq = tbfreq + '<td class="data">0.00</td>'
+            tbfreq = tbfreq + '<td class="data">0.00</td>'
+            tbfreq = tbfreq + '<td class="data">0.00</td>'
+            tbfreq = tbfreq + '</tr>'
+            tbfreq = tbfreq + '<tr nowrap bgcolor="#DDDDDD">'
+            tbfreq = tbfreq + '<td class="dir">SSW</td>'
+            if (WindDir == 'SSW') {
+                if (WindSpeed <= 0.5) {
+                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
+                }
+                else {
+                    tbfreq = tbfreq + '<td class="data">0.00</td>'
+                }
+                if (WindSpeed > 0.5 && WindSpeed <= 2) {
+                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
+                }
+                else {
+                    tbfreq = tbfreq + '<td class="data">0.00</td>'
+                }
+                if (WindSpeed > 4 && WindSpeed <= 6) {
+                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
+                }
+                else {
+                    tbfreq = tbfreq + '<td class="data">0.00</td>'
+                }
+                if (WindSpeed > 6 && WindSpeed <= 8) {
+                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
+                }
+                else {
+                    tbfreq = tbfreq + '<td class="data">0.00</td>'
+                }
+                if (WindSpeed > 10 && WindSpeed <= 10) {
+                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
+                }
+                else {
+                    tbfreq = tbfreq + '<td class="data">0.00</td>'
+                }
+
+            }
+            else {
+                tbfreq = tbfreq + '<td class="data">0.00</td>'
+                tbfreq = tbfreq + '<td class="data">0.00</td>'
+                tbfreq = tbfreq + '<td class="data">0.00</td>'
+                tbfreq = tbfreq + '<td class="data">0.00</td>'
+                tbfreq = tbfreq + '<td class="data">0.00</td>'
+            }
+            tbfreq = tbfreq + '<td class="data">0.00</td>'
+            tbfreq = tbfreq + '<td class="data">0.00</td>'
+            tbfreq = tbfreq + '<td class="data">0.00</td>'
+            tbfreq = tbfreq + '</tr>'
+            tbfreq = tbfreq + '<tr nowrap bgcolor="#DDDDDD">'
+            tbfreq = tbfreq + '<td class="dir">SW</td>'
+            if (WindDir == 'SW') {
+                if (WindSpeed <= 0.5) {
+                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
+                }
+                else {
+                    tbfreq = tbfreq + '<td class="data">0.00</td>'
+                }
+                if (WindSpeed > 0.5 && WindSpeed <= 2) {
+                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
+                }
+                else {
+                    tbfreq = tbfreq + '<td class="data">0.00</td>'
+                }
+                if (WindSpeed > 4 && WindSpeed <= 6) {
+                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
+                }
+                else {
+                    tbfreq = tbfreq + '<td class="data">0.00</td>'
+                }
+                if (WindSpeed > 6 && WindSpeed <= 8) {
+                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
+                }
+                else {
+                    tbfreq = tbfreq + '<td class="data">0.00</td>'
+                }
+                if (WindSpeed > 10 && WindSpeed <= 10) {
+                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
+                }
+                else {
+                    tbfreq = tbfreq + '<td class="data">0.00</td>'
+                }
+
+            }
+            else {
+                tbfreq = tbfreq + '<td class="data">0.00</td>'
+                tbfreq = tbfreq + '<td class="data">0.00</td>'
+                tbfreq = tbfreq + '<td class="data">0.00</td>'
+                tbfreq = tbfreq + '<td class="data">0.00</td>'
+                tbfreq = tbfreq + '<td class="data">0.00</td>'
+            }
+            tbfreq = tbfreq + '<td class="data">0.00</td>'
+            tbfreq = tbfreq + '<td class="data">0.00</td>'
+            tbfreq = tbfreq + '<td class="data">0.00</td>'
+            tbfreq = tbfreq + '</tr>'
+            tbfreq = tbfreq + '<tr nowrap bgcolor="#DDDDDD">'
+            tbfreq = tbfreq + '<td class="dir">WSW</td>'
+            if (WindDir == 'WSW') {
+                if (WindSpeed <= 0.5) {
+                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
+                }
+                else {
+                    tbfreq = tbfreq + '<td class="data">0.00</td>'
+                }
+                if (WindSpeed > 0.5 && WindSpeed <= 2) {
+                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
+                }
+                else {
+                    tbfreq = tbfreq + '<td class="data">0.00</td>'
+                }
+                if (WindSpeed > 4 && WindSpeed <= 6) {
+                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
+                }
+                else {
+                    tbfreq = tbfreq + '<td class="data">0.00</td>'
+                }
+                if (WindSpeed > 6 && WindSpeed <= 8) {
+                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
+                }
+                else {
+                    tbfreq = tbfreq + '<td class="data">0.00</td>'
+                }
+                if (WindSpeed > 10 && WindSpeed <= 10) {
+                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
+                }
+                else {
+                    tbfreq = tbfreq + '<td class="data">0.00</td>'
+                }
+
+            }
+            else {
+                tbfreq = tbfreq + '<td class="data">0.00</td>'
+                tbfreq = tbfreq + '<td class="data">0.00</td>'
+                tbfreq = tbfreq + '<td class="data">0.00</td>'
+                tbfreq = tbfreq + '<td class="data">0.00</td>'
+                tbfreq = tbfreq + '<td class="data">0.00</td>'
+            }
+            tbfreq = tbfreq + '<td class="data">0.00</td>'
+            tbfreq = tbfreq + '<td class="data">0.00</td>'
+            tbfreq = tbfreq + '<td class="data">0.00</td>'
+            tbfreq = tbfreq + '</tr>'
+            tbfreq = tbfreq + '<tr nowrap bgcolor="#DDDDDD">'
+            tbfreq = tbfreq + '<td class="dir">W</td>'
+            if (WindDir == 'W') {
+                if (WindSpeed <= 0.5) {
+                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
+                }
+                else {
+                    tbfreq = tbfreq + '<td class="data">0.00</td>'
+                }
+                if (WindSpeed > 0.5 && WindSpeed <= 2) {
+                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
+                }
+                else {
+                    tbfreq = tbfreq + '<td class="data">0.00</td>'
+                }
+                if (WindSpeed > 4 && WindSpeed <= 6) {
+                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
+                }
+                else {
+                    tbfreq = tbfreq + '<td class="data">0.00</td>'
+                }
+                if (WindSpeed > 6 && WindSpeed <= 8) {
+                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
+                }
+                else {
+                    tbfreq = tbfreq + '<td class="data">0.00</td>'
+                }
+                if (WindSpeed > 10 && WindSpeed <= 10) {
+                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
+                }
+                else {
+                    tbfreq = tbfreq + '<td class="data">0.00</td>'
+                }
+
+            }
+            else {
+                tbfreq = tbfreq + '<td class="data">0.00</td>'
+                tbfreq = tbfreq + '<td class="data">0.00</td>'
+                tbfreq = tbfreq + '<td class="data">0.00</td>'
+                tbfreq = tbfreq + '<td class="data">0.00</td>'
+                tbfreq = tbfreq + '<td class="data">0.00</td>'
+            }
+            tbfreq = tbfreq + '<td class="data">0.00</td>'
+            tbfreq = tbfreq + '<td class="data">0.00</td>'
+            tbfreq = tbfreq + '<td class="data">0.00</td>'
+            tbfreq = tbfreq + '</tr>'
+            tbfreq = tbfreq + '<tr nowrap bgcolor="#DDDDDD">'
+            tbfreq = tbfreq + '<td class="dir">WNW</td>'
+            if (WindDir == 'WW') {
+                if (WindSpeed <= 0.5) {
+                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
+                }
+                else {
+                    tbfreq = tbfreq + '<td class="data">0.00</td>'
+                }
+                if (WindSpeed > 0.5 && WindSpeed <= 2) {
+                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
+                }
+                else {
+                    tbfreq = tbfreq + '<td class="data">0.00</td>'
+                }
+                if (WindSpeed > 4 && WindSpeed <= 6) {
+                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
+                }
+                else {
+                    tbfreq = tbfreq + '<td class="data">0.00</td>'
+                }
+                if (WindSpeed > 6 && WindSpeed <= 8) {
+                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
+                }
+                else {
+                    tbfreq = tbfreq + '<td class="data">0.00</td>'
+                }
+                if (WindSpeed > 10 && WindSpeed <= 10) {
+                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
+                }
+                else {
+                    tbfreq = tbfreq + '<td class="data">0.00</td>'
+                }
+
+            }
+            else {
+                tbfreq = tbfreq + '<td class="data">0.00</td>'
+                tbfreq = tbfreq + '<td class="data">0.00</td>'
+                tbfreq = tbfreq + '<td class="data">0.00</td>'
+                tbfreq = tbfreq + '<td class="data">0.00</td>'
+                tbfreq = tbfreq + '<td class="data">0.00</td>'
+            }
+            tbfreq = tbfreq + '<td class="data">0.00</td>'
+            tbfreq = tbfreq + '<td class="data">0.00</td>'
+            tbfreq = tbfreq + '<td class="data">0.00</td>'
+            tbfreq = tbfreq + '</tr>'
+            tbfreq = tbfreq + '<tr nowrap bgcolor="#DDDDDD">'
+            tbfreq = tbfreq + '<td class="dir">NW</td>'
+            if (WindDir == 'NW') {
+                if (WindSpeed <= 0.5) {
+                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
+                }
+                else {
+                    tbfreq = tbfreq + '<td class="data">0.00</td>'
+                }
+                if (WindSpeed > 0.5 && WindSpeed <= 2) {
+                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
+                }
+                else {
+                    tbfreq = tbfreq + '<td class="data">0.00</td>'
+                }
+                if (WindSpeed > 4 && WindSpeed <= 6) {
+                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
+                }
+                else {
+                    tbfreq = tbfreq + '<td class="data">0.00</td>'
+                }
+                if (WindSpeed > 6 && WindSpeed <= 8) {
+                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
+                }
+                else {
+                    tbfreq = tbfreq + '<td class="data">0.00</td>'
+                }
+                if (WindSpeed > 10 && WindSpeed <= 10) {
+                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
+                }
+                else {
+                    tbfreq = tbfreq + '<td class="data">0.00</td>'
+                }
+
+            }
+            else {
+                tbfreq = tbfreq + '<td class="data">0.00</td>'
+                tbfreq = tbfreq + '<td class="data">0.00</td>'
+                tbfreq = tbfreq + '<td class="data">0.00</td>'
+                tbfreq = tbfreq + '<td class="data">0.00</td>'
+                tbfreq = tbfreq + '<td class="data">0.00</td>'
+            }
+            tbfreq = tbfreq + '<td class="data">0.00</td>'
+            tbfreq = tbfreq + '<td class="data">0.00</td>'
+            tbfreq = tbfreq + '<td class="data">0.00</td>'
+            tbfreq = tbfreq + '</tr>'
+            tbfreq = tbfreq + '<tr nowrap bgcolor="#DDDDDD">'
+            tbfreq = tbfreq + '<td class="dir">NNW</td>'
+            if (WindDir == 'NNW') {
+                if (WindSpeed <= 0.5) {
+                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
+                }
+                else {
+                    tbfreq = tbfreq + '<td class="data">0.00</td>'
+                }
+                if (WindSpeed > 0.5 && WindSpeed <= 2) {
+                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
+                }
+                else {
+                    tbfreq = tbfreq + '<td class="data">0.00</td>'
+                }
+                if (WindSpeed > 4 && WindSpeed <= 6) {
+                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
+                }
+                else {
+                    tbfreq = tbfreq + '<td class="data">0.00</td>'
+                }
+                if (WindSpeed > 6 && WindSpeed <= 8) {
+                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
+                }
+                else {
+                    tbfreq = tbfreq + '<td class="data">0.00</td>'
+                }
+                if (WindSpeed > 10 && WindSpeed <= 10) {
+                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
+                }
+                else {
+                    tbfreq = tbfreq + '<td class="data">0.00</td>'
+                }
+
+            }
+            else {
+                tbfreq = tbfreq + '<td class="data">0.00</td>'
+                tbfreq = tbfreq + '<td class="data">0.00</td>'
+                tbfreq = tbfreq + '<td class="data">0.00</td>'
+                tbfreq = tbfreq + '<td class="data">0.00</td>'
+                tbfreq = tbfreq + '<td class="data">0.00</td>'
+            }
+            tbfreq = tbfreq + '<td class="data">0.00</td>'
+            tbfreq = tbfreq + '<td class="data">0.00</td>'
+            tbfreq = tbfreq + '<td class="data">0.00</td>'
+            tbfreq = tbfreq + '</tr>'
+            $('#resp').html('');
+            $('#resp').append(tbfreq);
+
+
+            $('#chart_container').highcharts({
+                data: {
+                    table: 'freq',
+                    startRow: 1,
+                    endRow: 17,
+                    endColumn: 7
+                },
+
+                chart: {
+                    polar: true,
+                    type: 'column'
+                },
+
+                title: {
+                    text: 'Ice Wind Rose'
+                },
+
+                subtitle: {
+                    text: '..'
+                },
+
+                pane: {
+                    size: '85%'
+                },
+
+                legend: {
+                    reversed: true,
+                    align: 'right',
+                    verticalAlign: 'top',
+                    y: 100,
+                    layout: 'vertical'
+                },
+
+                xAxis: {
+                    tickmarkPlacement: 'on'
+                },
+
+                yAxis: {
+                    min: 0,
+                    endOnTick: false,
+                    showLastLabel: true,
+                    title: {
+                        text: 'Frequency (%)'
+                    },
+                    labels: {
+                        formatter: function () {
+                            return this.value + '%';
+                        }
+                    }
+                },
+
+                tooltip: {
+                    valueSuffix: '%',
+                    followPointer: true
+                },
+
+                plotOptions: {
+                    series: {
+                        stacking: 'normal',
+                        shadow: false,
+                        groupPadding: 0,
+                        pointPlacement: 'on'
+                    }
+                }
+            });
+            $.mobile.hidePageLoadingMsg();
+        }
+
+
+
+        
+    </script>
 </head>
 <body>
-    <div id="splash" class="app">
+    <div id="splash" style="display:none;" class="app">
         <h1>
             PhoneGap</h1>
         <div id="deviceready" class="blink">
@@ -224,6 +1933,8 @@
     <script type="text/javascript">
         app.initialize();
     </script>
+
+
     <div data-role="page" id="main" class="type-index">
         <div class="banner" style="z-index: 99999" data-role="header" role="banner" data-theme="c">
             <div class="wrapban">
