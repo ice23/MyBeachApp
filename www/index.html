@@ -2107,5 +2107,112 @@ console.log("Hello World25b");
         </div>
     </div>
    
+    <div data-role="page" id="meteo" class="type-index">
+        <div class="banner" style="z-index: 99999" data-role="header" role="banner" data-theme="c">
+            <div class="wrapban">
+                <span class="logo" style="width: 100px"></span>
+            </div>
+            <div id="slidein-panel_meteo" class="slidein-panel" style="z-index: 99999;">
+                <!-- SlidePanel Button Container -->
+                <div id="slidein-panel-container_meteo" class="slidein-panel-container">
+                    <a id="slidein-panel-btn_meteo" class="slidein-panel-btn" href="#"><i class="icon-list"></i>
+                    </a>
+                </div>
+                <!-- /SlidePanel Button Container -->
+                <!-- SlidePanel Content -->
+                <ul>
+                    <li><a href="#main">
+                        <img src="images/flip_flops.png" height="18px" width="18px" />
+                        &nbsp; Main</a></li>
+                    <li><a href="#gmap">
+                        <img src="images/flip_flops.png" height="18px" width="18px" />&nbsp; Beach Map</a></li>
+                    <li><a href="#meteo">
+                        <img src="images/flip_flops.png" height="18px" width="18px" />&nbsp; Weather</a></li>
+                </ul>
+                <!-- /SlidePanel Content -->
+            </div>
+        </div>
+        <div data-role="content" id="Div4">
+            <ul data-role="listview" data-inset="true">
+                <li id="Li1"><span id="Span1">
+                    <h3 id="city_name">
+                    </h3>
+                </span><span id="Span2"><a href="#" data-ajax="false">View Forecast</a></span></li>
+                <li class="indpr-1 myindpr"><a href="#" class="nomar" data-ajax="false">
+                    <img src="images/palm_tree.png" class="picture" alt="winelovers420x260" />
+                    <h2 id="city_temp" class="grl">
+                    </h2>
+                    <p>
+                        <div id="date_m">
+                        </div>
+                    </p>
+                </a></li>
+                <li class="indpr-1 myindpr"><a href="#" class="nomar" data-ajax="false">
+                    <h3>
+                        <div id="city_wind_lbl">
+                            Wind</div>
+                    </h3>
+                    <div class="likea" id="city_wind">
+                    </div>
+                </a></li>
+                <li class="indpr-1 myindpr"><a href="#" class="nomar" data-ajax="false">
+                    <h3>
+                        <h3>
+                            <div id="city_clouds_lbl">
+                                Cloudiness
+                            </div>
+                        </h3>
+                        <div class="likea" id="city_clouds">
+                        </div>
+                </a></li>
+                <li class="indpr-1 myindpr"><a href="#" class="nomar" data-ajax="false">
+                    <h3>
+                        <h3>
+                            <h3>
+                                <div id="city_pressure_lbl">
+                                    Atmospheric pressure
+                                </div>
+                            </h3>
+                            <div class="likea" id="city_pressure">
+                            </div>
+                </a></li>
+                <li class="indpr-1 myindpr"><a href="#" class="nomar" data-ajax="false">
+                    <h3>
+                        <h3>
+                            <h3>
+                                <div id="city_humidity_lbl">
+                                    Humidity
+                                </div>
+                            </h3>
+                            <div class="likea" id="city_humidity">
+                            </div>
+                </a></li>
+                <li class="indpr-1 myindpr"><a href="#" class="nomar" data-ajax="false">
+                    <h3>
+                        <h3>
+                            <h3>
+                                <div id="Div5">
+                                </div>
+                            </h3>
+                            <div class="likea" id="city_weather">
+                            </div>
+                </a></li>
+            </ul>
+        </div>
+        <div id="Div10">
+            <img id="Img2" src="images/footer_wave.png">
+        </div>
+        <div data-role="footer" id="Div11">
+        </div>
+        <script type="text/javascript" src="js/jquery.countdown.min.js?m=1368543442"></script>
+        <script type="text/javascript" src="js/mob-generic.js?m=1368543444"></script>
+        <script>
+            $('#cdcount #countdown-field').countdown({ until: new Date(2015, 1 - 1, 16, 17, 00, 00), format: 'dHM', timezone: -5, layout: '<div class="countdown_section">' + '<span class="countdown_amount">{dnn}</span>D' + '<span class="countdown_amount">{hnn}</span>H' + '<span class="countdown_amount">{mnn}</span>M' });
+        </script>
+        <div style="display: none">
+            <div id="Div12" style="width: 900px; height: 529px;">
+            </div>
+        </div>
+    </div>
 </body>
 </html>
