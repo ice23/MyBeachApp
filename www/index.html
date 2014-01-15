@@ -33,7 +33,7 @@
     <script src="js/jquery.easing.js"></script>
     <script type="text/javascript" charset="utf-8">
         // Wait for PhoneGap to load
-
+        var isDeviceOnline = 'NO';
         document.addEventListener("deviceready", onDeviceReady, false);
         function onDeviceReady() {
             //alert('checkConnection');
@@ -55,8 +55,13 @@
             states[Connection.CELL_4G] = 'Cell 4G connection';
             states[Connection.NONE] = 'No network connection';
             //alert('Connection type: ' + states[networkState]);
+
+            if (states[networkState] != states[Connection.NONE]) {
+                isDeviceOnline="YES"
+            }
+
             navigator.notification.alert(
-                states[networkState],  // message
+                states[networkState] + isDeviceOnline,  // message
                 alertDismissed,         // callback
                 'Connection type',            // title
                 'Done'                  // buttonName
@@ -410,10 +415,12 @@ console.log("Hello World16");
         };
 
         $('#main').live('pageshow', function (event, ui) {
+        alert(isDeviceOnline);
                  $("div[class$='slidein-panel']").animate({'left':-$("div[class$='slidein-panel']").outerWidth()});
                  status = 'close';
 
         });
+
 
 
         $('#meteo').live('pageshow', function (event, ui) {
@@ -2041,6 +2048,51 @@ console.log("Hello World25b");
         </script>
         <div style="display: none">
             <div id="map3d" style="width: 900px; height: 529px;">
+            </div>
+        </div>
+    </div>
+
+     <div data-role="page" id="gmap" class="type-index">
+        <div class="banner" style="z-index: 99999" data-role="header" role="banner" data-theme="c">
+            <div class="wrapban">
+                <span class="logo" style="width: 100px"></span>
+            </div>
+            <div id="slidein-panel_gmap" class="slidein-panel" style="z-index: 99999;">
+                <!-- SlidePanel Button Container -->
+                <div id="slidein-panel-container_gmap" class="slidein-panel-container">
+                    <a id="slidein-panel-btn_gmap" class="slidein-panel-btn" href="#"><i class="icon-list">
+                    </i></a>
+                </div>
+                <!-- /SlidePanel Button Container -->
+                <!-- SlidePanel Content -->
+                <ul>
+                    <li><a href="#main">
+                        <img src="images/flip_flops.png" height="18px" width="18px" />
+                        &nbsp; Main</a></li>
+                    <li><a href="#gmap">
+                        <img src="images/flip_flops.png" height="18px" width="18px" />&nbsp; Beach Map</a></li>
+                    <li><a href="#meteo">
+                        <img src="images/flip_flops.png" height="18px" width="18px" />&nbsp; Weather</a></li>
+                </ul>
+                <!-- /SlidePanel Content -->
+            </div>
+        </div>
+        <div data-role="content" id="Div1">
+            <div id="mapmap" style="width: 100%; height: 320px;">
+            </div>
+        </div>
+        <div id="Div1">
+            <img id="Img1" src="images/footer_wave.png">
+        </div>
+        <div data-role="footer" id="Div3">
+        </div>
+        <script type="text/javascript" src="js/jquery.countdown.min.js?m=1368543442"></script>
+        <script type="text/javascript" src="js/mob-generic.js?m=1368543444"></script>
+        <script>
+            $('#cdcount #countdown-field').countdown({ until: new Date(2015, 1 - 1, 16, 17, 00, 00), format: 'dHM', timezone: -5, layout: '<div class="countdown_section">' + '<span class="countdown_amount">{dnn}</span>D' + '<span class="countdown_amount">{hnn}</span>H' + '<span class="countdown_amount">{mnn}</span>M' });
+        </script>
+        <div style="display: none">
+            <div id="Div2" style="width: 900px; height: 529px;">
             </div>
         </div>
     </div>
