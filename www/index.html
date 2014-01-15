@@ -58,11 +58,11 @@
             //alert('Connection type: ' + states[networkState]);
 
             if (states[networkState] != states[Connection.NONE]) {
-                isDeviceOnline="YES"
+                isDeviceOnline = "YES"
             }
 
             navigator.notification.alert(
-                states[networkState] ,  // message
+                states[networkState],  // message
                 alertDismissed,         // callback
                 'Connection type',            // title
                 'Done'                  // buttonName
@@ -73,8 +73,7 @@
             $.extend($.mobile.zoom, { locked: true, enabled: false });
         });
     </script>
-
-     <script src="js/jqm-docs.js"></script>
+    <script src="js/jqm-docs.js"></script>
     <script src="js/jquery.mobile-1.1.1.js"></script>
     <script type="text/javascript" src="js/jquery.cycle.all.js"></script>
     <script type="text/javascript" src="js/jquery.easing.js"></script>
@@ -213,9 +212,9 @@
     <script type="text/javascript" src="js/highcharts/modules/exporting.js"></script>
     <script type="text/javascript" src="js/charts_mini.js"></script>
     <script type="text/javascript" src="js/googlejs.js"></script>
-    <script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyC5ukXmt0pQ3lvvi3NrfZX7LJKyW67TgK0&sensor=false" type="text/javascript"></script>
-
-      <script type="text/javascript" charset="utf-8">
+    <script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyC5ukXmt0pQ3lvvi3NrfZX7LJKyW67TgK0&sensor=false"
+        type="text/javascript"></script>
+    <script type="text/javascript" charset="utf-8">
 
        
 		var infowindow = null;
@@ -227,10 +226,13 @@
         var shape = null;
         var WindDir = '';
         var WindSpeed = 0;
+        var beachfinderby='wind';
         var Hpa = 0;
 console.log("Hello World10");
         var options, gm, gms, testOverflowMin, testOverflowMax, periodicRand;
 
+
+       
 
 
        
@@ -300,6 +302,30 @@ console.log("Hello World10");
 
          $(document).ready(function () {
 
+            $('#BeachFinderBy').change(function() {
+              //alert( this.value ); // or $(this).val()
+              beachfinderby= this.value;
+
+              var centerMap = new google.maps.LatLng(40.931153, 9.483948);
+                //alert('centerMap: ' +centerMap);
+                var myOptions = {
+                    zoom: 11,
+                    center: centerMap,
+                    mapTypeId: google.maps.MapTypeId.ROADMAP
+                }
+
+            
+                map = new google.maps.Map(document.getElementById("mapmap"), myOptions);
+                //alert('map: ' +map);
+
+                setMarkers(map, sites);
+                infowindow = new google.maps.InfoWindow({
+                    content: "loading..."
+                });
+            
+                var bikeLayer = new google.maps.BicyclingLayer();
+                bikeLayer.setMap(map);
+            });
             
             $.ajax({
                 type: "GET",
@@ -318,8 +344,10 @@ console.log("Hello World10");
                     var lon = spiaggia.attr('lon');
                     var descrizione = spiaggia.find('descrizione').text();
                     var windNO = spiaggia.find('windNO').text();
+                    var parking = spiaggia.find('parcheggio').text();
+                    var bar = spiaggia.find('bar').text();
                     //   
-                    var beach=[nome, lat,lon, 1, descrizione,windNO]
+                    var beach=[nome, lat,lon, 1, descrizione,windNO,parking,bar]
                     //alert(beach);
                     sites.push(beach);
                 });
@@ -430,7 +458,9 @@ console.log("Hello World16");
 
         $('#meteo').live('pageshow', function (event, ui) {
 
-            
+             if (navigator != null && navigator.notification != null) {
+                        navigator.notification.activityStart("caricamento", "Caricamento meteo in corso...");
+                }
             $("div[class$='slidein-panel']").animate({'left':-$("div[class$='slidein-panel']").outerWidth()});
             status = 'close';
 
@@ -460,6 +490,10 @@ console.log("Hello World16");
                     $.getJSON("http://api.openweathermap.org/data/2.5/weather?callback=?&id=" + current_city_id + '&units=' + units, showCurrentCity).error(errorHandler);
                 else
                     $.getJSON("http://api.openweathermap.org/data/2.5/weather?callback=?&id=auto" + '&units=' + units, showCurrentCity).error(errorHandler);
+
+                     if (navigator != null && navigator.notification != null) {
+                    navigator.notification.activityStop();
+                }
             }
             else
             {
@@ -608,9 +642,9 @@ console.log("Hello World16");
             isDeviceOnline='YES';
            if(isDeviceOnline=='YES')
            {
-//                if (navigator != null && navigator.notification != null) {
-//                        navigator.notification.activityStart("caricamento", "Caricamento mappa in corso...");
-//                }
+                if (navigator != null && navigator.notification != null) {
+                        navigator.notification.activityStart("caricamento", "Caricamento mappa in corso...");
+                }
                 //alert('centerMap..');
                 var centerMap = new google.maps.LatLng(40.931153, 9.483948);
                 //alert('centerMap: ' +centerMap);
@@ -645,16 +679,48 @@ console.log("Hello World16");
 
 
 
-            function setMarkers(map, markers) {
-               // alert('markers.length:' + markers.length);
+          
+
+
+
+
+
+
+        });
+
+          function setMarkers(map, markers) {
+               //alert('markers.length:' + markers.length);
+               
                 for (var i = 0; i < markers.length; i++) {
                     var sites = markers[i];
                     //alert(sites[0]);
                     var WindDirNo = sites[5];
+                    var parking=sites[6];
+                    var bar=sites[7];
+                    var valid=0;
+                    
+                    if(beachfinderby=='wind')
+                    {
+                        //alert('wind');
+                         if (WindDir == WindDirNo) {
+                            valid=1;
+                         }
+                    }
+                    if(beachfinderby=='parking')
+                    {
+                         if (parking=='1') {
+                            valid=1;
+                         }  
+                    }
+                    if(beachfinderby=='bar')
+                    {
+                         if (bar=='1') {
+                            valid=1;
+                         }  
+                    }
+                    var siteLatLng = new google.maps.LatLng(sites[1], sites[2]);
 
-                    if (WindDir == WindDirNo) {
-                        var siteLatLng = new google.maps.LatLng(sites[1], sites[2]);
-
+                    if (valid==0) {
                         var marker = new google.maps.Marker({
                             position: siteLatLng,
                             map: map,
@@ -664,7 +730,18 @@ console.log("Hello World16");
                     , icon: imgWindKO,
                             shape: shape
                         });
-
+                    }
+                    else {
+                             var marker = new google.maps.Marker({
+                                    position: siteLatLng,
+                                    map: map,
+                                    title: sites[0],
+                                    zIndex: sites[3],
+                                    html: sites[4] +  '<a href="#MyBeach?id=2">...</a>'
+                            , icon: imgWindOK,
+                                    shape: shape
+                                });
+                        }
                         var contentString = "Some content";
 
                         google.maps.event.addListener(marker, "click", function () {
@@ -672,38 +749,11 @@ console.log("Hello World16");
                             infowindow.setContent(this.html );
                             infowindow.open(map, this);
                         });
-                    }
-                    else {
-                        var siteLatLng = new google.maps.LatLng(sites[1], sites[2]);
-
-                        var marker = new google.maps.Marker({
-                            position: siteLatLng,
-                            map: map,
-                            title: sites[0],
-                            zIndex: sites[3],
-                            html: sites[4] +  '<a href="#MyBeach?id=2">...</a>'
-                    , icon: imgWindOK,
-                            shape: shape
-                        });
-
-                        var contentString = "Some content";
-
-                        google.maps.event.addListener(marker, "click", function () {
-                            //alert(this.html);
-                            infowindow.setContent(this.html);
-                            infowindow.open(map, this);
-                        });
-                    }
+                   
+                      
 
                 }
             }
-
-
-
-
-
-
-        });
 
         /*================================== initilize MAP END =================================*/
 
@@ -1935,7 +1985,7 @@ console.log("Hello World25b");
     </script>
 </head>
 <body>
-    <div id="splash" style="display:none;" class="app">
+    <div id="splash" style="display: none;" class="app">
         <h1>
             PhoneGap</h1>
         <div id="deviceready" class="blink">
@@ -1950,8 +2000,6 @@ console.log("Hello World25b");
     <script type="text/javascript">
         app.initialize();
     </script>
-
-
     <div data-role="page" id="main" class="type-index">
         <div class="banner" style="z-index: 99999" data-role="header" role="banner" data-theme="c">
             <div class="wrapban">
@@ -2061,12 +2109,15 @@ console.log("Hello World25b");
             </div>
         </div>
     </div>
-
-     <div data-role="page" id="gmap" class="type-index">
+    <div data-role="page" id="gmap" class="type-index">
         <div class="banner" style="z-index: 99999" data-role="header" role="banner" data-theme="c">
-            <div class="wrapban">
-                <span class="logo" style="width: 100px"></span>
-            </div>
+            <center>
+                <select id="BeachFinderBy" name="BeachFinderBy">
+                    <option value="wind" selected="selected">Vento</option>
+                    <option value="parking">Parcheggio </option>
+                    <option value="bar">Con Bar </option>
+                </select>
+            </center>
             <div id="slidein-panel_gmap" class="slidein-panel" style="z-index: 99999;">
                 <!-- SlidePanel Button Container -->
                 <div id="slidein-panel-container_gmap" class="slidein-panel-container">
@@ -2106,16 +2157,15 @@ console.log("Hello World25b");
             </div>
         </div>
     </div>
-   
     <div data-role="page" id="meteo" class="type-index">
         <div class="banner" style="z-index: 99999" data-role="header" role="banner" data-theme="c">
             <div class="wrapban">
                 <span class="logo" style="width: 100px"></span>
             </div>
-            <div id="slidein-panel_meteo" class="slidein-panel" style="z-index: 99999;">
+            <div id="slidein-panel" class="slidein-panel" style="z-index: 99999;">
                 <!-- SlidePanel Button Container -->
-                <div id="slidein-panel-container_meteo" class="slidein-panel-container">
-                    <a id="slidein-panel-btn_meteo" class="slidein-panel-btn" href="#"><i class="icon-list"></i>
+                <div id="slidein-panel-container" class="slidein-panel-container">
+                    <a id="slidein-panel-btn" class="slidein-panel-btn" href="#"><i class="icon-list"></i>
                     </a>
                 </div>
                 <!-- /SlidePanel Button Container -->

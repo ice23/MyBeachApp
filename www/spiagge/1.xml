@@ -3,24 +3,24 @@
   <spiaggia id="1" nome="Spiaggia Ira" lat="41.026752" lon="9.532471" prov="Olbia (OT)">
     <descrizione ds="-"> L’arenile si distende subito a ovest di Porto Rotondo (Olbia). 
     </descrizione>
-    <windNO>N</windNO>
+    <windNO>NE</windNO>
     <drive></drive>
     <foto></foto>
-    <parcheggio></parcheggio>
+    <parcheggio>1</parcheggio>
     <disabili></disabili>
-    <bar></bar>
+    <bar>1</bar>
     <xbambini></xbambini>
     <surf></surf>
     <attrezzata></attrezzata>
   </spiaggia>
   <spiaggia id="2" nome="Spiaggia Marinella" lat="41.003807" lon="9.554616" prov="Olbia (OT)">
     <descrizione ds="-">desc1</descrizione>
-    <windNO>N</windNO>
+    <windNO>NE</windNO>
     <drive></drive>
     <foto></foto>
-    <parcheggio></parcheggio>
+    <parcheggio>0</parcheggio>
     <disabili></disabili>
-    <bar></bar>
+    <bar>0</bar>
     <xbambini></xbambini>
     <surf></surf>
     <attrezzata></attrezzata>
@@ -30,9 +30,9 @@
     <windNO>N</windNO>
     <drive></drive>
     <foto></foto>
-    <parcheggio></parcheggio>
+    <parcheggio>0</parcheggio>
     <disabili></disabili>
-    <bar></bar>
+    <bar>1</bar>
     <xbambini></xbambini>
     <surf></surf>
     <attrezzata></attrezzata>
@@ -42,7 +42,7 @@
     <windNO>N</windNO>
     <drive></drive>
     <foto></foto>
-    <parcheggio></parcheggio>
+    <parcheggio>1</parcheggio>
     <disabili></disabili>
     <bar></bar>
     <xbambini></xbambini>
@@ -54,9 +54,9 @@
     <windNO>N</windNO>
     <drive></drive>
     <foto></foto>
-    <parcheggio></parcheggio>
+    <parcheggio>1</parcheggio>
     <disabili></disabili>
-    <bar></bar>
+    <bar>1</bar>
     <xbambini></xbambini>
     <surf></surf>
     <attrezzata></attrezzata>
@@ -66,9 +66,9 @@
     <windNO>N</windNO>
     <drive></drive>
     <foto></foto>
-    <parcheggio></parcheggio>
+    <parcheggio>1</parcheggio>
     <disabili></disabili>
-    <bar></bar>
+    <bar>0</bar>
     <xbambini></xbambini>
     <surf></surf>
     <attrezzata></attrezzata>
@@ -90,9 +90,9 @@
     <windNO>N</windNO>
     <drive></drive>
     <foto></foto>
-    <parcheggio></parcheggio>
+    <parcheggio>0</parcheggio>
     <disabili></disabili>
-    <bar></bar>
+    <bar>1</bar>
     <xbambini></xbambini>
     <surf></surf>
     <attrezzata></attrezzata>
@@ -102,9 +102,9 @@
     <windNO>N</windNO>
     <drive></drive>
     <foto></foto>
-    <parcheggio></parcheggio>
+    <parcheggio>1</parcheggio>
     <disabili></disabili>
-    <bar></bar>
+    <bar>0</bar>
     <xbambini></xbambini>
     <surf></surf>
     <attrezzata></attrezzata>
@@ -126,9 +126,9 @@
     <windNO>N</windNO>
     <drive></drive>
     <foto></foto>
-    <parcheggio></parcheggio>
+    <parcheggio>0</parcheggio>
     <disabili></disabili>
-    <bar></bar>
+    <bar>1</bar>
     <xbambini></xbambini>
     <surf></surf>
     <attrezzata></attrezzata>
@@ -137,10 +137,10 @@
     <descrizione ds="-">desc1</descrizione>
     <windNO>N</windNO>
     <drive></drive>
-    <foto></foto>
+    <foto></foto>1
     <parcheggio></parcheggio>
     <disabili></disabili>
-    <bar></bar>
+    <bar>0</bar>
     <xbambini></xbambini>
     <surf></surf>
     <attrezzata></attrezzata>
@@ -150,9 +150,9 @@
     <windNO>N</windNO>
     <drive></drive>
     <foto></foto>
-    <parcheggio></parcheggio>
+    <parcheggio>1</parcheggio>
     <disabili></disabili>
-    <bar></bar>
+    <bar>0</bar>
     <xbambini></xbambini>
     <surf></surf>
     <attrezzata></attrezzata>
@@ -162,9 +162,9 @@
     <windNO>N</windNO>
     <drive></drive>
     <foto></foto>
-    <parcheggio></parcheggio>
+    <parcheggio>0</parcheggio>
     <disabili></disabili>
-    <bar></bar>
+    <bar>0</bar>
     <xbambini></xbambini>
     <surf></surf>
     <attrezzata></attrezzata>
@@ -174,9 +174,9 @@
     <windNO>N</windNO>
     <drive></drive>
     <foto></foto>
-    <parcheggio></parcheggio>
+    <parcheggio>1</parcheggio>
     <disabili></disabili>
-    <bar></bar>
+    <bar>1</bar>
     <xbambini></xbambini>
     <surf></surf>
     <attrezzata></attrezzata>
