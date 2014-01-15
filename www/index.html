@@ -306,10 +306,10 @@ console.log("Hello World10");
               //alert( this.value ); // or $(this).val()
               beachfinderby= this.value;
 
-              var centerMap = new google.maps.LatLng(40.931153, 9.483948);
-                //alert('centerMap: ' +centerMap);
+                var centerMap = map.getCenter();
+                var zoomMap=map.getZoom();
                 var myOptions = {
-                    zoom: 11,
+                    zoom: zoomMap,
                     center: centerMap,
                     mapTypeId: google.maps.MapTypeId.ROADMAP
                 }
@@ -458,15 +458,16 @@ console.log("Hello World16");
 
         $('#meteo').live('pageshow', function (event, ui) {
 
-             if (navigator != null && navigator.notification != null) {
-                        navigator.notification.activityStart("caricamento", "Caricamento meteo in corso...");
-                }
+             
             $("div[class$='slidein-panel']").animate({'left':-$("div[class$='slidein-panel']").outerWidth()});
             status = 'close';
 
             isDeviceOnline='YES';
              if(isDeviceOnline=='YES')
             {
+                if (navigator != null && navigator.notification != null) {
+                        navigator.notification.activityStart("caricamento", "Caricamento meteo in corso...");
+                }
              
                 $('#city_wind_lbl').html('0');
 			    var units = 'metric';
@@ -491,9 +492,7 @@ console.log("Hello World16");
                 else
                     $.getJSON("http://api.openweathermap.org/data/2.5/weather?callback=?&id=auto" + '&units=' + units, showCurrentCity).error(errorHandler);
 
-                     if (navigator != null && navigator.notification != null) {
-                    navigator.notification.activityStop();
-                }
+                    
             }
             else
             {
@@ -506,7 +505,9 @@ console.log("Hello World16");
 
 
             current_city_id = d.id;
-            alert(d.name);
+            if (navigator != null && navigator.notification != null) {
+                    navigator.notification.activityStop();
+                }
             $('#city_name').html(d.name + ', ' + d.sys.country);
             $('#city_temp').html('Temperature ' + Math.round((d.main.temp) * 100) / 100 + '°C');
             //	$('#city_temp').html( 'Temperature  17 °C' );
