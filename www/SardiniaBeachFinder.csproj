@@ -54,7 +54,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="config.xml" />
+    <Content Include="config.xml">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Copy of index.html" />
     <Content Include="css\bootstrap-responsive.min.css" />
     <Content Include="css\bootstrap.min.css" />
     <Content Include="css\index.css" />
@@ -120,8 +123,8 @@
     <Content Include="images\sun.png" />
     <Content Include="images\sun_mini.png" />
     <Content Include="img\logo.png" />
-    <Content Include="index - Copia.html" />
     <Content Include="index.html" />
+    <Content Include="index_.html" />
     <Content Include="js\charts.js" />
     <Content Include="js\charts_mini.js" />
     <Content Include="js\gauge.js" />
