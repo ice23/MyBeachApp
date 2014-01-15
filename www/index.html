@@ -36,7 +36,7 @@
 
         document.addEventListener("deviceready", onDeviceReady, false);
         function onDeviceReady() {
-            alert('checkConnection');
+            //alert('checkConnection');
             checkConnection();
         }
 
@@ -54,11 +54,11 @@
             states[Connection.CELL_3G] = 'Cell 3G connection';
             states[Connection.CELL_4G] = 'Cell 4G connection';
             states[Connection.NONE] = 'No network connection';
-            alert('Connection type: ' + states[networkState]);
+            //alert('Connection type: ' + states[networkState]);
             navigator.notification.alert(
-                'You are the winner!',  // message
+                states[networkState],  // message
                 alertDismissed,         // callback
-                'Game Over',            // title
+                'Connection type',            // title
                 'Done'                  // buttonName
             );
         }
@@ -69,7 +69,7 @@
     </script>
 </head>
 <body>
-    <div class="app">
+    <div id="splash" class="app">
         <h1>
             PhoneGap</h1>
         <div id="deviceready" class="blink">
@@ -84,7 +84,7 @@
     <script type="text/javascript">
         app.initialize();
     </script>
-    <!--<div data-role="page" id="main" class="type-index">
+    <div data-role="page" id="main" class="type-index">
         <div class="banner" style="z-index: 99999" data-role="header" role="banner" data-theme="c">
             <div class="wrapban">
                 <span class="logo" style="width: 100px"></span>
@@ -192,6 +192,6 @@
             <div id="map3d" style="width: 900px; height: 529px;">
             </div>
         </div>
-    </div>-->
+    </div>
 </body>
 </html>
