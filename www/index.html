@@ -76,9 +76,9 @@
 
      <script src="js/jqm-docs.js"></script>
     <script src="js/jquery.mobile-1.1.1.js"></script>
-    <script type="text/javascript" src="http://tech.sarathdr.com/slider/js/jquery.cycle.all.js"></script>
-    <script type="text/javascript" src="http://tech.sarathdr.com/slider/js/jquery.easing.js"></script>
-    <script type="text/javascript" src="http://tech.sarathdr.com/slider/js/new-swipe.js"></script>
+    <script type="text/javascript" src="js/jquery.cycle.all.js"></script>
+    <script type="text/javascript" src="js/jquery.easing.js"></script>
+    <script type="text/javascript" src="js/new-swipe.js"></script>
     <script type="text/javascript">
 
         $(document).ready(function () {
@@ -208,6 +208,7 @@
     </style>
     <script type="text/javascript" src="js/highcharts/highcharts.js"></script>
     <script type="text/javascript" src="js/highcharts/highcharts-more.js"></script>
+    <script type="text/javascript" src="api/OpenLayers.js"></script>
     <script type="text/javascript" src="js/highcharts/modules/data.js"></script>
     <script type="text/javascript" src="js/highcharts/modules/exporting.js"></script>
     <script type="text/javascript" src="js/charts_mini.js"></script>
@@ -595,7 +596,7 @@ console.log("Hello World16");
 
         $('#gmap').live('pageshow', function (event, ui) {
             
-            alert(isDeviceOnline);
+           
 
             $("div[class$='slidein-panel']").animate({'left':-$("div[class$='slidein-panel']").outerWidth()});
             status = 'close';
@@ -608,6 +609,7 @@ console.log("Hello World16");
 //                if (navigator != null && navigator.notification != null) {
 //                        navigator.notification.activityStart("caricamento", "Caricamento mappa in corso...");
 //                }
+                alert('centerMap..');
                 var centerMap = new google.maps.LatLng(40.931153, 9.483948);
                 alert('centerMap: ' +centerMap);
                 var myOptions = {
