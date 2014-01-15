@@ -57,12 +57,12 @@
             states[Connection.NONE] = 'No network connection';
             //alert('Connection type: ' + states[networkState]);
 
-//            if (states[networkState] != states[Connection.NONE]) {
-//                isDeviceOnline="YES"
-//            }
+            if (states[networkState] != states[Connection.NONE]) {
+                isDeviceOnline="YES"
+            }
 
             navigator.notification.alert(
-                states[networkState],  // message
+                states[networkState] + isDeviceOnline,  // message
                 alertDismissed,         // callback
                 'Connection type',            // title
                 'Done'                  // buttonName
