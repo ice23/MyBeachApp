@@ -75,7 +75,7 @@
         //
         function onSuccess(position) {
             alert('ok');
-            alert( 'Latitude: ' + position.coords.latitude + '\n' +
+            alert('Latitude: ' + position.coords.latitude + '\n' +
                             'Longitude: ' + position.coords.longitude + '\n' +
                             'Altitude: ' + position.coords.altitude + '\n' +
                             'Accuracy: ' + position.coords.accuracy + '\n' +
@@ -688,7 +688,7 @@ console.log("Hello World16");
 
             if (navigator.geolocation) {
                 alert('navigator.geolocation on')
-               navigator.geolocation.getCurrentPosition(success,onError,{frequency:5000,maximumAge: 60000, timeout: 60000, enableHighAccuracy:true}); 
+               navigator.geolocation.getCurrentPosition(success,onError,{maximumAge: 60000, timeout: 60000, enableHighAccuracy:true}); 
             }
             else
             {
@@ -2080,6 +2080,15 @@ console.log("Hello World25b");
     </script>
 </head>
 <body>
+    <div id="fb-root">
+    </div>
+    <script>        (function (d, s, id) {
+            var js, fjs = d.getElementsByTagName(s)[0];
+            if (d.getElementById(id)) return;
+            js = d.createElement(s); js.id = id;
+            js.src = "//connect.facebook.net/it_IT/all.js#xfbml=1";
+            fjs.parentNode.insertBefore(js, fjs);
+        } (document, 'script', 'facebook-jssdk'));</script>
     <div id="splash" style="display: none;" class="app">
         <h1>
             PhoneGap</h1>
@@ -2151,6 +2160,7 @@ console.log("Hello World25b");
                         Dec 11&#44; 2013</div>
                     <h3 class="grl">
                         Norwegian Getaway to Feature Wine Lovers the Musical
+                        
                     </h3>
                 </a></li>
                 <li class="indpr-2 myindpr"><a href="#" class="nomar" data-ajax="false">
@@ -2161,6 +2171,7 @@ console.log("Hello World25b");
                         NORWEGIAN GETAWAY BEGINS HER CONVEYANCE ALONG THE EMS RIVER</h3>
                 </a></li>
             </ul>
+            <div class="fb-like" data-href="http://www.meridiana.it/it/index.aspx" data-layout="button_count" data-action="like" data-show-faces="true" data-share="false"></div>
             <div id="section-vid">
                 <ul data-role="listview" data-inset="true">
                     <li>
