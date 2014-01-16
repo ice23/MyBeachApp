@@ -251,6 +251,8 @@
         var WindSpeed = 0;
         var beachfinderby='wind';
         var Hpa = 0;
+        var mylng =0;
+        var mylat=0;
 console.log("Hello World10");
         var options, gm, gms, testOverflowMin, testOverflowMax, periodicRand;
 
@@ -321,9 +323,44 @@ console.log("Hello World10");
             return JSONobject;
         }
 
+        var directionsService = new google.maps.DirectionsService();
+        var distancekm=0.0;
+        function calcRoute(lat,long) {
+		        var start = mylat+","+mylng;
+		        var end = lat+","+long;
+                //alert(start + '\n' + end);
+		        //var distanceInput = document.getElementById("distance");
+
+		        var request = {
+		            origin: start,
+		            destination: end,
+		            travelMode: google.maps.DirectionsTravelMode.DRIVING
+		        };
+
+		        directionsService.route(request, function (response, status) {
+		            if (status == google.maps.DirectionsStatus.OK) {
+		                //directionsDisplay.setDirections(response);
+                        //alert(response.routes[0].legs[0].distance.value / 1000);
+                        distancekm=response.routes[0].legs[0].distance.value / 1000;
+		                alert(distancekm + 'km');
+		            }
+		        });
+		    }
        
 
          $(document).ready(function () {
+
+            navigator.geolocation.getCurrentPosition(handle_geolocation_query);  
+    
+            function handle_geolocation_query(position){
+                mylng = position.coords.longitude;
+                mylat = position.coords.latitude;
+                //
+                
+                alert(mylng +" " + mylat);
+
+                calcRoute(mylat,mylng);
+            }
 
             $('#BeachFinderBy').change(function() {
               //alert( this.value ); // or $(this).val()
@@ -716,7 +753,10 @@ console.log("Hello World16");
                //alert('markers.length:' + markers.length);
                
                 for (var i = 0; i < markers.length; i++) {
+                    
+
                     var sites = markers[i];
+                    calcRoute(sites[1],sites[2]);
                     //alert(sites[0]);
                     var WindDirNo = sites[5];
                     var parking=sites[6];
