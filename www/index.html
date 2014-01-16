@@ -350,17 +350,7 @@ console.log("Hello World10");
 
          $(document).ready(function () {
 
-            navigator.geolocation.getCurrentPosition(handle_geolocation_query);  
-    
-            function handle_geolocation_query(position){
-                mylng = position.coords.longitude;
-                mylat = position.coords.latitude;
-                //
-                
-                alert(mylng +" " + mylat);
-
-                calcRoute(mylat,mylng);
-            }
+           
 
             $('#BeachFinderBy').change(function() {
               //alert( this.value ); // or $(this).val()
@@ -692,7 +682,17 @@ console.log("Hello World16");
 
         $('#gmap').live('pageshow', function (event, ui) {
             
-           
+            navigator.geolocation.getCurrentPosition(handle_geolocation_query);  
+    
+            function handle_geolocation_query(position){
+                mylng = position.coords.longitude;
+                mylat = position.coords.latitude;
+                //
+                
+                alert(mylng +" " + mylat);
+
+                calcRoute(mylat,mylng);
+            }
 
             $("div[class$='slidein-panel']").animate({'left':-$("div[class$='slidein-panel']").outerWidth()});
             status = 'close';
