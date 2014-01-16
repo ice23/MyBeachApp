@@ -686,7 +686,7 @@ console.log("Hello World16");
 
             if (navigator.geolocation) {
                 alert('navigator.geolocation on')
-               navigator.geolocation.getCurrentPosition(success);
+               navigator.geolocation.getCurrentPosition(success,onError);
             }
             else
             {
@@ -703,8 +703,10 @@ console.log("Hello World16");
                 calcRoute(Geo.lat,Geo.lng);
             }
 
-            function error(){
-                console.log("Geocoder failed");
+            function onError(error) {
+                alert('error');
+                alert('code: '    + error.code    + '\n' +
+                        'message: ' + error.message + '\n');
             }
 
        
