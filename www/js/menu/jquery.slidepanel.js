@@ -7,7 +7,6 @@
 	$.SlidePanel = function(options) {
 		//default status is closed
 		
-
 		//initialize the panel show/hide button 
 		$("a[class^='slidein-panel-btn']").css({ 'position': 'absolute', 'top': 0, 'right': -$("a[class^='slidein-panel-btn']").outerWidth() + 'px' });
 
