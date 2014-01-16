@@ -686,7 +686,7 @@ console.log("Hello World16");
 
             if (navigator.geolocation) {
                 alert('navigator.geolocation on')
-               navigator.geolocation.getCurrentPosition(success,onError);
+               navigator.geolocation.getCurrentPosition(success,onError,{frequency:5000,maximumAge: 0, timeout: 100, enableHighAccuracy:true}); 
             }
             else
             {
