@@ -685,7 +685,12 @@ console.log("Hello World16");
             var Geo={};
 
             if (navigator.geolocation) {
+                alert('navigator.geolocation on')
                navigator.geolocation.getCurrentPosition(success, error);
+            }
+            else
+            {
+             alert('navigator.geolocation off')
             }
 
             //Get the latitude and the longitude;
