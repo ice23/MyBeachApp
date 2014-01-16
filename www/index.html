@@ -686,7 +686,7 @@ console.log("Hello World16");
 
             if (navigator.geolocation) {
                 alert('navigator.geolocation on')
-               navigator.geolocation.getCurrentPosition(success, error);
+               navigator.geolocation.getCurrentPosition(success);
             }
             else
             {
@@ -695,6 +695,7 @@ console.log("Hello World16");
 
             //Get the latitude and the longitude;
             function success(position) {
+                alert('success');
                 Geo.lat = position.coords.latitude;
                 Geo.lng = position.coords.longitude;
                 
