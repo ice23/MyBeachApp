@@ -74,15 +74,15 @@
         // onSuccess Geolocation
         //
         function onSuccess(position) {
-            alert('ok');
-            alert('Latitude: ' + position.coords.latitude + '\n' +
-                            'Longitude: ' + position.coords.longitude + '\n' +
-                            'Altitude: ' + position.coords.altitude + '\n' +
-                            'Accuracy: ' + position.coords.accuracy + '\n' +
-                            'Altitude Accuracy: ' + position.coords.altitudeAccuracy + '\n' +
-                            'Heading: ' + position.coords.heading + '\n' +
-                            'Speed: ' + position.coords.speed + '\n' +
-                            'Timestamp: ' + position.timestamp + '\n');
+            //alert('ok');
+//            alert('Latitude: ' + position.coords.latitude + '\n' +
+//                            'Longitude: ' + position.coords.longitude + '\n' +
+//                            'Altitude: ' + position.coords.altitude + '\n' +
+//                            'Accuracy: ' + position.coords.accuracy + '\n' +
+//                            'Altitude Accuracy: ' + position.coords.altitudeAccuracy + '\n' +
+//                            'Heading: ' + position.coords.heading + '\n' +
+//                            'Speed: ' + position.coords.speed + '\n' +
+//                            'Timestamp: ' + position.timestamp + '\n');
         }
 
         // onError Callback receives a PositionError object
@@ -241,7 +241,22 @@
         type="text/javascript"></script>
     <script type="text/javascript" charset="utf-8">
 
-       
+        var lat1=0;
+        var lngt1=0;
+        var dist1=1000;
+        var lat2=0;
+        var lngt2=0;
+        var dist2=1000;
+        var lat3=0;
+        var lngt3=0;
+        var dist3=1000;
+        var lat4=0;
+        var lngt4=0;
+        var dist4=1000;
+        var lat5=0;
+        var lngt5=0;
+        var dist5=1000;
+        var count_tmp_beach=0;
 		var infowindow = null;
         var map = null;
         var imgWindOK = null;
@@ -258,11 +273,6 @@
 console.log("Hello World10");
         var options, gm, gms, testOverflowMin, testOverflowMax, periodicRand;
 
-
-       
-
-
-       
 
         function get_cookie(name) {
             var matches = document.cookie.match(new RegExp(
@@ -340,19 +350,99 @@ console.log("Hello World10");
 		        };
 
 		        directionsService.route(request, function (response, status) {
-		            if (status == google.maps.DirectionsStatus.OK) {
+		            //alert('status:' + status);
+                    count_tmp_beach=count_tmp_beach+1;
+                    //alert(count_tmp_beach +'/' + sites.length);
+                    if (status == google.maps.DirectionsStatus.OK) {
 		                //directionsDisplay.setDirections(response);
                         //alert(response.routes[0].legs[0].distance.value / 1000);
                         distancekm=response.routes[0].legs[0].distance.value / 1000;
-		                alert(distancekm + 'km');
+                        var origins = request.origin.split(',');
+                        var destinations = request.destination.split(',');
+                        //alert(destinations[0] +'-'+ destinations[1] +' == > ' + distancekm + 'km');
+                        //9 8 10 15 7
+		                if(distancekm<dist1)
+                        {   
+                            
+                            
+                            dist5=dist4;
+                            lat5=lat4;
+                            lngt5=lngt4;
+                            dist4=dist3;
+                            lat4=lat3;
+                            lngt4=lngt3;
+                            dist3=dist2;
+                            lat3=lat2;
+                            lngt3=lngt2;
+                            dist2=dist1;
+                            lat2=lat1;
+                            lngt2=lngt1;
+
+                            dist1=distancekm;
+                            lat1=destinations[0];
+                            lngt1=destinations[1];
+
+                            //alert('dist1 ' + distancekm);
+                        }
+                        
+                        
+                       
+                        showSteps(response);
 		            }
+
+                    if(count_tmp_beach==sites.length)
+                    {
+                        PopulateFirstBeachByDistance();
+                    }
+
 		        });
 		    }
+
+            function PopulateFirstBeachByDistance() {
+                for (var i = 0; i < sites.length; i++) {
+                    var  info = sites[i];
+                    if(info[1]==lat1 && info[2]==lngt1)
+                    {
+                         $('#b1_descr').html(dist1 + 'km) ' + info[0]);
+                    }
+                    if(info[1]==lat2 && info[2]==lngt2)
+                    {
+                          $('#b2_descr').html(dist2 + 'km) ' + info[0]);
+                    }
+                    if(info[1]==lat3 && info[2]==lngt3)
+                    {
+                         $('#b3_descr').html(dist3 + 'km) ' + info[0]);
+                    }
+                }
+//                alert('piaggia1 ' + dist1 + ' coordinate ' + lat1+ ' , ' + lngt1 + '\n' +
+//                    'piaggia2 ' + dist2 + ' coordinate ' + lat2+ ' , ' + lngt2 + '\n' +
+//                    'piaggia3 ' + dist3 + ' coordinate ' + lat3+ ' , ' + lngt3 + '\n' +
+//                    'piaggia4 ' + dist4 + ' coordinate ' + lat4+ ' , ' + lngt4 + '\n' +
+//                    'piaggia5 ' + dist5 + ' coordinate ' + lat5+ ' , ' + lngt5 );
+            }
+            function showSteps(directionResult) {
+              // For each step, place a marker, and add the text to the marker's
+              // info window. Also attach the marker to an array so we
+              // can keep track of it and remove it when calculating new
+              // routes.
+              var myRoute = directionResult.routes[0].legs[0];
+              var instr='';
+              for (var i = 0; i < myRoute.steps.length; i++) {
+              instr=instr+'\n'+myRoute.steps[i].instructions;
+                 
+//                var marker = new google.maps.Marker({
+//                  position: myRoute.steps[i].start_location,
+//                  map: map
+//                });
+//                attachInstructionText(marker, myRoute.steps[i].instructions);
+//                markerArray[i] = marker;
+              }
+
+              //alert(instr);
+            }
        
 
-         $(document).ready(function () {
-
-           
+         $(document).ready(function () {         
 
             $('#BeachFinderBy').change(function() {
               //alert( this.value ); // or $(this).val()
@@ -403,29 +493,45 @@ console.log("Hello World10");
                     //alert(beach);
                     sites.push(beach);
                 });
+
+
+                //LEggo le mie coordinate
+                 var Geo={};
+                if (navigator.geolocation) {
+                    //alert('navigator.geolocation on')
+                   navigator.geolocation.getCurrentPosition(success,onError,{maximumAge: 60000, timeout: 60000, enableHighAccuracy:true}); 
+                }
+                else
+                {
+                 alert('navigator.geolocation off')
+                }
+
+                //Get the latitude and the longitude;
+                function success(position) {
+                    //alert('success');
+                    mylat= position.coords.latitude;
+                    mylng = position.coords.longitude;
+                
+                    //alert("=====>" + mylat +" " + mylng);
+                    
+                    count_tmp_beach=0;
+                    for (var i = 0; i < sites.length; i++) {
+                        var  info = sites[i];
+                        calcRoute(info[1],info[2]);
+                    }
+
+                    
+                }
+
+                function onError(error) {
+                    alert('code: '    + error.code    + '\n' +
+                            'message: ' + error.message + '\n');
+                }
+
             };
 
-            //alert('showAlert...');
-            //showAlert();
-            //alert('...showAlert');
-            //var xmlDoc = $.parseXML('spiagge/1.xml');
 
         });
-
-//          $('#meteo').live('pagecreate', function (event, ui) {
-//            alert('meteo');
-////            var units = 'metric';
-////            if (get_cookie('units') == 'imperial') units = 'imperial';
-////            var el = $('#flip-units');
-////            el.val(units).attr('selected', true).siblings('option').removeAttr('selected');
-
-
-////            var lang = 'it';
-////            if (get_cookie('lang') == 'en') lang = 'en';
-////            var el = $('#flip-LANG');
-////            el.val(lang).attr('selected', true).siblings('option').removeAttr('selected');
-//            alert('meteo end');
-//        });
 
 
 
@@ -498,9 +604,7 @@ console.log("Hello World16");
         };
 
         $('#main').live('pageshow', function (event, ui) {
-               //alert(isDeviceOnline);
 
-               
                  $("div[class$='slidein-panel']").animate({'left':-$("div[class$='slidein-panel']").outerWidth()});
                  status = 'close';
 
@@ -683,53 +787,10 @@ console.log("Hello World16");
 
 
         $('#gmap').live('pageshow', function (event, ui) {
-            
-            var Geo={};
-
-            if (navigator.geolocation) {
-                alert('navigator.geolocation on')
-               navigator.geolocation.getCurrentPosition(success,onError,{maximumAge: 60000, timeout: 60000, enableHighAccuracy:true}); 
-            }
-            else
-            {
-             alert('navigator.geolocation off')
-            }
-
-            //Get the latitude and the longitude;
-            function success(position) {
-                alert('success');
-                Geo.lat = position.coords.latitude;
-                Geo.lng = position.coords.longitude;
-                
-                alert("==>" + Geo.lat +" " + Geo.lng);
-                calcRoute(Geo.lat,Geo.lng);
-            }
-
-            function onError(error) {
-                alert('error');
-                alert('code: '    + error.code    + '\n' +
-                        'message: ' + error.message + '\n');
-            }
-
-       
-
-            navigator.geolocation.getCurrentPosition(handle_geolocation_query);  
-    
-            function handle_geolocation_query(position){
-                mylng = position.coords.longitude;
-                mylat = position.coords.latitude;
-                //
-                
-                alert(mylng +" " + mylat);
-
-                calcRoute(mylat,mylng);
-            }
 
             $("div[class$='slidein-panel']").animate({'left':-$("div[class$='slidein-panel']").outerWidth()});
             status = 'close';
 
-            
-            //alert('map' + map);
             map = null;
             isDeviceOnline='YES';
            if(isDeviceOnline=='YES')
@@ -738,7 +799,15 @@ console.log("Hello World16");
                         navigator.notification.activityStart("caricamento", "Caricamento mappa in corso...");
                 }
                 //alert('centerMap..');
-                var centerMap = new google.maps.LatLng(40.931153, 9.483948);
+                if(mylat==0)
+                {
+                    mylat=40.931153;
+                }
+                if(mylng==0)
+                {
+                    mylng=9.483948;
+                }
+                var centerMap = new google.maps.LatLng(mylat,mylng);
                 //alert('centerMap: ' +centerMap);
                 var myOptions = {
                     zoom: 11,
@@ -767,16 +836,6 @@ console.log("Hello World16");
             {
                 alert('no Connection');
             }
-
-
-
-
-          
-
-
-
-
-
 
         });
 
@@ -2152,23 +2211,22 @@ console.log("Hello World25b");
         </div>
         <div data-role="content" id="home-ct">
             <ul data-role="listview" data-inset="true">
-                <li id="ft"><span id="lns">Latest News</span><span id="viall"><a href="#" data-ajax="false">View
+                <li id="ft"><span id="lns">Spiagge piu vicine</span><span id="viall"><a href="#" data-ajax="false">View
                     All</a></span></li>
                 <li class="indpr-1 myindpr"><a href="#" class="nomar" data-ajax="false">
                     <img src="images/palm_tree.png" alt="winelovers420x260" />
-                    <div class="datebreak ui-li-desc">
-                        Dec 11&#44; 2013</div>
-                    <h3 class="grl">
-                        Norwegian Getaway to Feature Wine Lovers the Musical
-                        <div class="fb-like" data-href="http://www.meridiana.it/it/index.aspx" data-layout="button_count" data-action="like" data-show-faces="true" data-share="false"></div>
+                    <h3 id="b1_descr" class="grl">
                     </h3>
                 </a></li>
-                <li class="indpr-2 myindpr"><a href="#" class="nomar" data-ajax="false">
-                    <img src="images/palm_tree.png" alt="420x260EmsRiverPapenbergGetaway" />
-                    <div class="datebreak ui-li-desc">
-                        Nov 15&#44; 2013</div>
-                    <h3 class="grl">
-                        NORWEGIAN GETAWAY BEGINS HER CONVEYANCE ALONG THE EMS RIVER</h3>
+               <li class="indpr-1 myindpr"><a href="#" class="nomar" data-ajax="false">
+                    <img src="images/palm_tree.png" alt="winelovers420x260" />
+                    <h3 id="b2_descr" class="grl">
+                    </h3>
+                </a></li>
+                <li class="indpr-1 myindpr"><a href="#" class="nomar" data-ajax="false">
+                    <img src="images/palm_tree.png" alt="winelovers420x260" />
+                    <h3 id="b3_descr" class="grl">
+                    </h3>
                 </a></li>
             </ul>
             <div class="fb-like" data-href="http://www.meridiana.it/it/index.aspx" data-layout="button_count" data-action="like" data-show-faces="true" data-share="false"></div>
@@ -2176,14 +2234,11 @@ console.log("Hello World25b");
                 <ul data-role="listview" data-inset="true">
                     <li>
                         <div id="icvid">
-                            <!--    <iframe width="70" height="45" src="#"
-                                frameborder="0" allowfullscreen></iframe>-->
                         </div>
                         <div class="icbody">
                             <h3 class="grl">
-                                Watch Videos</h3>
-                            <a href="#" data-ajax="false" style="text-decoration: none;"><strong>View All Videos
-                                Now</strong></a>
+                               </h3>
+                            <a href="#" data-ajax="false" style="text-decoration: none;"><strong></strong></a>
                         </div>
                     </li>
                 </ul>
@@ -2248,6 +2303,7 @@ console.log("Hello World25b");
         <div data-role="content" id="Div1">
             <div id="mapmap" style="width: 100%; height: 320px;">
             </div>
+             <div class="fb-like" data-href="http://www.meridiana.it/it/index.aspx" data-layout="button_count" data-action="like" data-show-faces="true" data-share="false"></div>
         </div>
         <div id="Div1">
             <img id="Img1" src="images/footer_wave.png">
