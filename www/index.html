@@ -465,8 +465,9 @@ console.log("Hello World10");
        
 
          $(document).ready(function () {         
-            
-
+            $('#bt_view_ds').change(function() {
+                alert('bt_view_ds');
+            });
             $('#BeachFinderBy').change(function() {
               //alert( this.value ); // or $(this).val()
               beachfinderby= this.value;
@@ -661,6 +662,7 @@ console.log("Hello World16");
 
         $('#Beach').live('pageshow', function (event, ui) {
                  var Beach_ID=getURLParameter('id');
+                 //alert(Beach_ID);
                  for (var i = 0; i < sites.length; i++) {
                         var  info = sites[i];
                         //var beach=[nome, lat,lon, 1, descrizione,windNO,parking,bar,id]
@@ -950,7 +952,7 @@ console.log("Hello World16");
                     mapTypeId: google.maps.MapTypeId.ROADMAP
                 }
 
-            
+                map=null;
                 map = new google.maps.Map(document.getElementById("mapmap"), myOptions);
                 //alert('map: ' +map);
 
@@ -959,8 +961,8 @@ console.log("Hello World16");
                     content: "loading..."
                 });
             
-                var bikeLayer = new google.maps.BicyclingLayer();
-                bikeLayer.setMap(map);
+//                var bikeLayer = new google.maps.BicyclingLayer();
+//                bikeLayer.setMap(map);
 
 
                 if (navigator != null && navigator.notification != null) {
@@ -976,6 +978,7 @@ console.log("Hello World16");
 
           function setMarkers(map, markers) {
                //alert('markers.length:' + markers.length);
+               google.maps.event.clearListeners(map, 'click');
                var siteLatLng = new google.maps.LatLng(mylat, mylng);
                markerMyPosition=new google.maps.Marker({
                             position: siteLatLng,
@@ -1020,16 +1023,25 @@ console.log("Hello World16");
                          }  
                     }
                     var siteLatLng = new google.maps.LatLng(sites[1], sites[2]);
-
+                    //alert(sites[8]);
                     if (valid==0) {
                         var marker = new google.maps.Marker({
                             position: siteLatLng,
                             map: map,
                             title: sites[0], 
                             zIndex: sites[3],
-                            html: '<b>'+sites[0] +sites[8] + '</b> <br/>' + sites[4] +  '<a href="#Beach?id=' + sites[8] +'">....</a>'
+                            url: '#Beach?id=' + sites[8],
+                            html: '<b>'+sites[0] +sites[8] + '</b> <br/>' + sites[4] +  '<a href="#Beach?id=' + sites[8] +'">...clicca qui per maggiorni info</a>'
                     , icon: imgWindKO,
                             shape: shape
+                        });
+                     
+                        google.maps.event.addListener(marker, "click", function () {
+                            //alert(marker.url+'+++');
+
+                            window.location.href = this.url;
+                            infowindow.setContent(this.html );
+                            infowindow.open(map, this);
                         });
                     }
                     else {
@@ -1038,18 +1050,22 @@ console.log("Hello World16");
                                     map: map,
                                     title: sites[0],
                                     zIndex: sites[3],
-                                    html:  '<b>'+sites[0] +sites[8] + '</b> <br/>' + sites[4] +  '<a href="#Beach?id=' + sites[8] +'">....</a>'
+                                    url: '#Beach?id=' + sites[8],
+                                    html: '<b>'+sites[0] +sites[8] + '</b> <br/>' + sites[4] +  '<a href="#Beach?id=' + sites[8] +'">...clicca qui per maggiorni info</a>'
                             , icon: imgWindOK,
                                     shape: shape
                                 });
+
+                                //alert(marker.url+'---');
+                                google.maps.event.addListener(marker, "click", function () {
+    
+                                    window.location.href = this.url;
+                                    infowindow.setContent(this.html );
+                                    infowindow.open(map, this);
+                                });
                         }
                         var contentString = "Some content";
-
-                        google.maps.event.addListener(marker, "click", function () {
-                            //alert(this.html);
-                            infowindow.setContent(this.html );
-                            infowindow.open(map, this);
-                        });
+                         
                    
                       
 
@@ -2321,7 +2337,7 @@ console.log("Hello World25b");
             <div id="slidein-panel" class="slidein-panel" style="z-index: 99999">
                 <!-- SlidePanel Button Container -->
                 <div id="slidein-panel-container" class="slidein-panel-container">
-                    <a class="slidein-panel-btn" id="slidein-panel-btn" href="#"><i class="icon-list"></i>
+                    <a class="slidein-panel-btn" id="slidein-panel-btn" href="#"><a>Menu</a>
                     </a>
                 </div>
                 <!-- /SlidePanel Button Container -->
@@ -2329,11 +2345,11 @@ console.log("Hello World25b");
                 <ul>
                     <li><a href="#main">
                         <img src="images/flip_flops.png" height="18px" width="18px" />
-                        &nbsp; Main</a></li>
+                        &nbsp; Spiagge più vicine</a></li>
                     <li><a href="#gmap">
-                        <img src="images/flip_flops.png" height="18px" width="18px" />&nbsp; Beach Map</a></li>
+                        <img src="images/flip_flops.png" height="18px" width="18px" />&nbsp; Mappa Spiagge x te</a></li>
                     <li><a href="#meteo">
-                        <img src="images/flip_flops.png" height="18px" width="18px" />&nbsp; Weather</a></li>
+                        <img src="images/flip_flops.png" height="18px" width="18px" />&nbsp; Meteo</a></li>
                 </ul>
                 <!-- /SlidePanel Content -->
             </div>
@@ -2360,6 +2376,7 @@ console.log("Hello World25b");
             </div>
         </div>
         <div data-role="content" id="home-ct">
+        
             <ul data-role="listview" data-inset="true">
                 <li id="ft"><span id="lns">Spiagge piu vicine</span><span id="viall"><a href="#"
                     data-ajax="false">View All</a></span></li>
@@ -2599,6 +2616,18 @@ console.log("Hello World25b");
             <div id="divImg" style="width: 100%; height: 200px;">
                 <img id="beach_Img" src="images/beach/imagestest4.jpg" />
             </div>
+            <center>
+            <table style="border:0; border-style:none; border-width:0" cellpadding="5" cellspacing="5">
+                <tr>
+                    <td><img id="img_parcheggio" src="images/icona-parcheggio.png" height=40px width=40px /></td>
+                    <td><img id="img_bar" src="images/icona-bar.png" height=40px width=40px/></td>
+                    <td><img id="img_bambini" src="images/icona-bambini.png" height=40px width=40px/></td>
+                    <td><img id="img_disabili" src="images/icona-hand.png" height=40px width=40px/></td>
+                    <td><img id="img_noleggio" src="images/icona-noleggio.png" height=40px width=40px/></td>
+                    <td><img id="img_camper" src="images/icona-camper.png" height=40px width=40px/></td>
+                </tr>
+            </table>
+            </center>
             <br />
             <div data-role="collapsible-set" data-content-theme="a" data-iconpos="right" id="set">
                 <div data-role="collapsible" id="set1" data-collapsed="true">
@@ -2620,6 +2649,7 @@ console.log("Hello World25b");
             <br />
             <div id="divDs" style="width: 100%; height: 320px;">
                 <hr />
+                <h3>Indicazioni Stradali</h3>
                 <div style="height: 100%;" id="map_canvas">
                 </div>
                 <a id="beach_Drive">gira a destra </a>
