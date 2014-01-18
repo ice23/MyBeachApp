@@ -337,6 +337,13 @@ console.log("Hello World10");
             return JSONobject;
         }
 
+        $(document).ready(function(){
+            $('#backbt').click(function(){
+                parent.history.back();
+                return false;
+            });
+        });
+
         var directionsService = new google.maps.DirectionsService();
         var distancekm=0.0;
         function calcRoute(lat,long) {
@@ -420,6 +427,11 @@ console.log("Hello World10");
                     }
                     if(info[1]==lat4 && info[2]==lngt4)
                     {
+//                         alert('piaggia1 ' + dist1 + ' coordinate ' + lat1+ ' , ' + lngt1 + '\n' +
+//                        'piaggia2 ' + dist2 + ' coordinate ' + lat2+ ' , ' + lngt2 + '\n' +
+//                        'piaggia3 ' + dist3 + ' coordinate ' + lat3+ ' , ' + lngt3 + '\n' +
+//                        'piaggia4 ' + dist4 + ' coordinate ' + lat4+ ' , ' + lngt4 + '\n' +
+//                        'piaggia5 ' + dist5 + ' coordinate ' + lat5+ ' , ' + lngt5 );
                          $('#b4_descr').html(dist4 + 'km) ' + info[0]);
                          $('#lnkBeachID4').attr("href", "#Beach?id="+info[8]);
                     }
@@ -428,11 +440,7 @@ console.log("Hello World10");
 //                         $('#b5_descr').html(dist5 + 'km) ' + info[0]);
 //                    }
                 }
-//                alert('piaggia1 ' + dist1 + ' coordinate ' + lat1+ ' , ' + lngt1 + '\n' +
-//                    'piaggia2 ' + dist2 + ' coordinate ' + lat2+ ' , ' + lngt2 + '\n' +
-//                    'piaggia3 ' + dist3 + ' coordinate ' + lat3+ ' , ' + lngt3 + '\n' +
-//                    'piaggia4 ' + dist4 + ' coordinate ' + lat4+ ' , ' + lngt4 + '\n' +
-//                    'piaggia5 ' + dist5 + ' coordinate ' + lat5+ ' , ' + lngt5 );
+               
             }
             function showSteps(directionResult) {
               // For each step, place a marker, and add the text to the marker's
@@ -457,6 +465,7 @@ console.log("Hello World10");
        
 
          $(document).ready(function () {         
+            
 
             $('#BeachFinderBy').change(function() {
               //alert( this.value ); // or $(this).val()
@@ -670,6 +679,23 @@ console.log("Hello World16");
                             //alert(start + '\n' + end);
 		                    //var distanceInput = document.getElementById("distance");
 
+                            var directionDisplay;
+		                    var directionsService = new google.maps.DirectionsService();
+		                    var map_dir;
+
+                            directionsDisplay = new google.maps.DirectionsRenderer();
+		                    var mypos = new google.maps.LatLng(mylat, mylng);
+                            //alert(mylat + ' ' +mylng);
+		                    var myOptions = {
+		                        zoom: 12,
+		                        mapTypeId: google.maps.MapTypeId.ROADMAP,
+		                        center: mypos
+		                    }
+                            //alert(map_dir);
+		                    map_dir = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
+		                    directionsDisplay.setMap(map_dir);
+                            //alert(map_dir);
+
 		                    var request = {
 		                        origin: start,
 		                        destination: end,
@@ -681,7 +707,7 @@ console.log("Hello World16");
                                 count_tmp_beach=count_tmp_beach+1;
                                 //alert(count_tmp_beach +'/' + sites.length);
                                 if (status == google.maps.DirectionsStatus.OK) {
-		                            //directionsDisplay.setDirections(response);
+		                            directionsDisplay.setDirections(response);
                                     //alert(response.routes[0].legs[0].distance.value / 1000);
                                     distancekm=response.routes[0].legs[0].distance.value / 1000;
                                     var origins = request.origin.split(',');
@@ -968,7 +994,7 @@ console.log("Hello World16");
 
                     var sites = markers[i];
                     calcRoute(sites[1],sites[2]);
-                    //alert(sites[0]);
+                    
                     var WindDirNo = sites[5];
                     var parking=sites[6];
                     var bar=sites[7];
@@ -1001,7 +1027,7 @@ console.log("Hello World16");
                             map: map,
                             title: sites[0], 
                             zIndex: sites[3],
-                            html: sites[4]
+                            html: '<b>'+sites[0] +sites[8] + '</b> <br/>' + sites[4] +  '<a href="#Beach?id=' + sites[8] +'">....</a>'
                     , icon: imgWindKO,
                             shape: shape
                         });
@@ -1012,7 +1038,7 @@ console.log("Hello World16");
                                     map: map,
                                     title: sites[0],
                                     zIndex: sites[3],
-                                    html: sites[4] +  '<a href="#MyBeach?id=2">...</a>'
+                                    html:  '<b>'+sites[0] +sites[8] + '</b> <br/>' + sites[4] +  '<a href="#Beach?id=' + sites[8] +'">....</a>'
                             , icon: imgWindOK,
                                     shape: shape
                                 });
@@ -2286,9 +2312,12 @@ console.log("Hello World25b");
     </script>
     <div data-role="page" id="main" class="type-index">
         <div class="banner" style="z-index: 99999" data-role="header" role="banner" data-theme="c">
-            <div class="wrapban">
-                <span class="logo" style="width: 100px"></span>
-            </div>
+             <center>
+                <div style="vertical-align: middle;">
+                    <br />
+                    <a id="A1">Sardinia Beach Finder</a>
+                </div>
+            </center>
             <div id="slidein-panel" class="slidein-panel" style="z-index: 99999">
                 <!-- SlidePanel Button Container -->
                 <div id="slidein-panel-container" class="slidein-panel-container">
@@ -2334,35 +2363,37 @@ console.log("Hello World25b");
             <ul data-role="listview" data-inset="true">
                 <li id="ft"><span id="lns">Spiagge piu vicine</span><span id="viall"><a href="#"
                     data-ajax="false">View All</a></span></li>
-                <li class="indpr-1 myindpr"><a id="lnkBeachID1" href="#Beach?id=1" class="nomar" data-ajax="false">
+                <li class="indpr-1 myindpr"><a id="lnkBeachID1" href="#Beach?id=1" class="nomar"
+                    data-ajax="false">
                     <img src="images/palm_tree.png" alt="winelovers420x260" />
                     <h3 id="b1_descr" class="grl">
                     </h3>
                 </a></li>
-                <li class="indpr-1 myindpr"><a id="lnkBeachID2" href="#Beach?id=1" class="nomar" data-ajax="false">
+                <li class="indpr-1 myindpr"><a id="lnkBeachID2" href="#Beach?id=1" class="nomar"
+                    data-ajax="false">
                     <img src="images/palm_tree.png" alt="winelovers420x260" />
                     <h3 id="b2_descr" class="grl">
                     </h3>
                 </a></li>
-                <li class="indpr-1 myindpr"><a id="lnkBeachID3" href="#Beach?id=1" class="nomar" data-ajax="false">
+                <li class="indpr-1 myindpr"><a id="lnkBeachID3" href="#Beach?id=1" class="nomar"
+                    data-ajax="false">
                     <img src="images/palm_tree.png" alt="winelovers420x260" />
                     <h3 id="b3_descr" class="grl">
                     </h3>
                 </a></li>
-                <li class="indpr-1 myindpr"><a id="lnkBeachID4" href="#Beach?id=1" class="nomar" data-ajax="false">
+                <li class="indpr-1 myindpr"><a id="lnkBeachID4" href="#Beach?id=1" class="nomar"
+                    data-ajax="false">
                     <img src="images/palm_tree.png" alt="winelovers420x260" />
-                    <h3 id="b5_descr" class="grl">
+                    <h3 id="b4_descr" class="grl">
                     </h3>
                 </a></li>
             </ul>
             <div id="section-vid">
                 <ul data-role="listview" data-inset="true">
                     <li>
-                        <div id="icvid">
-                        </div>
                         <div class="icbody">
                             <h3 class="grl">
-                                Le distanze sono calcolate dalla posizione : <a id="OriginPosition"></a>
+                                Le distanze sono calcolate dalla posizione :" <a id="OriginPosition"></a>"
                             </h3>
                             <a href="#" data-ajax="false" style="text-decoration: none;"><strong></strong></a>
                         </div>
@@ -2556,43 +2587,42 @@ console.log("Hello World25b");
     </div>
     <div data-role="page" id="Beach" class="type-index">
         <div class="banner" style="z-index: 99999" data-role="header" role="banner" data-theme="c">
-           <center>
-                <div style="vertical-align:middle;">
-                  <br /><a id="beach_Name">SPiaggia</a>
+            <input type="image" style="float: left; top: -20px" src="images/back.png" id="backbt" />
+            <center>
+                <div style="vertical-align: middle;">
+                    <br />
+                    <a id="beach_Name">SPiaggia</a>
                 </div>
             </center>
-            <div id="slidein-panel_BeachDs" class="slidein-panel" style="z-index: 99999;">
-                <!-- SlidePanel Button Container -->
-                <div id="slidein-panel-container_BeachDs" class="slidein-panel-container">
-                    <a id="slidein-panel-btn_BeachDs" class="slidein-panel-btn" href="#"><i class="icon-list">
-                    </i></a>
-                </div>
-                <!-- /SlidePanel Button Container -->
-                <!-- SlidePanel Content -->
-                <ul>
-                    <li><a href="#main">
-                        <img src="images/flip_flops.png" height="18px" width="18px" />
-                        &nbsp; Main</a></li>
-                    <li><a href="#gmap">
-                        <img src="images/flip_flops.png" height="18px" width="18px" />&nbsp; Beach Map</a></li>
-                    <li><a href="#meteo">
-                        <img src="images/flip_flops.png" height="18px" width="18px" />&nbsp; Weather</a></li>
-                </ul>
-                <!-- /SlidePanel Content -->
-            </div>
         </div>
         <div data-role="content" id="Div9">
             <div id="divImg" style="width: 100%; height: 200px;">
                 <img id="beach_Img" src="images/beach/imagestest4.jpg" />
             </div>
+            <br />
+            <div data-role="collapsible-set" data-content-theme="a" data-iconpos="right" id="set">
+                <div data-role="collapsible" id="set1" data-collapsed="true">
+                    <h3>
+                        Descrizione</h3>
+                    <p>
+                        <h3 id="beach_Ds">
+                            questa piaggia vfdjvlfdmv ldsv jdknvckm vcdmc skjm ldjkdnlvmdc,sbvjsd, vkjdsnlkvmd,ms
+                            vkjjdsknvkjdhslkv kjdvlkds vbdskjc dskjcnmds hvbkds vndbsjvnmdsbvjkndsv kjdsn vdshvksd
+                            kvbkdsl fhdbfksdfjdslkfm jdsnfbsdf jkdhf dfndsmfbjds fbsdlkf
+                        </h3>
+                    </p>
+                </div>
+                <div data-role="collapsible" id="set2" data-collapsed="true">
+                    <h3>
+                        Galleria</h3>
+                </div>
+            </div>
+            <br />
             <div id="divDs" style="width: 100%; height: 320px;">
-                <h3 id="beach_Ds" >
-                questa piaggia vfdjvlfdmv ldsv jdknvckm vcdmc skjm ldjkdnlvmdc,sbvjsd, vkjdsnlkvmd,ms vkjjdsknvkjdhslkv kjdvlkds vbdskjc  dskjcnmds hvbkds vndbsjvnmdsbvjkndsv kjdsn vdshvksd kvbkdsl fhdbfksdfjdslkfm  jdsnfbsdf jkdhf dfndsmfbjds fbsdlkf 
-                </h3>
                 <hr />
-                <h3 id="beach_Drive" class="grl">
-                gira a destra
-                </h3>
+                <div style="height: 100%;" id="map_canvas">
+                </div>
+                <a id="beach_Drive">gira a destra </a>
             </div>
         </div>
         <div id="Div14">
