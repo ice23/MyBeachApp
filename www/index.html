@@ -75,14 +75,14 @@
         //
         function onSuccess(position) {
             //alert('ok');
-//            alert('Latitude: ' + position.coords.latitude + '\n' +
-//                            'Longitude: ' + position.coords.longitude + '\n' +
-//                            'Altitude: ' + position.coords.altitude + '\n' +
-//                            'Accuracy: ' + position.coords.accuracy + '\n' +
-//                            'Altitude Accuracy: ' + position.coords.altitudeAccuracy + '\n' +
-//                            'Heading: ' + position.coords.heading + '\n' +
-//                            'Speed: ' + position.coords.speed + '\n' +
-//                            'Timestamp: ' + position.timestamp + '\n');
+            //            alert('Latitude: ' + position.coords.latitude + '\n' +
+            //                            'Longitude: ' + position.coords.longitude + '\n' +
+            //                            'Altitude: ' + position.coords.altitude + '\n' +
+            //                            'Accuracy: ' + position.coords.accuracy + '\n' +
+            //                            'Altitude Accuracy: ' + position.coords.altitudeAccuracy + '\n' +
+            //                            'Heading: ' + position.coords.heading + '\n' +
+            //                            'Speed: ' + position.coords.speed + '\n' +
+            //                            'Timestamp: ' + position.timestamp + '\n');
         }
 
         // onError Callback receives a PositionError object
@@ -270,6 +270,8 @@
         var Hpa = 0;
         var mylng =0;
         var mylat=0;
+        var OriginPosition='';
+        var markerMyPosition=null;
 console.log("Hello World10");
         var options, gm, gms, testOverflowMin, testOverflowMax, periodicRand;
 
@@ -404,15 +406,27 @@ console.log("Hello World10");
                     if(info[1]==lat1 && info[2]==lngt1)
                     {
                          $('#b1_descr').html(dist1 + 'km) ' + info[0]);
+                         $('#lnkBeachID1').attr("href", "#Beach?id="+info[8]);
                     }
                     if(info[1]==lat2 && info[2]==lngt2)
                     {
                           $('#b2_descr').html(dist2 + 'km) ' + info[0]);
+                          $('#lnkBeachID2').attr("href", "#Beach?id="+info[8]);
                     }
                     if(info[1]==lat3 && info[2]==lngt3)
                     {
                          $('#b3_descr').html(dist3 + 'km) ' + info[0]);
+                         $('#lnkBeachID3').attr("href", "#Beach?id="+info[8]);
                     }
+                    if(info[1]==lat4 && info[2]==lngt4)
+                    {
+                         $('#b4_descr').html(dist4 + 'km) ' + info[0]);
+                         $('#lnkBeachID4').attr("href", "#Beach?id="+info[8]);
+                    }
+//                    if(info[1]==lat5 && info[2]==lngt5)
+//                    {
+//                         $('#b5_descr').html(dist5 + 'km) ' + info[0]);
+//                    }
                 }
 //                alert('piaggia1 ' + dist1 + ' coordinate ' + lat1+ ' , ' + lngt1 + '\n' +
 //                    'piaggia2 ' + dist2 + ' coordinate ' + lat2+ ' , ' + lngt2 + '\n' +
@@ -489,7 +503,7 @@ console.log("Hello World10");
                     var parking = spiaggia.find('parcheggio').text();
                     var bar = spiaggia.find('bar').text();
                     //   
-                    var beach=[nome, lat,lon, 1, descrizione,windNO,parking,bar]
+                    var beach=[nome, lat,lon, 1, descrizione,windNO,parking,bar,id]
                     //alert(beach);
                     sites.push(beach);
                 });
@@ -512,7 +526,33 @@ console.log("Hello World10");
                     mylat= position.coords.latitude;
                     mylng = position.coords.longitude;
                 
-                    //alert("=====>" + mylat +" " + mylng);
+                    var geocoder =null;
+                    geocoder= new google.maps.Geocoder();
+                    var latlng = new google.maps.LatLng(mylat, mylng);
+                    geocoder.geocode({'latLng': latlng}, function(results, status) {
+                      if (status == google.maps.GeocoderStatus.OK) {
+                        
+                        if (results[1]) {
+//                          map.setZoom(11);
+//                          marker = new google.maps.Marker({
+//                              position: latlng,
+//                              map: map
+//                          });
+                          markerMyPosition = new google.maps.Marker({
+                              position: latlng,
+                              map: map
+                          });
+                          OriginPosition=results[1].formatted_address;
+                          $('#OriginPosition').html(OriginPosition);
+                          //alert(results[1].formatted_address);
+                          //infowindow.setContent(results[1].formatted_address);
+                          //infowindow.open(map, marker);
+                        }
+                      } else {
+                        alert("Geocoder failed due to: " + status);
+                      }
+                    });
+                   
                     
                     count_tmp_beach=0;
                     for (var i = 0; i < sites.length; i++) {
@@ -610,6 +650,75 @@ console.log("Hello World16");
 
         });
 
+        $('#Beach').live('pageshow', function (event, ui) {
+                 var Beach_ID=getURLParameter('id');
+                 for (var i = 0; i < sites.length; i++) {
+                        var  info = sites[i];
+                        //var beach=[nome, lat,lon, 1, descrizione,windNO,parking,bar,id]
+                        if(Beach_ID==info[8])
+                        {
+                            var nome=info[0];
+                            var ds=info[4];
+                            //alert(info[0]);
+                            $('#beach_Name').html(nome);
+                            $('#beach_Ds').html(ds);
+
+
+                            //Direzione
+                            var start = mylat+","+mylng;
+		                    var end = info[1]+","+info[2];
+                            //alert(start + '\n' + end);
+		                    //var distanceInput = document.getElementById("distance");
+
+		                    var request = {
+		                        origin: start,
+		                        destination: end,
+		                        travelMode: google.maps.DirectionsTravelMode.DRIVING
+		                    };
+
+		                    directionsService.route(request, function (response, status) {
+		                        //alert('status:' + status);
+                                count_tmp_beach=count_tmp_beach+1;
+                                //alert(count_tmp_beach +'/' + sites.length);
+                                if (status == google.maps.DirectionsStatus.OK) {
+		                            //directionsDisplay.setDirections(response);
+                                    //alert(response.routes[0].legs[0].distance.value / 1000);
+                                    distancekm=response.routes[0].legs[0].distance.value / 1000;
+                                    var origins = request.origin.split(',');
+                                    var destinations = request.destination.split(',');
+
+                                    var myRoute = response.routes[0].legs[0];
+                                    var instr='';
+                                    for (var i = 0; i < myRoute.steps.length; i++) {
+                                        var km=myRoute.steps[i].distance.text;
+                                        instr=instr+'<br/> ' + km+')'+myRoute.steps[i].instructions ;
+                                    }
+
+                                     $('#beach_Drive').html(instr);
+		                        }
+
+		                    });
+                        }
+                 }
+
+
+                 $("div[class$='slidein-panel']").animate({'left':-$("div[class$='slidein-panel']").outerWidth()});
+                 status = 'close';
+
+        });
+
+        function getURLParameter(name) {
+             var vars = [], hash;
+            var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
+            for(var i = 0; i < hashes.length; i++)
+            {
+                hash = hashes[i].split('=');
+                vars.push(hash[0]);
+                vars[hash[0]] = hash[1];
+            }
+            return vars[name];
+        }
+        
 
 
         $('#meteo').live('pageshow', function (event, ui) {
@@ -841,7 +950,19 @@ console.log("Hello World16");
 
           function setMarkers(map, markers) {
                //alert('markers.length:' + markers.length);
-               
+               var siteLatLng = new google.maps.LatLng(mylat, mylng);
+               markerMyPosition=new google.maps.Marker({
+                            position: siteLatLng,
+                            map: map,
+                            title: '', 
+                            zIndex: 1,
+                            html: ''
+                        });
+                google.maps.event.addListener(markerMyPosition, "click", function () {
+                            infowindow.setContent('My Position' );
+                            infowindow.open(map, this);
+                        });
+
                 for (var i = 0; i < markers.length; i++) {
                     
 
@@ -2211,25 +2332,29 @@ console.log("Hello World25b");
         </div>
         <div data-role="content" id="home-ct">
             <ul data-role="listview" data-inset="true">
-                <li id="ft"><span id="lns">Spiagge piu vicine</span><span id="viall"><a href="#" data-ajax="false">View
-                    All</a></span></li>
-                <li class="indpr-1 myindpr"><a href="#" class="nomar" data-ajax="false">
+                <li id="ft"><span id="lns">Spiagge piu vicine</span><span id="viall"><a href="#"
+                    data-ajax="false">View All</a></span></li>
+                <li class="indpr-1 myindpr"><a id="lnkBeachID1" href="#Beach?id=1" class="nomar" data-ajax="false">
                     <img src="images/palm_tree.png" alt="winelovers420x260" />
                     <h3 id="b1_descr" class="grl">
                     </h3>
                 </a></li>
-               <li class="indpr-1 myindpr"><a href="#" class="nomar" data-ajax="false">
+                <li class="indpr-1 myindpr"><a id="lnkBeachID2" href="#Beach?id=1" class="nomar" data-ajax="false">
                     <img src="images/palm_tree.png" alt="winelovers420x260" />
                     <h3 id="b2_descr" class="grl">
                     </h3>
                 </a></li>
-                <li class="indpr-1 myindpr"><a href="#" class="nomar" data-ajax="false">
+                <li class="indpr-1 myindpr"><a id="lnkBeachID3" href="#Beach?id=1" class="nomar" data-ajax="false">
                     <img src="images/palm_tree.png" alt="winelovers420x260" />
                     <h3 id="b3_descr" class="grl">
                     </h3>
                 </a></li>
+                <li class="indpr-1 myindpr"><a id="lnkBeachID4" href="#Beach?id=1" class="nomar" data-ajax="false">
+                    <img src="images/palm_tree.png" alt="winelovers420x260" />
+                    <h3 id="b5_descr" class="grl">
+                    </h3>
+                </a></li>
             </ul>
-            <iframe src="http://www.facebook.com/plugins/like.php?href=http%3A%2F%2Fwww.meridiana.it%2Fit%2Findex.aspx&amp;width&amp;layout=button_count&amp;action=like&amp;show_faces=false&amp;share=false&amp;height=21" scrolling="no" frameborder="0" style="border:none; overflow:hidden; height:21px;" allowTransparency="true"></iframe>
             <div id="section-vid">
                 <ul data-role="listview" data-inset="true">
                     <li>
@@ -2237,14 +2362,13 @@ console.log("Hello World25b");
                         </div>
                         <div class="icbody">
                             <h3 class="grl">
-                               </h3>
+                                Le distanze sono calcolate dalla posizione : <a id="OriginPosition"></a>
+                            </h3>
                             <a href="#" data-ajax="false" style="text-decoration: none;"><strong></strong></a>
                         </div>
                     </li>
                 </ul>
             </div>
-            <a href="fb://profile/33138223345">deeplink</a>
-            <div class="fb-like" data-href="http://www.meridiana.it/it/index.aspx" data-layout="button_count" data-action="like" data-show-faces="true" data-share="false"></div>
         </div>
         <!-- /content -->
         <div id="cdcount">
@@ -2304,8 +2428,9 @@ console.log("Hello World25b");
         <div data-role="content" id="Div1">
             <div id="mapmap" style="width: 100%; height: 320px;">
             </div>
-             <div class="fb-like" data-href="http://www.meridiana.it/it/index.aspx" data-layout="button_count" data-action="like" data-show-faces="true" data-share="false"></div>
-             <iframe src="http://www.facebook.com/plugins/like.php?href=http%3A%2F%2Fwww.meridiana.it%2Fit%2Findex.aspx&amp;width&amp;layout=button_count&amp;action=like&amp;show_faces=false&amp;share=false&amp;height=21" scrolling="no" frameborder="0" style="border:none; overflow:hidden; height:21px;" allowTransparency="true"></iframe>
+            <!--<iframe src="http://www.facebook.com/plugins/like.php?href=http%3A%2F%2Fwww.meridiana.it%2Fit%2Findex.aspx&amp;width&amp;layout=button_count&amp;action=like&amp;show_faces=false&amp;share=false&amp;height=21"
+                scrolling="no" frameborder="0" style="border: none; overflow: hidden; height: 21px;"
+                allowtransparency="true"></iframe>-->
         </div>
         <div id="Div1">
             <img id="Img1" src="images/footer_wave.png">
@@ -2426,6 +2551,62 @@ console.log("Hello World25b");
         </script>
         <div style="display: none">
             <div id="Div12" style="width: 900px; height: 529px;">
+            </div>
+        </div>
+    </div>
+    <div data-role="page" id="Beach" class="type-index">
+        <div class="banner" style="z-index: 99999" data-role="header" role="banner" data-theme="c">
+           <center>
+                <div style="vertical-align:middle;">
+                  <br /><a id="beach_Name">SPiaggia</a>
+                </div>
+            </center>
+            <div id="slidein-panel_BeachDs" class="slidein-panel" style="z-index: 99999;">
+                <!-- SlidePanel Button Container -->
+                <div id="slidein-panel-container_BeachDs" class="slidein-panel-container">
+                    <a id="slidein-panel-btn_BeachDs" class="slidein-panel-btn" href="#"><i class="icon-list">
+                    </i></a>
+                </div>
+                <!-- /SlidePanel Button Container -->
+                <!-- SlidePanel Content -->
+                <ul>
+                    <li><a href="#main">
+                        <img src="images/flip_flops.png" height="18px" width="18px" />
+                        &nbsp; Main</a></li>
+                    <li><a href="#gmap">
+                        <img src="images/flip_flops.png" height="18px" width="18px" />&nbsp; Beach Map</a></li>
+                    <li><a href="#meteo">
+                        <img src="images/flip_flops.png" height="18px" width="18px" />&nbsp; Weather</a></li>
+                </ul>
+                <!-- /SlidePanel Content -->
+            </div>
+        </div>
+        <div data-role="content" id="Div9">
+            <div id="divImg" style="width: 100%; height: 200px;">
+                <img id="beach_Img" src="images/beach/imagestest4.jpg" />
+            </div>
+            <div id="divDs" style="width: 100%; height: 320px;">
+                <h3 id="beach_Ds" >
+                questa piaggia vfdjvlfdmv ldsv jdknvckm vcdmc skjm ldjkdnlvmdc,sbvjsd, vkjdsnlkvmd,ms vkjjdsknvkjdhslkv kjdvlkds vbdskjc  dskjcnmds hvbkds vndbsjvnmdsbvjkndsv kjdsn vdshvksd kvbkdsl fhdbfksdfjdslkfm  jdsnfbsdf jkdhf dfndsmfbjds fbsdlkf 
+                </h3>
+                <hr />
+                <h3 id="beach_Drive" class="grl">
+                gira a destra
+                </h3>
+            </div>
+        </div>
+        <div id="Div14">
+            <img id="Img3" src="images/footer_wave.png">
+        </div>
+        <div data-role="footer" id="Div15">
+        </div>
+        <script type="text/javascript" src="js/jquery.countdown.min.js?m=1368543442"></script>
+        <script type="text/javascript" src="js/mob-generic.js?m=1368543444"></script>
+        <script>
+            $('#cdcount #countdown-field').countdown({ until: new Date(2015, 1 - 1, 16, 17, 00, 00), format: 'dHM', timezone: -5, layout: '<div class="countdown_section">' + '<span class="countdown_amount">{dnn}</span>D' + '<span class="countdown_amount">{hnn}</span>H' + '<span class="countdown_amount">{mnn}</span>M' });
+        </script>
+        <div style="display: none">
+            <div id="Div16" style="width: 900px; height: 529px;">
             </div>
         </div>
     </div>
