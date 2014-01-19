@@ -1,22 +1,4 @@
 ﻿<!DOCTYPE html>
-<!--
-    Licensed to the Apache Software Foundation (ASF) under one
-    or more contributor license agreements.  See the NOTICE file
-    distributed with this work for additional information
-    regarding copyright ownership.  The ASF licenses this file
-    to you under the Apache License, Version 2.0 (the
-    "License"); you may not use this file except in compliance
-    with the License.  You may obtain a copy of the License at
-
-    http://www.apache.org/licenses/LICENSE-2.0
-
-    Unless required by applicable law or agreed to in writing,
-    software distributed under the License is distributed on an
-    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
-     KIND, either express or implied.  See the License for the
-    specific language governing permissions and limitations
-    under the License.
--->
 <html>
 <head>
     <meta charset="utf-8" />
@@ -272,6 +254,7 @@
         var mylat=0;
         var OriginPosition='';
         var markerMyPosition=null;
+        var flipView=null;
 console.log("Hello World10");
         var options, gm, gms, testOverflowMin, testOverflowMax, periodicRand;
 
@@ -342,6 +325,10 @@ console.log("Hello World10");
                 parent.history.back();
                 return false;
             });
+            $('select#flipView').change(function() {
+                flipView= $('select#flipView').val();           
+            });
+            
         });
 
         var directionsService = new google.maps.DirectionsService();
@@ -372,8 +359,6 @@ console.log("Hello World10");
                         //9 8 10 15 7
 		                if(distancekm<dist1)
                         {   
-                            
-                            
                             dist5=dist4;
                             lat5=lat4;
                             lngt5=lngt4;
@@ -393,9 +378,7 @@ console.log("Hello World10");
 
                             //alert('dist1 ' + distancekm);
                         }
-                        
-                        
-                       
+
                         showSteps(response);
 		            }
 
@@ -465,7 +448,7 @@ console.log("Hello World10");
        
 
          $(document).ready(function () {         
-            $('#bt_view_ds').change(function() {
+            $('#bt_view_ds').click(function() {
                 alert('bt_view_ds');
             });
             $('#BeachFinderBy').change(function() {
@@ -512,8 +495,14 @@ console.log("Hello World10");
                     var windNO = spiaggia.find('windNO').text();
                     var parking = spiaggia.find('parcheggio').text();
                     var bar = spiaggia.find('bar').text();
+                    var disabili = spiaggia.find('disabili').text();
+                    var xbambini = spiaggia.find('xbambini').text();
+                    var surf = spiaggia.find('surf').text();
+                    var rent = spiaggia.find('attrezzata').text();
+                    var photo = spiaggia.find('foto').text();
+                    var camper = spiaggia.find('foto').text();
                     //   
-                    var beach=[nome, lat,lon, 1, descrizione,windNO,parking,bar,id]
+                    var beach=[nome, lat,lon, 1, descrizione,windNO,parking,bar,id,disabili,xbambini,surf,rent,photo,camper]
                     //alert(beach);
                     sites.push(beach);
                 });
@@ -665,14 +654,67 @@ console.log("Hello World16");
                  //alert(Beach_ID);
                  for (var i = 0; i < sites.length; i++) {
                         var  info = sites[i];
-                        //var beach=[nome, lat,lon, 1, descrizione,windNO,parking,bar,id]
-                        if(Beach_ID==info[8])
+                        var parking = info[6];
+                        var bar = info[7];
+                        var id = info[8];
+                        var disabili = info[9];
+                        var xbambini = info[10];
+                        var surf = info[11];
+                        var rent = info[12];
+                        var photo = info[13];
+                        var camper = info[14];
+                        //var beach=[nome, lat,lon, 1, descrizione,windNO,parking,bar,id,disabili,xbambini,surf,rent,photo]
+                        if(Beach_ID==id)
                         {
+                            //Info
                             var nome=info[0];
                             var ds=info[4];
                             //alert(info[0]);
                             $('#beach_Name').html(nome);
                             $('#beach_Ds').html(ds);
+
+
+                            //Img
+                            if(parking=='1')
+                            {
+                                $('#img_parcheggio').attr('src','images/icona-parcheggio_ok.png');
+                            }
+                            else
+                            {
+                                $('#img_parcheggio').attr('src','images/icona-parcheggio_ko.png');
+                            }
+                             if(bar=='1')
+                            {
+                                $('#img_bar').attr('src','images/icona-bar_ok.png');
+                            }
+                            else
+                            {
+                                $('#img_bar').attr('src','images/icona-bar_ko.png');
+                            }
+                             if(disabili=='1')
+                            {
+                                $('#img_disabili').attr('src','images/icona-hand_ok.png');
+                            }
+                            else
+                            {
+                                $('#img_disabili').attr('src','images/icona-hand_ko.png');
+                            }
+                             if(xbambini=='1')
+                            {
+                                $('#img_bambini').attr('src','images/icona-bambini_ok.png');
+                            }
+                            else
+                            {
+                                $('#img_bambini').attr('src','images/icona-bambini_ko.png');
+                            }
+                             if(rent=='1')
+                            {
+                                $('#img_noleggio').attr('src','images/icona-noleggio_ok.png');
+                            }
+                            else
+                            {
+                                $('#img_noleggio').attr('src','images/icona-noleggio_ko.png');
+                            }
 
 
                             //Direzione
@@ -928,8 +970,8 @@ console.log("Hello World16");
             $("div[class$='slidein-panel']").animate({'left':-$("div[class$='slidein-panel']").outerWidth()});
             status = 'close';
 
-            map = null;
-            isDeviceOnline='YES';
+           map = null;
+           isDeviceOnline='YES';
            if(isDeviceOnline=='YES')
            {
                 if (navigator != null && navigator.notification != null) {
@@ -954,6 +996,7 @@ console.log("Hello World16");
 
                 map=null;
                 map = new google.maps.Map(document.getElementById("mapmap"), myOptions);
+                
                 //alert('map: ' +map);
 
                 setMarkers(map, sites);
@@ -997,10 +1040,15 @@ console.log("Hello World16");
 
                     var sites = markers[i];
                     calcRoute(sites[1],sites[2]);
-                    
+                    //var beach=[nome, lat,lon, 1, descrizione,windNO,parking,bar,id,disabili,xbambini,surf,rent,photo,camper]
                     var WindDirNo = sites[5];
                     var parking=sites[6];
                     var bar=sites[7];
+                    var child=sites[10];
+                    var hand=sites[9];
+                    var rent=sites[12];
+                    var camper=sites[14];
+     
                     var valid=0;
                     
                     if(beachfinderby=='wind')
@@ -1022,6 +1070,31 @@ console.log("Hello World16");
                             valid=1;
                          }  
                     }
+                    if(beachfinderby=='child')
+                    {
+                         if (child=='1') {
+                            valid=1;
+                         }  
+                    }
+                    if(beachfinderby=='hand')
+                    {
+                         if (hand=='1') {
+                            valid=1;
+                         }  
+                    }
+                    if(beachfinderby=='rent')
+                    {
+                         if (rent=='1') {
+                            valid=1;
+                         }  
+                    }
+                    if(beachfinderby=='camper')
+                    {
+                         if (camper=='1') {
+                            valid=1;
+                         }  
+                    }
+    
                     var siteLatLng = new google.maps.LatLng(sites[1], sites[2]);
                     //alert(sites[8]);
                     if (valid==0) {
@@ -1031,17 +1104,23 @@ console.log("Hello World16");
                             title: sites[0], 
                             zIndex: sites[3],
                             url: '#Beach?id=' + sites[8],
-                            html: '<b>'+sites[0] +sites[8] + '</b> <br/>' + sites[4] +  '<a href="#Beach?id=' + sites[8] +'">...clicca qui per maggiorni info</a>'
+                            html: '<b>'+sites[0]  + '</b> <br/>' + sites[4]
                     , icon: imgWindKO,
                             shape: shape
                         });
-                     
-                        google.maps.event.addListener(marker, "click", function () {
-                            //alert(marker.url+'+++');
+                    
 
-                            window.location.href = this.url;
-                            infowindow.setContent(this.html );
-                            infowindow.open(map, this);
+                        google.maps.event.addListener(marker, "click", function () {
+                            //alert(this.url+'+++');
+                            if(flipView=='ds')
+                            {
+                                window.location.href = this.url;
+                            }
+                            else
+                            {
+                                infowindow.setContent(this.html  );
+                                infowindow.open(map, this);
+                            }
                         });
                     }
                     else {
@@ -1051,17 +1130,22 @@ console.log("Hello World16");
                                     title: sites[0],
                                     zIndex: sites[3],
                                     url: '#Beach?id=' + sites[8],
-                                    html: '<b>'+sites[0] +sites[8] + '</b> <br/>' + sites[4] +  '<a href="#Beach?id=' + sites[8] +'">...clicca qui per maggiorni info</a>'
+                                    html: '<b>'+sites[0] + '</b> <br/>' + sites[4] 
                             , icon: imgWindOK,
                                     shape: shape
                                 });
 
                                 //alert(marker.url+'---');
                                 google.maps.event.addListener(marker, "click", function () {
-    
-                                    window.location.href = this.url;
-                                    infowindow.setContent(this.html );
-                                    infowindow.open(map, this);
+                                    if(flipView=='ds')
+                                    {
+                                        window.location.href = this.url;
+                                    }
+                                    else
+                                    {
+                                        infowindow.setContent(this.html  );
+                                        infowindow.open(map, this);
+                                    }
                                 });
                         }
                         var contentString = "Some content";
@@ -2300,6 +2384,7 @@ console.log("Hello World25b");
 
         
     </script>
+
 </head>
 <body>
     <div id="fb-root">
@@ -2328,7 +2413,7 @@ console.log("Hello World25b");
     </script>
     <div data-role="page" id="main" class="type-index">
         <div class="banner" style="z-index: 99999" data-role="header" role="banner" data-theme="c">
-             <center>
+            <center>
                 <div style="vertical-align: middle;">
                     <br />
                     <a id="A1">Sardinia Beach Finder</a>
@@ -2337,8 +2422,7 @@ console.log("Hello World25b");
             <div id="slidein-panel" class="slidein-panel" style="z-index: 99999">
                 <!-- SlidePanel Button Container -->
                 <div id="slidein-panel-container" class="slidein-panel-container">
-                    <a class="slidein-panel-btn" id="slidein-panel-btn" href="#"><a>Menu</a>
-                    </a>
+                    <a class="slidein-panel-btn" id="slidein-panel-btn" href="#"><a>Menu</a> </a>
                 </div>
                 <!-- /SlidePanel Button Container -->
                 <!-- SlidePanel Content -->
@@ -2347,7 +2431,8 @@ console.log("Hello World25b");
                         <img src="images/flip_flops.png" height="18px" width="18px" />
                         &nbsp; Spiagge più vicine</a></li>
                     <li><a href="#gmap">
-                        <img src="images/flip_flops.png" height="18px" width="18px" />&nbsp; Mappa Spiagge x te</a></li>
+                        <img src="images/flip_flops.png" height="18px" width="18px" />&nbsp; Mappa Spiagge
+                        x te</a></li>
                     <li><a href="#meteo">
                         <img src="images/flip_flops.png" height="18px" width="18px" />&nbsp; Meteo</a></li>
                 </ul>
@@ -2376,7 +2461,6 @@ console.log("Hello World25b");
             </div>
         </div>
         <div data-role="content" id="home-ct">
-        
             <ul data-role="listview" data-inset="true">
                 <li id="ft"><span id="lns">Spiagge piu vicine</span><span id="viall"><a href="#"
                     data-ajax="false">View All</a></span></li>
@@ -2448,27 +2532,31 @@ console.log("Hello World25b");
         <div class="banner" style="z-index: 99999" data-role="header" role="banner" data-theme="c">
             <center>
                 <select id="BeachFinderBy" name="BeachFinderBy">
-                    <option value="wind" selected="selected">Vento</option>
-                    <option value="parking">Parcheggio </option>
+                    <option value="wind" selected="selected">Direzione del Vento</option>
+                    <option value="parking">Con Parcheggio </option>
                     <option value="bar">Con Bar </option>
+                    <option value="child">Adatta ai bambini </option>
+                    <option value="hand">Attrezzata per i disabili </option>
+                    <option value="rent">Con possibilità di noleggi </option>
+                    <option value="camper">Adatta per i Camper </option>
                 </select>
             </center>
             <div id="slidein-panel_gmap" class="slidein-panel" style="z-index: 99999;">
                 <!-- SlidePanel Button Container -->
                 <div id="slidein-panel-container_gmap" class="slidein-panel-container">
-                    <a id="slidein-panel-btn_gmap" class="slidein-panel-btn" href="#"><i class="icon-list">
-                    </i></a>
+                    <a id="slidein-panel-btn_gmap" class="slidein-panel-btn" href="#"><a>Menu</a> </a>
                 </div>
                 <!-- /SlidePanel Button Container -->
                 <!-- SlidePanel Content -->
                 <ul>
                     <li><a href="#main">
                         <img src="images/flip_flops.png" height="18px" width="18px" />
-                        &nbsp; Main</a></li>
+                        &nbsp; Spiagge più vicine</a></li>
                     <li><a href="#gmap">
-                        <img src="images/flip_flops.png" height="18px" width="18px" />&nbsp; Beach Map</a></li>
+                        <img src="images/flip_flops.png" height="18px" width="18px" />&nbsp; Mappa Spiagge
+                        x te</a></li>
                     <li><a href="#meteo">
-                        <img src="images/flip_flops.png" height="18px" width="18px" />&nbsp; Weather</a></li>
+                        <img src="images/flip_flops.png" height="18px" width="18px" />&nbsp; Meteo</a></li>
                 </ul>
                 <!-- /SlidePanel Content -->
             </div>
@@ -2476,6 +2564,19 @@ console.log("Hello World25b");
         <div data-role="content" id="Div1">
             <div id="mapmap" style="width: 100%; height: 320px;">
             </div>
+            <center>
+                <div data-role="fieldcontain" style="width: 100% !important">
+                    <label for="flip-c" style="color: Orange; font-family: Comic Sans MS; font-style: italic;
+                        font-size: small;">
+                        Selezione l'azione quando clicchi sul POI della spiaggia : Anteprima o Vai alla
+                        descrizione</label>
+                    <br />
+                    <select name="slider" id="flipView" data-role="slider" data-theme="e">
+                        <option value="an">Anteprima</option>
+                        <option value="ds">Descrizione</option>
+                    </select>
+                </div>
+            </center>
             <!--<iframe src="http://www.facebook.com/plugins/like.php?href=http%3A%2F%2Fwww.meridiana.it%2Fit%2Findex.aspx&amp;width&amp;layout=button_count&amp;action=like&amp;show_faces=false&amp;share=false&amp;height=21"
                 scrolling="no" frameborder="0" style="border: none; overflow: hidden; height: 21px;"
                 allowtransparency="true"></iframe>-->
@@ -2503,19 +2604,19 @@ console.log("Hello World25b");
             <div id="slidein-panel" class="slidein-panel" style="z-index: 99999;">
                 <!-- SlidePanel Button Container -->
                 <div id="slidein-panel-container" class="slidein-panel-container">
-                    <a id="slidein-panel-btn" class="slidein-panel-btn" href="#"><i class="icon-list"></i>
-                    </a>
+                    <a id="slidein-panel-btn" class="slidein-panel-btn" href="#"><a>Menu</a> </a>
                 </div>
                 <!-- /SlidePanel Button Container -->
                 <!-- SlidePanel Content -->
                 <ul>
                     <li><a href="#main">
                         <img src="images/flip_flops.png" height="18px" width="18px" />
-                        &nbsp; Main</a></li>
+                        &nbsp; Spiagge più vicine</a></li>
                     <li><a href="#gmap">
-                        <img src="images/flip_flops.png" height="18px" width="18px" />&nbsp; Beach Map</a></li>
+                        <img src="images/flip_flops.png" height="18px" width="18px" />&nbsp; Mappa Spiagge
+                        x te</a></li>
                     <li><a href="#meteo">
-                        <img src="images/flip_flops.png" height="18px" width="18px" />&nbsp; Weather</a></li>
+                        <img src="images/flip_flops.png" height="18px" width="18px" />&nbsp; Meteo</a></li>
                 </ul>
                 <!-- /SlidePanel Content -->
             </div>
@@ -2617,16 +2718,28 @@ console.log("Hello World25b");
                 <img id="beach_Img" src="images/beach/imagestest4.jpg" />
             </div>
             <center>
-            <table style="border:0; border-style:none; border-width:0" cellpadding="5" cellspacing="5">
-                <tr>
-                    <td><img id="img_parcheggio" src="images/icona-parcheggio.png" height=40px width=40px /></td>
-                    <td><img id="img_bar" src="images/icona-bar.png" height=40px width=40px/></td>
-                    <td><img id="img_bambini" src="images/icona-bambini.png" height=40px width=40px/></td>
-                    <td><img id="img_disabili" src="images/icona-hand.png" height=40px width=40px/></td>
-                    <td><img id="img_noleggio" src="images/icona-noleggio.png" height=40px width=40px/></td>
-                    <td><img id="img_camper" src="images/icona-camper.png" height=40px width=40px/></td>
-                </tr>
-            </table>
+                <table style="border: 0; border-style: none; border-width: 0" cellpadding="5" cellspacing="5">
+                    <tr>
+                        <td>
+                            <img id="img_parcheggio" src="images/icona-parcheggio.png" height="40px" width="40px" />
+                        </td>
+                        <td>
+                            <img id="img_bar" src="images/icona-bar.png" height="40px" width="40px" />
+                        </td>
+                        <td>
+                            <img id="img_bambini" src="images/icona-bambini.png" height="40px" width="40px" />
+                        </td>
+                        <td>
+                            <img id="img_disabili" src="images/icona-hand.png" height="40px" width="40px" />
+                        </td>
+                        <td>
+                            <img id="img_noleggio" src="images/icona-noleggio.png" height="40px" width="40px" />
+                        </td>
+                        <td>
+                            <img id="img_camper" src="images/icona-camper.png" height="40px" width="40px" />
+                        </td>
+                    </tr>
+                </table>
             </center>
             <br />
             <div data-role="collapsible-set" data-content-theme="a" data-iconpos="right" id="set">
@@ -2649,7 +2762,8 @@ console.log("Hello World25b");
             <br />
             <div id="divDs" style="width: 100%; height: 320px;">
                 <hr />
-                <h3>Indicazioni Stradali</h3>
+                <h3>
+                    Indicazioni Stradali</h3>
                 <div style="height: 100%;" id="map_canvas">
                 </div>
                 <a id="beach_Drive">gira a destra </a>
