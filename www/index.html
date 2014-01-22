@@ -269,11 +269,11 @@
 
 
         imgWindOK = {
-            url: 'images/face-smile-big.png',
+            url: 'images/face-smile-big.png'
         };
 
         imgWindKO = {
-            url: 'images/face-angry.png',
+            url: 'images/face-angry.png'
         };
 
         shape = {
@@ -355,25 +355,25 @@
         });
 
        //googleutils.js
-       
 
-         $(document).ready(function () {         
-            $('#bt_view_ds').click(function() {
+
+        $(document).ready(function () {
+            $('#bt_view_ds').click(function () {
                 alert('bt_view_ds');
             });
-            $('#BeachFinderBy').change(function() {
-              //alert( this.value ); // or $(this).val()
-              beachfinderby= this.value;
+            $('#BeachFinderBy').change(function () {
+                //alert( this.value ); // or $(this).val()
+                beachfinderby = this.value;
 
                 var centerMap = map.getCenter();
-                var zoomMap=map.getZoom();
+                var zoomMap = map.getZoom();
                 var myOptions = {
                     zoom: zoomMap,
                     center: centerMap,
                     mapTypeId: google.maps.MapTypeId.ROADMAP
                 }
 
-            
+
                 map = new google.maps.Map(document.getElementById("mapmap"), myOptions);
                 //alert('map: ' +map);
 
@@ -381,11 +381,11 @@
                 infowindow = new google.maps.InfoWindow({
                     content: "loading..."
                 });
-            
+
                 var bikeLayer = new google.maps.BicyclingLayer();
                 bikeLayer.setMap(map);
             });
-            
+
             $.ajax({
                 type: "GET",
                 url: "spiagge/1.xml",
@@ -412,68 +412,70 @@
                     var photo = spiaggia.find('foto').text();
                     var camper = spiaggia.find('foto').text();
                     //   
-                    var beach=[nome, lat,lon, 1, descrizione,windNO,parking,bar,id,disabili,xbambini,surf,rent,photo,camper]
+                    var beach = [nome, lat, lon, 1, descrizione, windNO, parking, bar, id, disabili, xbambini, surf, rent, photo, camper]
                     //alert(beach);
                     sites.push(beach);
                 });
 
 
                 //LEggo le mie coordinate
-                 var Geo={};
+                var Geo = {};
                 if (navigator.geolocation) {
                     //alert('navigator.geolocation on')
-                   navigator.geolocation.getCurrentPosition(success,onError,{maximumAge: 60000, timeout: 60000, enableHighAccuracy:true}); 
+                    navigator.geolocation.getCurrentPosition(success, onError, { maximumAge: 60000, timeout: 60000, enableHighAccuracy: true });
                 }
-                else
-                {
-                 alert('navigator.geolocation off')
+                else {
+                    alert('navigator.geolocation off')
                 }
 
                 //Get the latitude and the longitude;
                 function success(position) {
                     //alert('success');
-                    mylat= position.coords.latitude;
+                    mylat = position.coords.latitude;
                     mylng = position.coords.longitude;
-                
-                    var geocoder =null;
-                    geocoder= new google.maps.Geocoder();
-                    var latlng = new google.maps.LatLng(mylat, mylng);
-                    geocoder.geocode({'latLng': latlng}, function(results, status) {
-                      if (status == google.maps.GeocoderStatus.OK) {
-                        
-                        if (results[1]) {
-//                          map.setZoom(11);
-//                          marker = new google.maps.Marker({
-//                              position: latlng,
-//                              map: map
-//                          });
-                          markerMyPosition = new google.maps.Marker({
-                              position: latlng,
-                              map: map
-                          });
-                          OriginPosition=results[1].formatted_address;
-                          $('#OriginPosition').html(OriginPosition);
-                          //alert(results[1].formatted_address);
-                          //infowindow.setContent(results[1].formatted_address);
-                          //infowindow.open(map, marker);
-                        }
-                      } else {
-                        alert("Geocoder failed due to: " + status);
-                      }
-                    });
-                   
-                    
-                    count_tmp_beach=0;
-                    for (var i = 0; i < sites.length; i++) {
-                        var  info = sites[i];
-                        calcRoute(info[1],info[2]);
-                    }
 
-                    
+                    var geocoder = null;
+                    geocoder = new google.maps.Geocoder();
+                    var latlng = new google.maps.LatLng(mylat, mylng);
+                    geocoder.geocode({ 'latLng': latlng }, function (results, status) {
+                        if (status == google.maps.GeocoderStatus.OK) {
+
+                            if (results[1]) {
+                                //                          map.setZoom(11);
+                                //                          marker = new google.maps.Marker({
+                                //                              position: latlng,
+                                //                              map: map
+                                //                          });
+                                markerMyPosition = new google.maps.Marker({
+                                    position: latlng,
+                                    map: map
+                                });
+                                OriginPosition = results[1].formatted_address;
+                                $('#OriginPosition').html(OriginPosition);
+                                //alert(results[1].formatted_address);
+                                //infowindow.setContent(results[1].formatted_address);
+                                //infowindow.open(map, marker);
+                            }
+                        } else {
+                            alert("Geocoder failed due to: " + status);
+                        }
+                    });
+
+
+                    count_tmp_beach = 0;
+                    for (var i = 0; i < sites.length; i++) {
+                        var info = sites[i];
+ 
+                        Calcdistance(info[1], info[2], mylat, mylng, info[0]);
+                        PopulateFirstBeachByDistance();
+                    }
+                    PopulateFirstBeachByDistance();
+
+
                 }
 
                 function onError(error) {
-                    alert('code: '    + error.code    + '\n' +
+                    alert('code: ' + error.code + '\n' +
                             'message: ' + error.message + '\n');
                 }
 
@@ -482,7 +484,7 @@
 
         });
 
-
+        
 
         /*================================== initilize Pressure =================================*/
 
@@ -1791,7 +1793,7 @@
             <div id="slidein-panel" class="slidein-panel" style="z-index: 99999">
                 <!-- SlidePanel Button Container -->
                 <div id="slidein-panel-container" class="slidein-panel-container">
-                    <a class="slidein-panel-btn" id="slidein-panel-btn" href="#"><a>Menu</a> </a>
+                    <a class="slidein-panel-btn" id="slidein-panel-btn" href="#"> </a>
                 </div>
                 <!-- /SlidePanel Button Container -->
                 <!-- SlidePanel Content -->
@@ -1904,6 +1906,7 @@
             <center>
                 <select id="BeachFinderBy" name="BeachFinderBy">
                     <option value="wind" selected="selected">Direzione del Vento</option>
+                     <option value="near">Le 5 più vicine </option>
                     <option value="parking">Con Parcheggio </option>
                     <option value="bar">Con Bar </option>
                     <option value="child">Adatta ai bambini </option>
@@ -1915,7 +1918,7 @@
             <div id="slidein-panel_gmap" class="slidein-panel" style="z-index: 99999;">
                 <!-- SlidePanel Button Container -->
                 <div id="slidein-panel-container_gmap" class="slidein-panel-container">
-                    <a id="slidein-panel-btn_gmap" class="slidein-panel-btn" href="#"><a>Menu</a> </a>
+                    <a id="slidein-panel-btn_gmap" class="slidein-panel-btn" href="#"></a>
                 </div>
                 <!-- /SlidePanel Button Container -->
                 <!-- SlidePanel Content -->
@@ -1975,7 +1978,7 @@
             <div id="slidein-panel" class="slidein-panel" style="z-index: 99999;">
                 <!-- SlidePanel Button Container -->
                 <div id="slidein-panel-container" class="slidein-panel-container">
-                    <a id="slidein-panel-btn" class="slidein-panel-btn" href="#"><a>Menu</a> </a>
+                    <a id="slidein-panel-btn" class="slidein-panel-btn" href="#"></a>
                 </div>
                 <!-- /SlidePanel Button Container -->
                 <!-- SlidePanel Content -->

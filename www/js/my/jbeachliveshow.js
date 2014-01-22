@@ -96,11 +96,12 @@
                     var destinations = request.destination.split(',');
 
                     var myRoute = response.routes[0].legs[0];
-                    var instr = '';
+                    var instr = '<b> Distanza Totale : ' + distancekm +'km <b/></br>';
                     for (var i = 0; i < myRoute.steps.length; i++) {
                         var km = myRoute.steps[i].distance.text;
                         instr = instr + '<br/> ' + km + ')' + myRoute.steps[i].instructions;
                     }
+
 
                     $('#beach_Drive').html(instr);
                 }

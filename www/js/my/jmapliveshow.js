@@ -71,7 +71,7 @@ function setMarkers(map, markers) {
 
 
         var sites = markers[i];
-        calcRoute(sites[1], sites[2]);
+        //calcRoute(sites[1], sites[2]);
         //var beach=[nome, lat,lon, 1, descrizione,windNO,parking,bar,id,disabili,xbambini,surf,rent,photo,camper]
         var WindDirNo = sites[5];
         var parking = sites[6];
@@ -83,6 +83,41 @@ function setMarkers(map, markers) {
 
         var valid = 0;
 
+        var Distance = '';
+        if (sites[1] == lat1 && sites[2] == lngt1) {
+            Distance = dist1 + 'km';
+        }
+        if (sites[1] == lat2 && sites[2] == lngt2) {
+            Distance = dist2 + 'km';
+        }
+        if (sites[1] == lat3 && sites[2] == lngt3) {
+            Distance = dist3 + 'km';
+        }
+        if (sites[1] == lat4 && sites[2] == lngt4) {
+            Distance = dist4 + 'km';
+        }
+        if (sites[1] == lat5 && sites[2] == lngt5) {
+            Distance = dist5 + 'km';
+        }
+        
+        if (beachfinderby == 'near') {
+            //alert('wind');
+            if (sites[1] == lat1 && sites[2] == lngt1) {
+                valid = 1;
+            }
+            if (sites[1] == lat2 && sites[2] == lngt2) {
+                valid = 2;
+            }
+            if (sites[1] == lat3 && sites[2] == lngt3) {
+                valid = 3;
+            }
+            if (sites[1] == lat4 && sites[2] == lngt4) {
+                valid = 4;
+            }
+            if (sites[1] == lat5 && sites[2] == lngt5) {
+                valid = 5;
+            }
+        }
         if (beachfinderby == 'wind') {
             //alert('wind');
             if (WindDir == WindDirNo) {
@@ -120,16 +155,17 @@ function setMarkers(map, markers) {
             }
         }
 
+       
         var siteLatLng = new google.maps.LatLng(sites[1], sites[2]);
         //alert(sites[8]);
         if (valid == 0) {
             var marker = new google.maps.Marker({
                 position: siteLatLng,
                 map: map,
-                title: sites[0] + '|' + sites[1] + '|' + sites[2],
+                title: sites[0] + '|' + sites[1] + '|' + sites[2] + '|' + Distance,
                 zIndex: sites[3],
                 url: '#Beach?id=' + sites[8],
-                html: '<b>' + sites[0] + '</b> <br/> Clicca una seconda volta per avere maggiori informazioni' 
+                html: '<b>' + sites[0] + '</b> <br/>' + Distance + ' Clicca una seconda volta per avere maggiori informazioni' 
                     , icon: imgWindKO,
                 shape: shape
             });
@@ -156,17 +192,50 @@ function setMarkers(map, markers) {
             });
         }
         else {
+            if (beachfinderby == 'near') {
+                if (valid == 1) {
+                    imgWindOK = {
+                        url: '../../images/1b.png'
+                    };
+                }
+                if (valid == 2) {
+                    imgWindOK = {
+                        url: '../../images/2b.png'
+                    };
+                }
+                if (valid == 3) {
+                    imgWindOK = {
+                        url: '../../images/3b.png'
+                    };
+                }
+                if (valid == 4) {
+                    imgWindOK = {
+                        url: '../../images/4b.png'
+                    };
+                }
+                if (valid == 5) {
+                    imgWindOK = {
+                        url: '../../images/5b.png'
+                    };
+                }
+            }
+            else {
+                imgWindOK = {
+                    url: '../../images/face-smile-big.png'
+                };
+            }
             
-            var marker = new google.maps.Marker({
-                position: siteLatLng,
-                map: map,
-                title: sites[0],
-                zIndex: sites[3],
-                url: '#Beach?id=' + sites[8],
-                html: '<b>' + sites[0] + '</b> <br/> Clicca una seconda volta per avere maggiori informazioni' 
+                var marker = new google.maps.Marker({
+                    position: siteLatLng,
+                    map: map,
+                    title: sites[0] + '|' + Distance,
+                    zIndex: sites[3],
+                    url: '#Beach?id=' + sites[8],
+                    html: '<b>' + sites[0] + '</b> <br/>' + Distance + ' Clicca una seconda volta per avere maggiori informazioni'
                             , icon: imgWindOK,
-                shape: shape
-            });
+                    shape: shape
+                });
+            
 
             //alert(marker.url+'---');
             google.maps.event.addListener(marker, "click", function () {
