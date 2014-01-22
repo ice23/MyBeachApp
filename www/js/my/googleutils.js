@@ -174,11 +174,11 @@ function PopulateFirstBeachByDistance() {
 
     }
 
-    alert('piaggia1 ' + dist1 + ' coordinate ' + lat1 + ' , ' + lngt1 + '\n' +
+   /* alert('piaggia1 ' + dist1 + ' coordinate ' + lat1 + ' , ' + lngt1 + '\n' +
                                     'piaggia2 ' + dist2 + ' coordinate ' + lat2 + ' , ' + lngt2 + '\n' +
                                     'piaggia3 ' + dist3 + ' coordinate ' + lat3 + ' , ' + lngt3 + '\n' +
                                     'piaggia4 ' + dist4 + ' coordinate ' + lat4 + ' , ' + lngt4 + '\n' +
-                                    'piaggia5 ' + dist5 + ' coordinate ' + lat5 + ' , ' + lngt5);
+                                    'piaggia5 ' + dist5 + ' coordinate ' + lat5 + ' , ' + lngt5);*/
 
 }
 function showSteps(directionResult) {

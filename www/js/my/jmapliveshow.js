@@ -195,33 +195,33 @@ function setMarkers(map, markers) {
             if (beachfinderby == 'near') {
                 if (valid == 1) {
                     imgWindOK = {
-                        url: '../../images/1b.png'
+                        url: 'images/1b.png'
                     };
                 }
                 if (valid == 2) {
                     imgWindOK = {
-                        url: '../../images/2b.png'
+                        url: 'images/2b.png'
                     };
                 }
                 if (valid == 3) {
                     imgWindOK = {
-                        url: '../../images/3b.png'
+                        url: 'images/3b.png'
                     };
                 }
                 if (valid == 4) {
                     imgWindOK = {
-                        url: '../../images/4b.png'
+                        url: 'images/4b.png'
                     };
                 }
                 if (valid == 5) {
                     imgWindOK = {
-                        url: '../../images/5b.png'
+                        url: 'images/5b.png'
                     };
                 }
             }
             else {
                 imgWindOK = {
-                    url: '../../images/face-smile-big.png'
+                    url: 'images/face-smile-big.png'
                 };
             }
             
