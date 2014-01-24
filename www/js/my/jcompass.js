@@ -33,13 +33,13 @@ function onDeviceReady() {
 }
 
 function bussola() {
-    alert('bussola');
+    //alert('bussola');
     var options = { frequency: 300 };
     watchID = navigator.compass.watchHeading(onSuccess, onError, options);
 }
 
 function onSuccess(heading) {
-    alert('onSuccess bussola');
+    //alert('onSuccess bussola');
     var element = document.getElementById('heading');
     element.innerHTML = 'Heading: ' + heading.magneticHeading;
     angle = heading.magneticHeading;
