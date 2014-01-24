@@ -228,6 +228,8 @@
     <script type="text/javascript" src="js/my/jmeteoliveshow.js"></script>
     <script type="text/javascript" src="js/my/JchartLiveShow.js"></script>
     <script type="text/javascript" src="js/my/jcompass.js"></script>
+     <script type="text/javascript" src="js/my/jforecast.js"></script>
+   
     <script type="text/javascript" charset="utf-8">
 
         var lat1 = 0;
@@ -262,6 +264,7 @@
         var OriginPosition = '';
         var markerMyPosition = null;
         var flipView = 'N';
+        var slideBussola = 'N';
 
         var lat1click = 0;
         var lng1click = 0;
@@ -376,6 +379,16 @@
             SetWeather();
 
             ReadXml();
+
+            $('select#slideBussola').change(function () {
+                slideBussola = $('select#slideBussola').val();
+                if (slideBussola == 'Y') {
+                    stopWatch();
+                }
+                else {
+                    startWatch();
+                }
+            });
 
             $('select#flipView').change(function () {
                 flipView = $('select#flipView').val();
@@ -702,11 +715,15 @@
                 var hr = dt.getHours();
                 if (hr < 10) hr = '0' + hr;
 
+                var curr_date = dt.getDate();
+                var curr_month = dt.getMonth() + 1; //Months are zero based
+                var curr_year = dt.getFullYear();
+
                 if (day != lastday) {
                     if (lastday != 0)
                         html = html + "</li></ul>";
-                    html = html + "<li><h3>" + dt.toDateString() + "</h3> \
-			<p>Temp. from " + Math.round(ar_tmin.shift()) + " to " +
+                    html = html + "<li><h3>" + curr_date + '/' + curr_month + '/' + curr_year + "</h3> \
+			<p>Temp. min " + Math.round(ar_tmin.shift()) + " max " +
 				Math.round(ar_tmax.shift()) + "°C</p><ul>";
                     lastday = day;
                 }
@@ -723,7 +740,7 @@
                 var cloud = JSONobject.list[i].clouds.all;
 
                 var lang = 'it';
-                if (get_cookie('lang') == 'en') lang = 'en';
+                //if (get_cookie('lang') == 'en') lang = 'en';
                 if (lang == 'en') {
                     html = html + '<li>' + img + '<h1>' + hr + ':00 </h1> <span class="ui-li-count"><h5>' + temp + '°C</h5></span>' +
 '<p><strong>Temp. from ' + tmin + ' to ' + tmax + '°C</strong></p><p> Wind ' + wind +
@@ -731,8 +748,8 @@
                 }
                 else {
                     html = html + '<li>' + img + '<h1>' + hr + ':00 </h1> <span class="ui-li-count"><h5>' + temp + '°C</h5></span>' +
-'<p><strong>Temp. from ' + tmin + ' to ' + tmax + '°C</strong></p><p> Vento ' + wind +
-' m/s.</p><p> Clouds ' + cloud + ' % ' + pressure + ' hpa</p></li>';
+'<p><strong>Temp. min ' + tmin + ' max ' + tmax + '°C</strong></p><p> Vento ' + wind +
+' m/s.</p><p> nuvolosità ' + cloud + ' % ' + pressure + ' hpa</p></li>';
                 }
 
             }
@@ -1059,8 +1076,6 @@
                         <img src="images/flip_flops.png" height="18px" width="18px" />&nbsp; Meteo</a></li>
                     <li><a href="#chart">
                         <img src="images/flip_flops.png" height="18px" width="18px" />&nbsp; Rosa dei venti</a></li>
-                    <li><a href="#compass">
-                        <img src="images/flip_flops.png" height="18px" width="18px" />&nbsp; Compass</a></li>
                     <li><a href="#Setting">
                         <img src="images/flip_flops.png" height="18px" width="18px" />&nbsp; Impostazioni</a></li>
                 </ul>
@@ -1094,15 +1109,12 @@
                     data-ajax="false">Tutte&nbsp;&nbsp;&nbsp;</a>
                     <input type="image" src="images/Refresh.png" id="rfh" />
                 </span></li>
-                <li class="indpr-1 myindpr">
-
-                        <a id="lnkBeachID1" href="#Beach?id=1" class="nomar" data-ajax="false">
-                            <img src="images/palm_tree.png" alt="winelovers420x260" />
-                            <h3 id="b1_descr" class="grl">
-                            </h3>
-                        </a>
-                 
-                </li>
+                <li class="indpr-1 myindpr"><a id="lnkBeachID1" href="#Beach?id=1" class="nomar"
+                    data-ajax="false">
+                    <img src="images/palm_tree.png" alt="winelovers420x260" />
+                    <h3 id="b1_descr" class="grl">
+                    </h3>
+                </a></li>
                 <li class="indpr-1 myindpr"><a id="lnkBeachID2" href="#Beach?id=1" class="nomar"
                     data-ajax="false">
                     <img src="images/palm_tree.png" alt="winelovers420x260" />
@@ -1122,9 +1134,9 @@
                     </h3>
                 </a></li>
             </ul>
-            <div id="section-vid" style="height:150px">
-                <ul data-role="listview" data-inset="true" >
-                    <li >
+            <div id="section-vid" style="height: 150px">
+                <ul data-role="listview" data-inset="true">
+                    <li>
                         <div class="icbody">
                             <h3 class="grl">
                                 Le distanze sono calcolate dalla posizione :" <a id="OriginPosition"></a>"
@@ -1244,7 +1256,7 @@
                 <li id="Li1"><span id="Span1">
                     <h3 id="city_name">
                     </h3>
-                </span><span id="Span2"><a href="#" data-ajax="false">View Forecast</a></span></li>
+                </span><span id="Span2"><a href="#forecast" data-ajax="false">View Forecast</a></span></li>
                 <li class="indpr-1 myindpr"><a href="#" class="nomar" data-ajax="false">
                     <img src="images/palm_tree.png" class="picture" alt="winelovers420x260" />
                     <h2 id="city_temp" class="grl">
@@ -1485,8 +1497,12 @@
             </div>
             <div align="center" id="heading">
                 Waiting for heading...</div>
-            <button onclick="startWatch();">Start Watching</button>
-            <button onclick="stopWatch();">Stop Watching</button>
+            <center>
+                <select name="slider" id="slideBussola" data-role="slider" data-theme="e">
+                    <option value="N" selected="selected">Bussola on</option>
+                    <option value="Y">Bussola off</option>
+                </select>
+            </center>
         </div>
         <!-- /content -->
         <div id="Div7">
@@ -1506,20 +1522,23 @@
             </div>
         </div>
     </div>
-    <div data-role="page" id="compass">
+    <div data-role="page" id="forecast">
         <div class="banner" style="z-index: 99999" data-role="header" role="banner" data-theme="c">
             <input type="image" style="float: left; top: -20px" src="images/back.png" id="bck3" />
             <center>
                 <div style="vertical-align: middle;">
                     <br />
-                    <a id="A5">Compass</a>
+                    <a id="A5">Forecast</a>
                 </div>
             </center>
         </div>
         <div data-role="content" id="Div19">
-            <div align="center">
+           <h3>
+                <div id="forecast_title">
+                </div>
+            </h3>
+            <div id='forecast_list_ul'>
             </div>
-            
         </div>
         <!-- /content -->
         <div id="Div27">

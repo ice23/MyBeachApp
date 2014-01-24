@@ -4,12 +4,12 @@ var angle = 0;
 
 function drawCanvas() {
     surface = document.getElementById("myCanvas");
-    android = document.getElementById("chart_container");
-    /*if (surface.getContext) {
+    //android = document.getElementById("chart_container");
+    if (surface.getContext) {
         android = new Image();
         android.onload = loadingComplete;
         android.src = "images/compass.png";
-    }*/
+    }
 }
 
 function loadingComplete(e) {
