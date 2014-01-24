@@ -221,31 +221,31 @@
     <script type="text/javascript" src="js/jquery.ui.map.min.js"></script>
     <script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyC5ukXmt0pQ3lvvi3NrfZX7LJKyW67TgK0&sensor=false"
         type="text/javascript"></script>
-
     <script type="text/javascript" src="js/my/jmapliveshow.js"></script>
     <script type="text/javascript" src="js/my/googleutils.js"></script>
     <script type="text/javascript" src="js/my/jbeachliveshow.js"></script>
     <script type="text/javascript" src="js/my/jmeteoliveshow.js"></script>
-    
+    <script type="text/javascript" src="js/my/JchartLiveShow.js"></script>
+    <script type="text/javascript" src="js/my/jcompass.js"></script>
     <script type="text/javascript" charset="utf-8">
 
-        var lat1=0;
-        var lngt1=0;
-        var dist1=1000;
-        var lat2=0;
-        var lngt2=0;
-        var dist2=1000;
-        var lat3=0;
-        var lngt3=0;
-        var dist3=1000;
-        var lat4=0;
-        var lngt4=0;
-        var dist4=1000;
-        var lat5=0;
-        var lngt5=0;
-        var dist5=1000;
-        var count_tmp_beach=0;
-		var infowindow = null;
+        var lat1 = 0;
+        var lngt1 = 0;
+        var dist1 = 1000;
+        var lat2 = 0;
+        var lngt2 = 0;
+        var dist2 = 1000;
+        var lat3 = 0;
+        var lngt3 = 0;
+        var dist3 = 1000;
+        var lat4 = 0;
+        var lngt4 = 0;
+        var dist4 = 1000;
+        var lat5 = 0;
+        var lngt5 = 0;
+        var dist5 = 1000;
+        var count_tmp_beach = 0;
+        var infowindow = null;
         var map = null;
         var imgWindOK = null;
         var imgWindKO = null;
@@ -254,16 +254,16 @@
         var shape = null;
         var WindDir = '';
         var WindSpeed = 0;
-        var beachfinderby='wind';
+        var beachfinderby = 'wind';
         var Hpa = 0;
-        var mylng =0;
-        var mylat=0;
-        var OriginPosition='';
-        var markerMyPosition=null;
-        var flipView=null;
+        var mylng = 0;
+        var mylat = 0;
+        var OriginPosition = '';
+        var markerMyPosition = null;
+        var flipView = 'N';
 
-        var lat1click=0;
-        var lng1click=0;
+        var lat1click = 0;
+        var lng1click = 0;
 
         var options, gm, gms, testOverflowMin, testOverflowMax, periodicRand;
 
@@ -289,7 +289,7 @@
             return matches ? decodeURIComponent(matches[1]) : ''
         }
 
- 
+
         function set_cookie(name, value, expires) {
             if (!expires) {
                 expires = new Date();
@@ -297,35 +297,35 @@
             document.cookie = name + "=" + escape(value) + "; expires=" + expires.toGMTString() + "; path=/";
         }
 
-      
+
         function ShowSuccessMess(mess) {
             $("#alert_body").html(mess);
             $("#alert_title").html('Success');
             $("#lnkDialog").click();
             $.mobile.hidePageLoadingMsg();
         }
-   
+
         function ShowInfoMess(mess) {
             $("#alert_body").html(mess);
             $("#alert_title").html('Message');
             $("#lnkDialog").click();
             $.mobile.hidePageLoadingMsg();
         }
-      
+
         function ShowAlertMess(mess) {
             $("#alert_body").html(mess);
             $("#alert_title").html('Alert');
             $("#lnkDialog").click();
             $.mobile.hidePageLoadingMsg();
         }
-     
+
         function errorHandler(e) {
             alert('a');
             ShowAlertMess(e.status + ' ' + e.statusText);
         }
 
 
-         function ParseJson(JSONtext) {
+        function ParseJson(JSONtext) {
             try {
                 JSONobject = JSON.parse(JSONtext);
             } catch (e) {
@@ -343,26 +343,17 @@
             return JSONobject;
         }
 
-        $(document).ready(function(){
-            $('#backbt').click(function(){
+        $(document).ready(function () {
+            $('#backbt').click(function () {
                 parent.history.back();
                 return false;
             });
-            $('select#flipView').change(function() {
-                flipView= $('select#flipView').val();           
-            });
-            
-        });
-
-       //googleutils.js
 
 
-        $(document).ready(function () {
-            $('#bt_view_ds').click(function () {
-                alert('bt_view_ds');
-            });
-            $('#BeachFinderBy').change(function () {
-                //alert( this.value ); // or $(this).val()
+            SetWeather();
+
+            $('select#flipView').change(function () {
+                flipView = $('select#flipView').val();
                 beachfinderby = this.value;
 
                 var centerMap = map.getCenter();
@@ -384,6 +375,40 @@
 
                 var bikeLayer = new google.maps.BicyclingLayer();
                 bikeLayer.setMap(map);
+            });
+
+        });
+
+        //googleutils.js
+
+
+        $(document).ready(function () {
+            $('#bt_view_ds').click(function () {
+                alert('bt_view_ds');
+            });
+            $('#BeachFinderBy').change(function () {
+                beachfinderby = this.value;
+
+                var centerMap = map.getCenter();
+                var zoomMap = map.getZoom();
+                var myOptions = {
+                    zoom: zoomMap,
+                    center: centerMap,
+                    mapTypeId: google.maps.MapTypeId.ROADMAP
+                }
+
+
+                map = new google.maps.Map(document.getElementById("mapmap"), myOptions);
+                //alert('map: ' +map);
+
+                setMarkers(map, sites);
+                infowindow = new google.maps.InfoWindow({
+                    content: "loading..."
+                });
+
+                var bikeLayer = new google.maps.BicyclingLayer();
+                bikeLayer.setMap(map);
+
             });
 
             $.ajax({
@@ -465,7 +490,7 @@
                     count_tmp_beach = 0;
                     for (var i = 0; i < sites.length; i++) {
                         var info = sites[i];
- 
+
                         Calcdistance(info[1], info[2], mylat, mylng, info[0]);
                         PopulateFirstBeachByDistance();
                     }
@@ -484,7 +509,7 @@
 
         });
 
-        
+
 
         /*================================== initilize Pressure =================================*/
 
@@ -532,19 +557,19 @@
 
         $('#main').live('pageshow', function (event, ui) {
 
-                 $("div[class$='slidein-panel']").animate({'left':-$("div[class$='slidein-panel']").outerWidth()});
-                 status = 'close';
+            $("div[class$='slidein-panel']").animate({ 'left': -$("div[class$='slidein-panel']").outerWidth() });
+            status = 'close';
 
         });
 
-       //jbeachliveshow.js;
-        
+        //jbeachliveshow.js;
 
 
-       //jmeteoliveshow.js;
+
+        //jmeteoliveshow.js;
 
 
-       //jmapliveshow
+        //jmapliveshow
 
         /*================================== initilize MAP END =================================*/
 
@@ -697,7 +722,7 @@
             showPolarSpeed('chart_container', data);
             $.mobile.hidePageLoadingMsg();
         }
-		
+
 
         function getHistoryData_pres(JSONtext) {
             alert('getHistoryData_pres');
@@ -749,15 +774,15 @@
 
         });
 
-        
+
 
 
         $('#dialogpage').live('pageshow', function (event, ui) {
         });
 
         $('#chart').live('pageshow', function (event, ui) {
-            
-             $("div[class$='slidein-panel']").animate({'left':-$("div[class$='slidein-panel']").outerWidth()});
+
+            $("div[class$='slidein-panel']").animate({ 'left': -$("div[class$='slidein-panel']").outerWidth() });
             status = 'close';
 
             // date start
@@ -823,7 +848,7 @@
 
 
         $('#forecast').live('pageshow', function (event, ui) {
-             $("div[class$='slidein-panel']").animate({'left':-$("div[class$='slidein-panel']").outerWidth()});
+            $("div[class$='slidein-panel']").animate({ 'left': -$("div[class$='slidein-panel']").outerWidth() });
             status = 'close';
 
             var units = 'metric';
@@ -869,11 +894,11 @@
         });
 
 
-        
 
 
 
-        
+
+
 
 
         function showFind(JSONtext) {
@@ -924,838 +949,12 @@
 
         console.log("Hello World19");
         //**************************** getHistoryData ****************************
-        function getWindRose() {
-            //alert('WindDirect' + WindDir + ' Speed ' + WindSpeed);
-            var tbfreq = '';
-            tbfreq = tbfreq + '<table id="freq" border="0" cellspacing="0" cellpadding="0">'
-            tbfreq = tbfreq + '<tr nowrap bgcolor="#CCCCFF">'
-            tbfreq = tbfreq + '<th colspan="9" class="hdr">Table of Frequencies (percent)</th>'
-            tbfreq = tbfreq + '</tr>'
-            tbfreq = tbfreq + '<tr nowrap bgcolor="#CCCCFF">'
-            tbfreq = tbfreq + '<th class="freq">Direction</th>'
-            tbfreq = tbfreq + '<th class="freq">&lt; 0.5 m/s</th>'
-            tbfreq = tbfreq + '<th class="freq">0.5-2 m/s</th>'
-            tbfreq = tbfreq + '<th class="freq">2-4 m/s</th>'
-            tbfreq = tbfreq + '<th class="freq">4-6 m/s</th>'
-            tbfreq = tbfreq + '<th class="freq">6-8 m/s</th>'
-            tbfreq = tbfreq + '<th class="freq">8-10 m/s</th>'
-            tbfreq = tbfreq + '<th class="freq">Total</th>'
-            tbfreq = tbfreq + '</tr>'
-            tbfreq = tbfreq + '<tr nowrap bgcolor="#DDDDDD">'
-            tbfreq = tbfreq + '<td class="dir">N</td>'
-            if (WindDir == 'N') {
-                if (WindSpeed <= 0.5) {
-                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
-                }
-                else {
-                    tbfreq = tbfreq + '<td class="data">0.00</td>'
-                }
-                if (WindSpeed > 0.5 && WindSpeed <= 2) {
-                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
-                }
-                else {
-                    tbfreq = tbfreq + '<td class="data">0.00</td>'
-                }
-                if (WindSpeed > 4 && WindSpeed <= 6) {
-                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
-                }
-                else {
-                    tbfreq = tbfreq + '<td class="data">0.00</td>'
-                }
-                if (WindSpeed > 6 && WindSpeed <= 8) {
-                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
-                }
-                else {
-                    tbfreq = tbfreq + '<td class="data">0.00</td>'
-                }
-                if (WindSpeed > 10 && WindSpeed <= 10) {
-                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
-                }
-                else {
-                    tbfreq = tbfreq + '<td class="data">0.00</td>'
-                }
-
-            }
-            else {
-                tbfreq = tbfreq + '<td class="data">0.00</td>'
-                tbfreq = tbfreq + '<td class="data">0.00</td>'
-                tbfreq = tbfreq + '<td class="data">0.00</td>'
-                tbfreq = tbfreq + '<td class="data">0.00</td>'
-                tbfreq = tbfreq + '<td class="data">0.00</td>'
-            }
-            tbfreq = tbfreq + '<td class="data">0.00</td>'
-            tbfreq = tbfreq + '<td class="data">0.00</td>'
-            tbfreq = tbfreq + '<td class="data">0.00</td>'
-            tbfreq = tbfreq + '</tr>'
-
-            tbfreq = tbfreq + '<tr nowrap bgcolor="#DDDDDD">'
-            tbfreq = tbfreq + '<td class="dir">NNE</td>'
-            if (WindDir == 'NNE') {
-                if (WindSpeed <= 0.5) {
-                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
-                }
-                else {
-                    tbfreq = tbfreq + '<td class="data">0.00</td>'
-                }
-                if (WindSpeed > 0.5 && WindSpeed <= 2) {
-                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
-                }
-                else {
-                    tbfreq = tbfreq + '<td class="data">0.00</td>'
-                }
-                if (WindSpeed > 4 && WindSpeed <= 6) {
-                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
-                }
-                else {
-                    tbfreq = tbfreq + '<td class="data">0.00</td>'
-                }
-                if (WindSpeed > 6 && WindSpeed <= 8) {
-                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
-                }
-                else {
-                    tbfreq = tbfreq + '<td class="data">0.00</td>'
-                }
-                if (WindSpeed > 10 && WindSpeed <= 10) {
-                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
-                }
-                else {
-                    tbfreq = tbfreq + '<td class="data">0.00</td>'
-                }
-
-            }
-            else {
-                tbfreq = tbfreq + '<td class="data">0.00</td>'
-                tbfreq = tbfreq + '<td class="data">0.00</td>'
-                tbfreq = tbfreq + '<td class="data">0.00</td>'
-                tbfreq = tbfreq + '<td class="data">0.00</td>'
-                tbfreq = tbfreq + '<td class="data">0.00</td>'
-            }
-            tbfreq = tbfreq + '<td class="data">0.00</td>'
-            tbfreq = tbfreq + '<td class="data">0.00</td>'
-            tbfreq = tbfreq + '<td class="data">0.00</td>'
-            tbfreq = tbfreq + '</tr>'
-
-            tbfreq = tbfreq + '<tr nowrap bgcolor="#DDDDDD">'
-            tbfreq = tbfreq + '<td class="dir">NE</td>'
-            if (WindDir == 'NE') {
-                if (WindSpeed <= 0.5) {
-                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
-                }
-                else {
-                    tbfreq = tbfreq + '<td class="data">0.00</td>'
-                }
-                if (WindSpeed > 0.5 && WindSpeed <= 2) {
-                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
-                }
-                else {
-                    tbfreq = tbfreq + '<td class="data">0.00</td>'
-                }
-                if (WindSpeed > 4 && WindSpeed <= 6) {
-                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
-                }
-                else {
-                    tbfreq = tbfreq + '<td class="data">0.00</td>'
-                }
-                if (WindSpeed > 6 && WindSpeed <= 8) {
-                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
-                }
-                else {
-                    tbfreq = tbfreq + '<td class="data">0.00</td>'
-                }
-                if (WindSpeed > 8 && WindSpeed <= 10) {
-                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
-                }
-                else {
-                    tbfreq = tbfreq + '<td class="data">0.00</td>'
-                }
-
-            }
-            else {
-                tbfreq = tbfreq + '<td class="data">0.00</td>'
-                tbfreq = tbfreq + '<td class="data">0.00</td>'
-                tbfreq = tbfreq + '<td class="data">0.00</td>'
-                tbfreq = tbfreq + '<td class="data">0.00</td>'
-                tbfreq = tbfreq + '<td class="data">0.00</td>'
-            }
-            tbfreq = tbfreq + '<td class="data">0.00</td>'
-            tbfreq = tbfreq + '<td class="data">0.00</td>'
-            tbfreq = tbfreq + '<td class="data">0.00</td>'
-            tbfreq = tbfreq + '</tr>'
-            tbfreq = tbfreq + '<tr nowrap bgcolor="#DDDDDD">'
-            tbfreq = tbfreq + '<td class="dir">ENE</td>'
-            if (WindDir == 'ENE') {
-                if (WindSpeed <= 0.5) {
-                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
-                }
-                else {
-                    tbfreq = tbfreq + '<td class="data">0.00</td>'
-                }
-                if (WindSpeed > 0.5 && WindSpeed <= 2) {
-                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
-                }
-                else {
-                    tbfreq = tbfreq + '<td class="data">0.00</td>'
-                }
-                if (WindSpeed > 4 && WindSpeed <= 6) {
-                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
-                }
-                else {
-                    tbfreq = tbfreq + '<td class="data">0.00</td>'
-                }
-                if (WindSpeed > 6 && WindSpeed <= 8) {
-                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
-                }
-                else {
-                    tbfreq = tbfreq + '<td class="data">0.00</td>'
-                }
-                if (WindSpeed > 10 && WindSpeed <= 10) {
-                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
-                }
-                else {
-                    tbfreq = tbfreq + '<td class="data">0.00</td>'
-                }
-
-            }
-            else {
-                tbfreq = tbfreq + '<td class="data">0.00</td>'
-                tbfreq = tbfreq + '<td class="data">0.00</td>'
-                tbfreq = tbfreq + '<td class="data">0.00</td>'
-                tbfreq = tbfreq + '<td class="data">0.00</td>'
-                tbfreq = tbfreq + '<td class="data">0.00</td>'
-            }
-            tbfreq = tbfreq + '<td class="data">0.00</td>'
-            tbfreq = tbfreq + '<td class="data">0.00</td>'
-            tbfreq = tbfreq + '<td class="data">0.00</td>'
-            tbfreq = tbfreq + '</tr>'
-            tbfreq = tbfreq + '<tr nowrap bgcolor="#DDDDDD">'
-            tbfreq = tbfreq + '<td class="dir">E</td>'
-            if (WindDir == 'E') {
-                if (WindSpeed <= 0.5) {
-                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
-                }
-                else {
-                    tbfreq = tbfreq + '<td class="data">0.00</td>'
-                }
-                if (WindSpeed > 0.5 && WindSpeed <= 2) {
-                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
-                }
-                else {
-                    tbfreq = tbfreq + '<td class="data">0.00</td>'
-                }
-                if (WindSpeed > 4 && WindSpeed <= 6) {
-                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
-                }
-                else {
-                    tbfreq = tbfreq + '<td class="data">0.00</td>'
-                }
-                if (WindSpeed > 6 && WindSpeed <= 8) {
-                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
-                }
-                else {
-                    tbfreq = tbfreq + '<td class="data">0.00</td>'
-                }
-                if (WindSpeed > 10 && WindSpeed <= 10) {
-                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
-                }
-                else {
-                    tbfreq = tbfreq + '<td class="data">0.00</td>'
-                }
-
-            }
-            else {
-                tbfreq = tbfreq + '<td class="data">0.00</td>'
-                tbfreq = tbfreq + '<td class="data">0.00</td>'
-                tbfreq = tbfreq + '<td class="data">0.00</td>'
-                tbfreq = tbfreq + '<td class="data">0.00</td>'
-                tbfreq = tbfreq + '<td class="data">0.00</td>'
-            }
-            tbfreq = tbfreq + '<td class="data">0.00</td>'
-            tbfreq = tbfreq + '<td class="data">0.00</td>'
-            tbfreq = tbfreq + '<td class="data">0.00</td>'
-            tbfreq = tbfreq + '</tr>'
-            tbfreq = tbfreq + '<tr nowrap bgcolor="#DDDDDD">'
-            tbfreq = tbfreq + '<td class="dir">ESE</td>'
-            if (WindDir == 'ESE') {
-                if (WindSpeed <= 0.5) {
-                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
-                }
-                else {
-                    tbfreq = tbfreq + '<td class="data">0.00</td>'
-                }
-                if (WindSpeed > 0.5 && WindSpeed <= 2) {
-                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
-                }
-                else {
-                    tbfreq = tbfreq + '<td class="data">0.00</td>'
-                }
-                if (WindSpeed > 4 && WindSpeed <= 6) {
-                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
-                }
-                else {
-                    tbfreq = tbfreq + '<td class="data">0.00</td>'
-                }
-                if (WindSpeed > 6 && WindSpeed <= 8) {
-                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
-                }
-                else {
-                    tbfreq = tbfreq + '<td class="data">0.00</td>'
-                }
-                if (WindSpeed > 10 && WindSpeed <= 10) {
-                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
-                }
-                else {
-                    tbfreq = tbfreq + '<td class="data">0.00</td>'
-                }
-
-            }
-            else {
-                tbfreq = tbfreq + '<td class="data">0.00</td>'
-                tbfreq = tbfreq + '<td class="data">0.00</td>'
-                tbfreq = tbfreq + '<td class="data">0.00</td>'
-                tbfreq = tbfreq + '<td class="data">0.00</td>'
-                tbfreq = tbfreq + '<td class="data">0.00</td>'
-            }
-            tbfreq = tbfreq + '<td class="data">0.00</td>'
-            tbfreq = tbfreq + '<td class="data">0.00</td>'
-            tbfreq = tbfreq + '<td class="data">0.00</td>'
-            tbfreq = tbfreq + '</tr>'
-            tbfreq = tbfreq + '<tr nowrap bgcolor="#DDDDDD">'
-            tbfreq = tbfreq + '<td class="dir">SE</td>'
-            if (WindDir == 'SE') {
-                if (WindSpeed <= 0.5) {
-                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
-                }
-                else {
-                    tbfreq = tbfreq + '<td class="data">0.00</td>'
-                }
-                if (WindSpeed > 0.5 && WindSpeed <= 2) {
-                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
-                }
-                else {
-                    tbfreq = tbfreq + '<td class="data">0.00</td>'
-                }
-                if (WindSpeed > 4 && WindSpeed <= 6) {
-                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
-                }
-                else {
-                    tbfreq = tbfreq + '<td class="data">0.00</td>'
-                }
-                if (WindSpeed > 6 && WindSpeed <= 8) {
-                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
-                }
-                else {
-                    tbfreq = tbfreq + '<td class="data">0.00</td>'
-                }
-                if (WindSpeed > 10 && WindSpeed <= 10) {
-                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
-                }
-                else {
-                    tbfreq = tbfreq + '<td class="data">0.00</td>'
-                }
-
-            }
-            else {
-                tbfreq = tbfreq + '<td class="data">0.00</td>'
-                tbfreq = tbfreq + '<td class="data">0.00</td>'
-                tbfreq = tbfreq + '<td class="data">0.00</td>'
-                tbfreq = tbfreq + '<td class="data">0.00</td>'
-                tbfreq = tbfreq + '<td class="data">0.00</td>'
-            }
-            tbfreq = tbfreq + '<td class="data">0.00</td>'
-            tbfreq = tbfreq + '<td class="data">0.00</td>'
-            tbfreq = tbfreq + '<td class="data">0.00</td>'
-            tbfreq = tbfreq + '</tr>'
-            tbfreq = tbfreq + '<tr nowrap bgcolor="#DDDDDD">'
-            tbfreq = tbfreq + '<td class="dir">SSE</td>'
-            if (WindDir == 'SSE') {
-                if (WindSpeed <= 0.5) {
-                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
-                }
-                else {
-                    tbfreq = tbfreq + '<td class="data">0.00</td>'
-                }
-                if (WindSpeed > 0.5 && WindSpeed <= 2) {
-                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
-                }
-                else {
-                    tbfreq = tbfreq + '<td class="data">0.00</td>'
-                }
-                if (WindSpeed > 4 && WindSpeed <= 6) {
-                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
-                }
-                else {
-                    tbfreq = tbfreq + '<td class="data">0.00</td>'
-                }
-                if (WindSpeed > 6 && WindSpeed <= 8) {
-                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
-                }
-                else {
-                    tbfreq = tbfreq + '<td class="data">0.00</td>'
-                }
-                if (WindSpeed > 10 && WindSpeed <= 10) {
-                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
-                }
-                else {
-                    tbfreq = tbfreq + '<td class="data">0.00</td>'
-                }
-
-            }
-            else {
-                tbfreq = tbfreq + '<td class="data">0.00</td>'
-                tbfreq = tbfreq + '<td class="data">0.00</td>'
-                tbfreq = tbfreq + '<td class="data">0.00</td>'
-                tbfreq = tbfreq + '<td class="data">0.00</td>'
-                tbfreq = tbfreq + '<td class="data">0.00</td>'
-            }
-            tbfreq = tbfreq + '<td class="data">0.00</td>'
-            tbfreq = tbfreq + '<td class="data">0.00</td>'
-            tbfreq = tbfreq + '<td class="data">0.00</td>'
-            tbfreq = tbfreq + '</tr>'
-            tbfreq = tbfreq + '<tr nowrap bgcolor="#DDDDDD">'
-            tbfreq = tbfreq + '<td class="dir">S</td>'
-            if (WindDir == 'S') {
-                if (WindSpeed <= 0.5) {
-                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
-                }
-                else {
-                    tbfreq = tbfreq + '<td class="data">0.00</td>'
-                }
-                if (WindSpeed > 0.5 && WindSpeed <= 2) {
-                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
-                }
-                else {
-                    tbfreq = tbfreq + '<td class="data">0.00</td>'
-                }
-                if (WindSpeed > 4 && WindSpeed <= 6) {
-                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
-                }
-                else {
-                    tbfreq = tbfreq + '<td class="data">0.00</td>'
-                }
-                if (WindSpeed > 6 && WindSpeed <= 8) {
-                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
-                }
-                else {
-                    tbfreq = tbfreq + '<td class="data">0.00</td>'
-                }
-                if (WindSpeed > 10 && WindSpeed <= 10) {
-                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
-                }
-                else {
-                    tbfreq = tbfreq + '<td class="data">0.00</td>'
-                }
-
-            }
-            else {
-                tbfreq = tbfreq + '<td class="data">0.00</td>'
-                tbfreq = tbfreq + '<td class="data">0.00</td>'
-                tbfreq = tbfreq + '<td class="data">0.00</td>'
-                tbfreq = tbfreq + '<td class="data">0.00</td>'
-                tbfreq = tbfreq + '<td class="data">0.00</td>'
-            }
-            tbfreq = tbfreq + '<td class="data">0.00</td>'
-            tbfreq = tbfreq + '<td class="data">0.00</td>'
-            tbfreq = tbfreq + '<td class="data">0.00</td>'
-            tbfreq = tbfreq + '</tr>'
-            tbfreq = tbfreq + '<tr nowrap bgcolor="#DDDDDD">'
-            tbfreq = tbfreq + '<td class="dir">SSW</td>'
-            if (WindDir == 'SSW') {
-                if (WindSpeed <= 0.5) {
-                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
-                }
-                else {
-                    tbfreq = tbfreq + '<td class="data">0.00</td>'
-                }
-                if (WindSpeed > 0.5 && WindSpeed <= 2) {
-                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
-                }
-                else {
-                    tbfreq = tbfreq + '<td class="data">0.00</td>'
-                }
-                if (WindSpeed > 4 && WindSpeed <= 6) {
-                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
-                }
-                else {
-                    tbfreq = tbfreq + '<td class="data">0.00</td>'
-                }
-                if (WindSpeed > 6 && WindSpeed <= 8) {
-                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
-                }
-                else {
-                    tbfreq = tbfreq + '<td class="data">0.00</td>'
-                }
-                if (WindSpeed > 10 && WindSpeed <= 10) {
-                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
-                }
-                else {
-                    tbfreq = tbfreq + '<td class="data">0.00</td>'
-                }
-
-            }
-            else {
-                tbfreq = tbfreq + '<td class="data">0.00</td>'
-                tbfreq = tbfreq + '<td class="data">0.00</td>'
-                tbfreq = tbfreq + '<td class="data">0.00</td>'
-                tbfreq = tbfreq + '<td class="data">0.00</td>'
-                tbfreq = tbfreq + '<td class="data">0.00</td>'
-            }
-            tbfreq = tbfreq + '<td class="data">0.00</td>'
-            tbfreq = tbfreq + '<td class="data">0.00</td>'
-            tbfreq = tbfreq + '<td class="data">0.00</td>'
-            tbfreq = tbfreq + '</tr>'
-            tbfreq = tbfreq + '<tr nowrap bgcolor="#DDDDDD">'
-            tbfreq = tbfreq + '<td class="dir">SW</td>'
-            if (WindDir == 'SW') {
-                if (WindSpeed <= 0.5) {
-                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
-                }
-                else {
-                    tbfreq = tbfreq + '<td class="data">0.00</td>'
-                }
-                if (WindSpeed > 0.5 && WindSpeed <= 2) {
-                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
-                }
-                else {
-                    tbfreq = tbfreq + '<td class="data">0.00</td>'
-                }
-                if (WindSpeed > 4 && WindSpeed <= 6) {
-                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
-                }
-                else {
-                    tbfreq = tbfreq + '<td class="data">0.00</td>'
-                }
-                if (WindSpeed > 6 && WindSpeed <= 8) {
-                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
-                }
-                else {
-                    tbfreq = tbfreq + '<td class="data">0.00</td>'
-                }
-                if (WindSpeed > 10 && WindSpeed <= 10) {
-                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
-                }
-                else {
-                    tbfreq = tbfreq + '<td class="data">0.00</td>'
-                }
-
-            }
-            else {
-                tbfreq = tbfreq + '<td class="data">0.00</td>'
-                tbfreq = tbfreq + '<td class="data">0.00</td>'
-                tbfreq = tbfreq + '<td class="data">0.00</td>'
-                tbfreq = tbfreq + '<td class="data">0.00</td>'
-                tbfreq = tbfreq + '<td class="data">0.00</td>'
-            }
-            tbfreq = tbfreq + '<td class="data">0.00</td>'
-            tbfreq = tbfreq + '<td class="data">0.00</td>'
-            tbfreq = tbfreq + '<td class="data">0.00</td>'
-            tbfreq = tbfreq + '</tr>'
-            tbfreq = tbfreq + '<tr nowrap bgcolor="#DDDDDD">'
-            tbfreq = tbfreq + '<td class="dir">WSW</td>'
-            if (WindDir == 'WSW') {
-                if (WindSpeed <= 0.5) {
-                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
-                }
-                else {
-                    tbfreq = tbfreq + '<td class="data">0.00</td>'
-                }
-                if (WindSpeed > 0.5 && WindSpeed <= 2) {
-                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
-                }
-                else {
-                    tbfreq = tbfreq + '<td class="data">0.00</td>'
-                }
-                if (WindSpeed > 4 && WindSpeed <= 6) {
-                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
-                }
-                else {
-                    tbfreq = tbfreq + '<td class="data">0.00</td>'
-                }
-                if (WindSpeed > 6 && WindSpeed <= 8) {
-                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
-                }
-                else {
-                    tbfreq = tbfreq + '<td class="data">0.00</td>'
-                }
-                if (WindSpeed > 10 && WindSpeed <= 10) {
-                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
-                }
-                else {
-                    tbfreq = tbfreq + '<td class="data">0.00</td>'
-                }
-
-            }
-            else {
-                tbfreq = tbfreq + '<td class="data">0.00</td>'
-                tbfreq = tbfreq + '<td class="data">0.00</td>'
-                tbfreq = tbfreq + '<td class="data">0.00</td>'
-                tbfreq = tbfreq + '<td class="data">0.00</td>'
-                tbfreq = tbfreq + '<td class="data">0.00</td>'
-            }
-            tbfreq = tbfreq + '<td class="data">0.00</td>'
-            tbfreq = tbfreq + '<td class="data">0.00</td>'
-            tbfreq = tbfreq + '<td class="data">0.00</td>'
-            tbfreq = tbfreq + '</tr>'
-            tbfreq = tbfreq + '<tr nowrap bgcolor="#DDDDDD">'
-            tbfreq = tbfreq + '<td class="dir">W</td>'
-            if (WindDir == 'W') {
-                if (WindSpeed <= 0.5) {
-                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
-                }
-                else {
-                    tbfreq = tbfreq + '<td class="data">0.00</td>'
-                }
-                if (WindSpeed > 0.5 && WindSpeed <= 2) {
-                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
-                }
-                else {
-                    tbfreq = tbfreq + '<td class="data">0.00</td>'
-                }
-                if (WindSpeed > 4 && WindSpeed <= 6) {
-                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
-                }
-                else {
-                    tbfreq = tbfreq + '<td class="data">0.00</td>'
-                }
-                if (WindSpeed > 6 && WindSpeed <= 8) {
-                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
-                }
-                else {
-                    tbfreq = tbfreq + '<td class="data">0.00</td>'
-                }
-                if (WindSpeed > 10 && WindSpeed <= 10) {
-                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
-                }
-                else {
-                    tbfreq = tbfreq + '<td class="data">0.00</td>'
-                }
-
-            }
-            else {
-                tbfreq = tbfreq + '<td class="data">0.00</td>'
-                tbfreq = tbfreq + '<td class="data">0.00</td>'
-                tbfreq = tbfreq + '<td class="data">0.00</td>'
-                tbfreq = tbfreq + '<td class="data">0.00</td>'
-                tbfreq = tbfreq + '<td class="data">0.00</td>'
-            }
-            tbfreq = tbfreq + '<td class="data">0.00</td>'
-            tbfreq = tbfreq + '<td class="data">0.00</td>'
-            tbfreq = tbfreq + '<td class="data">0.00</td>'
-            tbfreq = tbfreq + '</tr>'
-            tbfreq = tbfreq + '<tr nowrap bgcolor="#DDDDDD">'
-            tbfreq = tbfreq + '<td class="dir">WNW</td>'
-            if (WindDir == 'WW') {
-                if (WindSpeed <= 0.5) {
-                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
-                }
-                else {
-                    tbfreq = tbfreq + '<td class="data">0.00</td>'
-                }
-                if (WindSpeed > 0.5 && WindSpeed <= 2) {
-                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
-                }
-                else {
-                    tbfreq = tbfreq + '<td class="data">0.00</td>'
-                }
-                if (WindSpeed > 4 && WindSpeed <= 6) {
-                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
-                }
-                else {
-                    tbfreq = tbfreq + '<td class="data">0.00</td>'
-                }
-                if (WindSpeed > 6 && WindSpeed <= 8) {
-                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
-                }
-                else {
-                    tbfreq = tbfreq + '<td class="data">0.00</td>'
-                }
-                if (WindSpeed > 10 && WindSpeed <= 10) {
-                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
-                }
-                else {
-                    tbfreq = tbfreq + '<td class="data">0.00</td>'
-                }
-
-            }
-            else {
-                tbfreq = tbfreq + '<td class="data">0.00</td>'
-                tbfreq = tbfreq + '<td class="data">0.00</td>'
-                tbfreq = tbfreq + '<td class="data">0.00</td>'
-                tbfreq = tbfreq + '<td class="data">0.00</td>'
-                tbfreq = tbfreq + '<td class="data">0.00</td>'
-            }
-            tbfreq = tbfreq + '<td class="data">0.00</td>'
-            tbfreq = tbfreq + '<td class="data">0.00</td>'
-            tbfreq = tbfreq + '<td class="data">0.00</td>'
-            tbfreq = tbfreq + '</tr>'
-            tbfreq = tbfreq + '<tr nowrap bgcolor="#DDDDDD">'
-            tbfreq = tbfreq + '<td class="dir">NW</td>'
-            if (WindDir == 'NW') {
-                if (WindSpeed <= 0.5) {
-                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
-                }
-                else {
-                    tbfreq = tbfreq + '<td class="data">0.00</td>'
-                }
-                if (WindSpeed > 0.5 && WindSpeed <= 2) {
-                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
-                }
-                else {
-                    tbfreq = tbfreq + '<td class="data">0.00</td>'
-                }
-                if (WindSpeed > 4 && WindSpeed <= 6) {
-                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
-                }
-                else {
-                    tbfreq = tbfreq + '<td class="data">0.00</td>'
-                }
-                if (WindSpeed > 6 && WindSpeed <= 8) {
-                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
-                }
-                else {
-                    tbfreq = tbfreq + '<td class="data">0.00</td>'
-                }
-                if (WindSpeed > 10 && WindSpeed <= 10) {
-                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
-                }
-                else {
-                    tbfreq = tbfreq + '<td class="data">0.00</td>'
-                }
-
-            }
-            else {
-                tbfreq = tbfreq + '<td class="data">0.00</td>'
-                tbfreq = tbfreq + '<td class="data">0.00</td>'
-                tbfreq = tbfreq + '<td class="data">0.00</td>'
-                tbfreq = tbfreq + '<td class="data">0.00</td>'
-                tbfreq = tbfreq + '<td class="data">0.00</td>'
-            }
-            tbfreq = tbfreq + '<td class="data">0.00</td>'
-            tbfreq = tbfreq + '<td class="data">0.00</td>'
-            tbfreq = tbfreq + '<td class="data">0.00</td>'
-            tbfreq = tbfreq + '</tr>'
-            tbfreq = tbfreq + '<tr nowrap bgcolor="#DDDDDD">'
-            tbfreq = tbfreq + '<td class="dir">NNW</td>'
-            if (WindDir == 'NNW') {
-                if (WindSpeed <= 0.5) {
-                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
-                }
-                else {
-                    tbfreq = tbfreq + '<td class="data">0.00</td>'
-                }
-                if (WindSpeed > 0.5 && WindSpeed <= 2) {
-                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
-                }
-                else {
-                    tbfreq = tbfreq + '<td class="data">0.00</td>'
-                }
-                if (WindSpeed > 4 && WindSpeed <= 6) {
-                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
-                }
-                else {
-                    tbfreq = tbfreq + '<td class="data">0.00</td>'
-                }
-                if (WindSpeed > 6 && WindSpeed <= 8) {
-                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
-                }
-                else {
-                    tbfreq = tbfreq + '<td class="data">0.00</td>'
-                }
-                if (WindSpeed > 10 && WindSpeed <= 10) {
-                    tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
-                }
-                else {
-                    tbfreq = tbfreq + '<td class="data">0.00</td>'
-                }
-
-            }
-            else {
-                tbfreq = tbfreq + '<td class="data">0.00</td>'
-                tbfreq = tbfreq + '<td class="data">0.00</td>'
-                tbfreq = tbfreq + '<td class="data">0.00</td>'
-                tbfreq = tbfreq + '<td class="data">0.00</td>'
-                tbfreq = tbfreq + '<td class="data">0.00</td>'
-            }
-            tbfreq = tbfreq + '<td class="data">0.00</td>'
-            tbfreq = tbfreq + '<td class="data">0.00</td>'
-            tbfreq = tbfreq + '<td class="data">0.00</td>'
-            tbfreq = tbfreq + '</tr>'
-            $('#resp').html('');
-            $('#resp').append(tbfreq);
-
-
-            $('#chart_container').highcharts({
-                data: {
-                    table: 'freq',
-                    startRow: 1,
-                    endRow: 17,
-                    endColumn: 7
-                },
-
-                chart: {
-                    polar: true,
-                    type: 'column'
-                },
-
-                title: {
-                    text: 'Ice Wind Rose'
-                },
-
-                subtitle: {
-                    text: '..'
-                },
-
-                pane: {
-                    size: '85%'
-                },
-
-                legend: {
-                    reversed: true,
-                    align: 'right',
-                    verticalAlign: 'top',
-                    y: 100,
-                    layout: 'vertical'
-                },
-
-                xAxis: {
-                    tickmarkPlacement: 'on'
-                },
-
-                yAxis: {
-                    min: 0,
-                    endOnTick: false,
-                    showLastLabel: true,
-                    title: {
-                        text: 'Frequency (%)'
-                    },
-                    labels: {
-                        formatter: function () {
-                            return this.value + '%';
-                        }
-                    }
-                },
-
-                tooltip: {
-                    valueSuffix: '%',
-                    followPointer: true
-                },
-
-                plotOptions: {
-                    series: {
-                        stacking: 'normal',
-                        shadow: false,
-                        groupPadding: 0,
-                        pointPlacement: 'on'
-                    }
-                }
-            });
-            $.mobile.hidePageLoadingMsg();
-        }
+        //jchartliveshow
 
 
 
         
     </script>
-
 </head>
 <body>
     <div id="fb-root">
@@ -1793,7 +992,7 @@
             <div id="slidein-panel" class="slidein-panel" style="z-index: 99999">
                 <!-- SlidePanel Button Container -->
                 <div id="slidein-panel-container" class="slidein-panel-container">
-                    <a class="slidein-panel-btn" id="slidein-panel-btn" href="#"> </a>
+                    <a class="slidein-panel-btn" id="slidein-panel-btn" href="#"></a>
                 </div>
                 <!-- /SlidePanel Button Container -->
                 <!-- SlidePanel Content -->
@@ -1806,6 +1005,11 @@
                         x te</a></li>
                     <li><a href="#meteo">
                         <img src="images/flip_flops.png" height="18px" width="18px" />&nbsp; Meteo</a></li>
+                    <li><a href="#chart">
+                        <img src="images/flip_flops.png" height="18px" width="18px" />&nbsp; Rosa dei venti</a></li>
+                     <li><a href="#compass">
+                        <img src="images/flip_flops.png" height="18px" width="18px" />&nbsp; Compass</a></li>
+                        
                     <li><a href="#Setting">
                         <img src="images/flip_flops.png" height="18px" width="18px" />&nbsp; Impostazioni</a></li>
                 </ul>
@@ -1906,7 +1110,7 @@
             <center>
                 <select id="BeachFinderBy" name="BeachFinderBy">
                     <option value="wind" selected="selected">Direzione del Vento</option>
-                     <option value="near">Le 5 più vicine </option>
+                    <option value="near">Le 5 più vicine </option>
                     <option value="parking">Con Parcheggio </option>
                     <option value="bar">Con Bar </option>
                     <option value="child">Adatta ai bambini </option>
@@ -1936,18 +1140,17 @@
             </div>
         </div>
         <div data-role="content" id="Div1">
-            <div id="mapmap" style="width: 100%; height: 320px;">
+            <div id="mapmap" style="width: 100%; height: 400px;">
             </div>
             <center>
-                <div data-role="fieldcontain" style="width: 100% !important; visibility:hidden">
+                <div data-role="fieldcontain" style="width: 100% !important;">
                     <label for="flip-c" style="color: Orange; font-family: Comic Sans MS; font-style: italic;
                         font-size: small;">
-                        Selezione l'azione quando clicchi sul POI della spiaggia : Anteprima o Vai alla
-                        descrizione</label>
+                        Evidenzia solo le spiagge che rispettano la richiesta</label>
                     <br />
                     <select name="slider" id="flipView" data-role="slider" data-theme="e">
-                        <option value="an">Anteprima</option>
-                        <option value="ds">Descrizione</option>
+                        <option value="N">Attiva</option>
+                        <option value="Y">Disattiva</option>
                     </select>
                 </div>
             </center>
@@ -1972,9 +1175,12 @@
     </div>
     <div data-role="page" id="meteo" class="type-index">
         <div class="banner" style="z-index: 99999" data-role="header" role="banner" data-theme="c">
-            <div class="wrapban">
-                <span class="logo" style="width: 100px"></span>
-            </div>
+            <center>
+                <div style="vertical-align: middle;">
+                    <br />
+                    <a id="A3">Meteo</a>
+                </div>
+            </center>
             <div id="slidein-panel" class="slidein-panel" style="z-index: 99999;">
                 <!-- SlidePanel Button Container -->
                 <div id="slidein-panel-container" class="slidein-panel-container">
@@ -2158,7 +1364,7 @@
             </div>
         </div>
     </div>
-       <div data-role="page" id="Setting" class="type-index">
+    <div data-role="page" id="Setting" class="type-index">
         <div class="banner" style="z-index: 99999" data-role="header" role="banner" data-theme="c">
             <input type="image" style="float: left; top: -20px" src="images/back.png" id="Image1" />
             <center>
@@ -2168,7 +1374,6 @@
                 </div>
             </center>
         </div>
-
         <div data-role="content" id="Div21">
             <ul data-role="listview" data-inset="true">
                 <li id="Li2"><span id="Span3">La tua posizione</span><span id="Span4"></span></li>
@@ -2211,6 +1416,87 @@
         </script>
         <div style="display: none">
             <div id="Div26" style="width: 900px; height: 529px;">
+            </div>
+        </div>
+    </div>
+    <div data-role="page" id="chart">
+        <div class="banner" style="z-index: 99999" data-role="header" role="banner" data-theme="c">
+            <input type="image" style="float: left; top: -20px" src="images/back.png" id="Image2" />
+            <center>
+                <div style="vertical-align: middle;">
+                    <br />
+                    <a id="A4">Impostazioni</a>
+                </div>
+            </center>
+        </div>
+        <div data-role="content" id="Div6">
+            
+                <div id="chart_container" style=" float:left; background-color: Black; display: inline; width: 100%;
+                    height: 360px; margin: 0 auto">
+                </div>
+            
+            <center>
+                <canvas id="gauge_pres" style="display: none;" width="250" height="250"></canvas>
+            </center>
+            <!--<div id="container" style="min-width: 420px; max-width: 600px; height: 400px; margin: 0 auto"></div>-->
+            <div style="display: none">
+                <!-- Source: http://or.water.usgs.gov/cgi-bin/grapher/graph_windrose.pl -->
+                <div id="resp">
+                    Here will be displayed the data from the XML file.</div>
+            </div>
+        </div>
+        <!-- /content -->
+        <div id="Div7">
+            <img id="Img5" src="images/footer_wave.png">
+        </div>
+        <div id="Div8">
+        </div>
+        <div data-role="footer" id="Div13">
+        </div>
+        <script type="text/javascript" src="js/jquery.countdown.min.js?m=1368543442"></script>
+        <script type="text/javascript" src="js/mob-generic.js?m=1368543444"></script>
+        <script>
+            $('#cdcount #countdown-field').countdown({ until: new Date(2015, 1 - 1, 16, 17, 00, 00), format: 'dHM', timezone: -5, layout: '<div class="countdown_section">' + '<span class="countdown_amount">{dnn}</span>D' + '<span class="countdown_amount">{hnn}</span>H' + '<span class="countdown_amount">{mnn}</span>M' });
+        </script>
+        <div style="display: none">
+            <div id="Div17" style="width: 900px; height: 529px;">
+            </div>
+        </div>
+    </div>
+    <div data-role="page" id="compass">
+        <div class="banner" style="z-index: 99999" data-role="header" role="banner" data-theme="c">
+            <input type="image" style="float: left; top: -20px" src="images/back.png" id="Image3" />
+            <center>
+                <div style="vertical-align: middle;">
+                    <br />
+                    <a id="A5">Compass</a>
+                </div>
+            </center>
+        </div>
+        <div data-role="content" id="Div19">
+            <div align="center">
+                <canvas id="myCanvas" width="256" height="256">
+            <p>Your browser doesn't support canvas.</p>
+        </canvas>
+            </div>
+            <div align="center" id="heading">
+                Waiting for heading...</div>
+        </div>
+        <!-- /content -->
+        <div id="Div27">
+            <img id="Img6" src="images/footer_wave.png">
+        </div>
+        <div id="Div28">
+        </div>
+        <div data-role="footer" id="Div29">
+        </div>
+        <script type="text/javascript" src="js/jquery.countdown.min.js?m=1368543442"></script>
+        <script type="text/javascript" src="js/mob-generic.js?m=1368543444"></script>
+        <script>
+            $('#cdcount #countdown-field').countdown({ until: new Date(2015, 1 - 1, 16, 17, 00, 00), format: 'dHM', timezone: -5, layout: '<div class="countdown_section">' + '<span class="countdown_amount">{dnn}</span>D' + '<span class="countdown_amount">{hnn}</span>H' + '<span class="countdown_amount">{mnn}</span>M' });
+        </script>
+        <div style="display: none">
+            <div id="Div30" style="width: 900px; height: 529px;">
             </div>
         </div>
     </div>

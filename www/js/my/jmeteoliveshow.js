@@ -1,4 +1,6 @@
-﻿$('#meteo').live('pageshow', function (event, ui) {
+﻿
+
+$('#meteo').live('pageshow', function (event, ui) {
 
 
     $("div[class$='slidein-panel']").animate({ 'left': -$("div[class$='slidein-panel']").outerWidth() });
@@ -29,9 +31,9 @@
 
         // alert(current_city_id + '1');
         if (current_city_id)
-            $.getJSON("http://api.openweathermap.org/data/2.5/weather?callback=?&id=" + current_city_id + '&units=' + units, showCurrentCity).error(errorHandler);
+            $.getJSON("http://api.openweathermap.org/data/2.5/weather?callback=?&id=" + current_city_id + '&units=' + units + '&lang=it', showCurrentCity).error(errorHandler);
         else
-            $.getJSON("http://api.openweathermap.org/data/2.5/weather?callback=?&id=auto" + '&units=' + units, showCurrentCity).error(errorHandler);
+            $.getJSON("http://api.openweathermap.org/data/2.5/weather?callback=?&id=auto" + '&units=' + units + '&lang=it', showCurrentCity).error(errorHandler);
 
 
     }
@@ -39,7 +41,7 @@
         alert('no connection');
     }
 
-
+   
 
     function showCurrentCity(d) {
 
@@ -168,3 +170,91 @@
     }
 
 });
+
+
+
+
+function SetWeather() {
+    //alert('SetWeather');
+    var units = 'metric';
+    if (get_cookie('units') == 'imperial') units = 'imperial';
+    var lang = 'it';
+    if (get_cookie('lang') == 'en') lang = 'en';
+
+    current_city_id = '3172087';
+
+    $.getJSON("http://api.openweathermap.org/data/2.5/weather?callback=?&id=" + current_city_id + '&units=' + units + '&lang=it', setParWeather).error(errorHandler);
+}
+
+function setParWeather(d) {
+    current_city_id = d.id;
+    
+    WindDir = '';
+    /*
+    N        348.75 - 11.25
+    NNE      11.25 - 33.75
+    NE       33.75 - 56.25
+    ENE      56.25 - 78.75
+    E        78.75 - 101.25
+    ESE      101.25 - 123.75
+    SE       123.75 - 146.25
+    SSE      146.25 - 168.75
+    S        168.75 - 191.25
+    SSW      191.25 - 213.75
+    SW       213.75 - 236.25
+    WSW      236.25 - 258.75
+    W        258.75 - 281.25
+    WNW      281.25 - 303.75
+    NW       303.75 - 326.25
+    NNW      326.25 - 348.75
+    */
+    WindSpeed = d.wind.speed;
+    if (d.wind.deg >= 348.75 || d.wind.deg < 11.25) {
+        WindDir = 'N';
+    }
+    if (d.wind.deg >= 11.25 && d.wind.deg < 33.75) {
+        WindDir = 'NNE';
+    }
+    if (d.wind.deg >= 33.75 && d.wind.deg < 56.25) {
+        WindDir = 'NE';
+    }
+    if (d.wind.deg >= 56.25 && d.wind.deg < 78.75) {
+        WindDir = 'ENE';
+    }
+    if (d.wind.deg >= 78.75 && d.wind.deg < 101.25) {
+        WindDir = 'E';
+    }
+    if (d.wind.deg >= 101.25 && d.wind.deg < 123.75) {
+        WindDir = 'ESE';
+    }
+    if (d.wind.deg >= 123.75 && d.wind.deg < 146.25) {
+        WindDir = 'SE';
+    }
+    if (d.wind.deg >= 146.25 && d.wind.deg < 168.75) {
+        WindDir = 'SSE';
+    }
+    if (d.wind.deg >= 168.75 && d.wind.deg < 191.25) {
+        WindDir = 'S';
+    }
+    if (d.wind.deg >= 191.25 && d.wind.deg < 213.75) {
+        WindDir = 'SSW';
+    }
+    if (d.wind.deg >= 213.75 && d.wind.deg < 236.25) {
+        WindDir = 'SW';
+    }
+    if (d.wind.deg >= 236.25 && d.wind.deg < 258.75) {
+        WindDir = 'WSW';
+    }
+    if (d.wind.deg >= 258.75 && d.wind.deg < 281.25) {
+        WindDir = 'W';
+    }
+    if (d.wind.deg >= 281.25 && d.wind.deg < 303.75) {
+        WindDir = 'WW';
+    }
+    if (d.wind.deg >= 303.75 && d.wind.deg < 326.25) {
+        WindDir = 'NW';
+    }
+    if (d.wind.deg >= 348.75 && d.wind.deg < 326.25) {
+        WindDir = 'NW';
+    }
+}

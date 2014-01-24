@@ -159,37 +159,31 @@ function setMarkers(map, markers) {
         var siteLatLng = new google.maps.LatLng(sites[1], sites[2]);
         //alert(sites[8]);
         if (valid == 0) {
-            var marker = new google.maps.Marker({
-                position: siteLatLng,
-                map: map,
-                title: sites[0] + '|' + sites[1] + '|' + sites[2] + '|' + Distance,
-                zIndex: sites[3],
-                url: '#Beach?id=' + sites[8],
-                html: '<b>' + sites[0] + '</b> <br/>' + Distance + ' Clicca una seconda volta per avere maggiori informazioni' 
-                    , icon: imgWindKO,
-                shape: shape
-            });
+            if (flipView == 'N') {
+                var marker = new google.maps.Marker({
+                    position: siteLatLng,
+                    map: map,
+                    title: sites[0] + '|' + sites[1] + '|' + sites[2] + '|' + Distance,
+                    zIndex: sites[3],
+                    url: '#Beach?id=' + sites[8],
+                    html: '<b>' + sites[0] + '</b> <br/>' + Distance + ' Clicca una seconda volta per avere maggiori informazioni' 
+                        , icon: imgWindKO,
+                    shape: shape
+                });
 
-
-            google.maps.event.addListener(marker, "click", function () {
-                var lat2click = this.title.split('|')[1];
-                var lng2click = this.title.split('|')[2];
-                if (lat1click == lat2click && lng1click == lng2click) {
-                    window.location.href = this.url;
-                }
-                lat1click = lat2click;
-                lng1click = lng2click;
-                infowindow.setContent(this.html);
-                infowindow.open(map, this);
-                /*
-                if (flipView == 'ds') {
-                    window.location.href = this.url;
-                }
-                else {
+            
+                google.maps.event.addListener(marker, "click", function () {
+                    var lat2click = this.title.split('|')[1];
+                    var lng2click = this.title.split('|')[2];
+                    if (lat1click == lat2click && lng1click == lng2click) {
+                        window.location.href = this.url;
+                    }
+                    lat1click = lat2click;
+                    lng1click = lng2click;
                     infowindow.setContent(this.html);
                     infowindow.open(map, this);
-                }*/
-            });
+                });
+            }
         }
         else {
             if (beachfinderby == 'near') {
