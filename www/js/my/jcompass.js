@@ -8,7 +8,7 @@ function drawCanvas() {
     if (surface.getContext) {
         android = new Image();
         android.onload = loadingComplete;
-        android.src = "../../images/compass.png";
+        android.src = "images/compass.png";
     }
 }
 
