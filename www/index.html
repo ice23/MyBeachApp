@@ -228,8 +228,8 @@
     <script type="text/javascript" src="js/my/jmeteoliveshow.js"></script>
     <script type="text/javascript" src="js/my/JchartLiveShow.js"></script>
     <script type="text/javascript" src="js/my/jcompass.js"></script>
-     <script type="text/javascript" src="js/my/jforecast.js"></script>
-   
+    <script type="text/javascript" src="js/my/jforecast.js"></script>
+    <script type="text/javascript" src="js/moment-with-langs.js"></script>
     <script type="text/javascript" charset="utf-8">
 
         var lat1 = 0;
@@ -369,6 +369,10 @@
                 parent.history.back();
                 return false;
             });
+            $('#bck5').click(function () {
+                parent.history.back();
+                return false;
+            }); 
 
             $('#rfh').click(function () {
                 UpdateMyPosition();
@@ -705,7 +709,10 @@
             ar_tmax.push(max_cur);
 
             lastday = 0;
-
+            /* <li class="indpr-1 myindpr"><a href="#" class="nomar" data-ajax="false">
+                    <img src="images/palm_tree.png" class="picture" alt="winelovers420x260" />
+                    <p><div id="Div18">
+                        </div></p></a></li>*/
             for (var i = 0; i < JSONobject.list.length; i++) {
 
                 var dt = new Date(JSONobject.list[i].dt * 1000 + time_zone);
@@ -718,13 +725,22 @@
                 var curr_date = dt.getDate();
                 var curr_month = dt.getMonth() + 1; //Months are zero based
                 var curr_year = dt.getFullYear();
+                
+                moment.lang('it')
+                var data = moment(dt).format('dddd Do MMMM YYYY');
+                //alert(data);
 
                 if (day != lastday) {
                     if (lastday != 0)
                         html = html + "</li></ul>";
-                    html = html + "<li><h3>" + curr_date + '/' + curr_month + '/' + curr_year + "</h3> \
+//                    html = html + "<li class='indpr-1 myindpr'><a href='#' class='nomar' data-ajax='false'>";
+//                    html = html + "<p><div>";
+//                    html = html + curr_date + '/' + curr_month + '/' + curr_year;
+//                    html = html + " Temp. min " + Math.round(ar_tmin.shift()) + " max " + Math.round(ar_tmax.shift()) + "°C";
+//                    html = html + "</div></p></a><ul  data-role=listview data-inset=true>";
+                    html = html + "<li class=indpr-1 myindpr><h3>" + data + "</h3> \
 			<p>Temp. min " + Math.round(ar_tmin.shift()) + " max " +
-				Math.round(ar_tmax.shift()) + "°C</p><ul>";
+				Math.round(ar_tmax.shift()) + "°C</p><ul  data-role=listview data-inset=true>";
                     lastday = day;
                 }
                 var temp = Math.round(JSONobject.list[i].main.temp);
@@ -742,21 +758,22 @@
                 var lang = 'it';
                 //if (get_cookie('lang') == 'en') lang = 'en';
                 if (lang == 'en') {
-                    html = html + '<li>' + img + '<h1>' + hr + ':00 </h1> <span class="ui-li-count"><h5>' + temp + '°C</h5></span>' +
+                    html = html + '<li class=indpr-1 myindpr>' + img + '<h1>' + hr + ':00 </h1> <span class="ui-li-count"><h5>' + temp + '°C</h5></span>' +
 '<p><strong>Temp. from ' + tmin + ' to ' + tmax + '°C</strong></p><p> Wind ' + wind +
 ' m/s.</p><p> Clouds ' + cloud + ' % ' + pressure + ' hpa</p></li>';
                 }
                 else {
-                    html = html + '<li>' + img + '<h1>' + hr + ':00 </h1> <span class="ui-li-count"><h5>' + temp + '°C</h5></span>' +
+                    html = html + '<li class=indpr-1 myindpr>' + img + '<h1>' + hr + ':00 </h1> <span class="ui-li-count"><h5>' + temp + '°C</h5></span>' +
 '<p><strong>Temp. min ' + tmin + ' max ' + tmax + '°C</strong></p><p> Vento ' + wind +
 ' m/s.</p><p> nuvolosità ' + cloud + ' % ' + pressure + ' hpa</p></li>';
                 }
 
             }
-            html = '<ul data-role="listview" id="forecast_list_data">' + html + '</ul>';
+
+            html = '<ul data-role="listview" id="forecast_list_data_" data-inset=true>' + html + '</ul>';
 
             $("#forecast_list_ul").html(html);
-            $("#forecast_list_data").listview();
+            $("#forecast_list_data_").listview();
 
             $.mobile.hidePageLoadingMsg();
         };
@@ -1212,7 +1229,7 @@
             </div>
             <center>
                 <div data-role="fieldcontain" style="width: 100% !important;">
-                    <label for="flip-c" style="color: Orange; font-family: Comic Sans MS; font-style: italic;
+                    <label for="flip-c" style="color: Blue; font-family: Comic Sans MS; font-style: italic;
                         font-size: small;">
                         Evidenzia solo le spiagge che rispettano la richiesta</label>
                     <br />
@@ -1254,9 +1271,11 @@
         <div data-role="content" id="Div4">
             <ul data-role="listview" data-inset="true">
                 <li id="Li1"><span id="Span1">
+                    
+                    <a style="float:right;" href="#forecast" data-ajax="false">nei prossimi giorni</a>
                     <h3 id="city_name">
                     </h3>
-                </span><span id="Span2"><a href="#forecast" data-ajax="false">View Forecast</a></span></li>
+                </span></li>
                 <li class="indpr-1 myindpr"><a href="#" class="nomar" data-ajax="false">
                     <img src="images/palm_tree.png" class="picture" alt="winelovers420x260" />
                     <h2 id="city_temp" class="grl">
@@ -1269,42 +1288,37 @@
                 <li class="indpr-1 myindpr"><a href="#" class="nomar" data-ajax="false">
                     <h3>
                         <div id="city_wind_lbl">
-                            Wind</div>
+                            ...</div>
                     </h3>
                     <div class="likea" id="city_wind">
                     </div>
                 </a></li>
                 <li class="indpr-1 myindpr"><a href="#" class="nomar" data-ajax="false">
                     <h3>
-                        <h3>
-                            <div id="city_clouds_lbl">
-                                Cloudiness
-                            </div>
-                        </h3>
-                        <div class="likea" id="city_clouds">
+                        <div id="city_clouds_lbl">
+                            ...
                         </div>
+                    </h3>
+                    <div class="likea" id="city_clouds">
+                    </div>
                 </a></li>
                 <li class="indpr-1 myindpr"><a href="#" class="nomar" data-ajax="false">
                     <h3>
-                        <h3>
-                            <h3>
-                                <div id="city_pressure_lbl">
-                                    Atmospheric pressure
-                                </div>
-                            </h3>
-                            <div class="likea" id="city_pressure">
-                            </div>
+                        <div id="city_pressure_lbl">
+                            ...
+                        </div>
+                    </h3>
+                    <div class="likea" id="city_pressure">
+                    </div>
                 </a></li>
                 <li class="indpr-1 myindpr"><a href="#" class="nomar" data-ajax="false">
                     <h3>
-                        <h3>
-                            <h3>
-                                <div id="city_humidity_lbl">
-                                    Humidity
-                                </div>
-                            </h3>
-                            <div class="likea" id="city_humidity">
-                            </div>
+                        <div id="city_humidity_lbl">
+                            ...
+                        </div>
+                    </h3>
+                    <div class="likea" id="city_humidity">
+                    </div>
                 </a></li>
                 <li class="indpr-1 myindpr"><a href="#" class="nomar" data-ajax="false">
                     <h3>
@@ -1351,22 +1365,22 @@
                 <table style="border: 0; border-style: none; border-width: 0" cellpadding="5" cellspacing="5">
                     <tr>
                         <td>
-                            <img id="img_parcheggio" src="images/icona-parcheggio.png" height="40px" width="40px" />
+                            <img id="img_parcheggio" src="images/icona-parcheggio.png" height="50px" width="50px" />
                         </td>
                         <td>
-                            <img id="img_bar" src="images/icona-bar.png" height="40px" width="40px" />
+                            <img id="img_bar" src="images/icona-bar.png" height="50px" width="50px" />
                         </td>
                         <td>
-                            <img id="img_bambini" src="images/icona-bambini.png" height="40px" width="40px" />
+                            <img id="img_bambini" src="images/icona-bambini.png" height="50px" width="50px" />
                         </td>
                         <td>
-                            <img id="img_disabili" src="images/icona-hand.png" height="40px" width="40px" />
+                            <img id="img_disabili" src="images/icona-hand.png" height="50px" width="50px" />
                         </td>
                         <td>
-                            <img id="img_noleggio" src="images/icona-noleggio.png" height="40px" width="40px" />
+                            <img id="img_noleggio" src="images/icona-noleggio.png" height="50px" width="50px" />
                         </td>
                         <td>
-                            <img id="img_camper" src="images/icona-camper.png" height="40px" width="40px" />
+                            <img id="img_camper" src="images/icona-camper.png" height="50px" width="50px" />
                         </td>
                     </tr>
                 </table>
@@ -1471,7 +1485,7 @@
     </div>
     <div data-role="page" id="chart">
         <div class="banner" style="z-index: 99999" data-role="header" role="banner" data-theme="c">
-            <input type="image" style="float: left; top: -20px" src="images/back.png" id="Image2" />
+            <input type="image" style="float: left; top: -20px" src="images/back.png" id="bck5" />
             <center>
                 <div style="vertical-align: middle;">
                     <br />
@@ -1483,11 +1497,11 @@
             <div id="chart_container" style="float: left; background-color: Black; display: inline;
                 width: 100%; height: 360px; margin: 0 auto">
             </div>
-            <canvas id="myCanvas" width="300" height="300">
+            <!-- <canvas id="myCanvas"  width="300" height="300">
                     <p>Your browser doesn't support canvas.</p>
                 </canvas>
-            <center>
-                <canvas id="gauge_pres" style="display: none;" width="100%" height="350"></canvas>
+            <center>-->
+            <canvas id="gauge_pres" style="display: none;" width="100%" height="350"></canvas>
             </center>
             <!--<div id="container" style="min-width: 420px; max-width: 600px; height: 400px; margin: 0 auto"></div>-->
             <div style="display: none">
@@ -1495,14 +1509,14 @@
                 <div id="resp">
                     Here will be displayed the data from the XML file.</div>
             </div>
-            <div align="center" id="heading">
+            <!-- <div align="center" id="heading">
                 Waiting for heading...</div>
             <center>
                 <select name="slider" id="slideBussola" data-role="slider" data-theme="e">
                     <option value="N" selected="selected">Bussola on</option>
                     <option value="Y">Bussola off</option>
                 </select>
-            </center>
+            </center>-->
         </div>
         <!-- /content -->
         <div id="Div7">
@@ -1533,9 +1547,14 @@
             </center>
         </div>
         <div data-role="content" id="Div19">
-           <h3>
-                <div id="forecast_title">
-                </div>
+            <ul data-role="listview" data-inset="true">
+                <li id="Li4"><span id="Span7">
+                    <h3 id="H3">
+                    </h3>
+                </span><span id="Span8">Meteo dei prossimi giorni a  <a id="forecast_title"></a></span></li>
+            </ul>
+            <h3>
+
             </h3>
             <div id='forecast_list_ul'>
             </div>

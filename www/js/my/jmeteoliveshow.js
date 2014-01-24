@@ -51,10 +51,10 @@ $('#meteo').live('pageshow', function (event, ui) {
             navigator.notification.activityStop();
         }
         $('#city_name').html(d.name + ', ' + d.sys.country);
-        $('#city_temp').html('Temperature ' + Math.round((d.main.temp) * 100) / 100 + '°C');
+        $('#city_temp').html('Temperatura ' + Math.round((d.main.temp) * 100) / 100 + '°C');
         //	$('#city_temp').html( 'Temperature  17 °C' );
 
-        $("#forecast_title").html("Forecast for " + d.name + ', ' + d.sys.country);
+        $("#forecast_title").html( d.name + ', ' + d.sys.country);
 
         var dt = new Date(d.dt * 1000);
         var hr = dt.getHours();
