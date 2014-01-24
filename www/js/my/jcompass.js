@@ -4,12 +4,12 @@ var angle = 0;
 
 function drawCanvas() {
     surface = document.getElementById("myCanvas");
-
-    if (surface.getContext) {
+    android = document.getElementById("chart_container");
+    /*if (surface.getContext) {
         android = new Image();
         android.onload = loadingComplete;
         android.src = "images/compass.png";
-    }
+    }*/
 }
 
 function loadingComplete(e) {
@@ -41,7 +41,7 @@ function bussola() {
 // Start watching the compass   
 function startWatch() {
     // Update compass every 3 seconds
-    var options = { frequency: 700 };
+    var options = { frequency: 500 };
     watchID = navigator.compass.watchHeading(onSuccess, onError, options);
 }
 // Stop watching the compass     
