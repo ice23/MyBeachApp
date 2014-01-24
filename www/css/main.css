@@ -357,7 +357,7 @@ border-radius:0.4em;
 .banner.ui-header {
 position:relative;
 height:56px;
-text-align:center;
+text-align:left;
 background: url("../images/header_bg_grad.png") repeat-x;
 z-index:1;
 border:none;

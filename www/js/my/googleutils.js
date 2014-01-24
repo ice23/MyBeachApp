@@ -145,13 +145,31 @@ function calcRoute(lat, long) {
 
     });
 }
+function CleartBeachByDistance() {
+    $('#b1_descr').html('...');
+    $('#lnkBeachID4').attr("href", "#");
+    $('#b2_descr').html('...');
+    $('#lnkBeachID4').attr("href", "#");
+    $('#b3_descr').html('...');
+    $('#lnkBeachID4').attr("href", "#");
+    $('#b4_descr').html('...');
+    $('#lnkBeachID4').attr("href", "#");
+    $('#lnkBeachID1').slideUp(300).delay(300).fadeIn(400);
+    $('#lnkBeachID2').slideUp(300).delay(400).fadeIn(400);
+    $('#lnkBeachID3').slideUp(300).delay(500).fadeIn(400);
+    $('#lnkBeachID4').slideUp(300).delay(600).fadeIn(400);
+}
 
 function PopulateFirstBeachByDistance() {
+
     for (var i = 0; i < sites.length; i++) {
+        //sleep(3);
         var info = sites[i];
         if (info[1] == lat1 && info[2] == lngt1) {
-            $('#b1_descr').html(dist1 + 'km) ' + info[0]);
-            $('#lnkBeachID1').attr("href", "#Beach?id=" + info[8]);
+ 
+           $('#b1_descr').html(dist1 + 'km) ' + info[0]);
+           $('#lnkBeachID1').attr("href", "#Beach?id=" + info[8]);
+           //alert('pop');
         }
         if (info[1] == lat2 && info[2] == lngt2) {
             $('#b2_descr').html(dist2 + 'km) ' + info[0]);
@@ -162,7 +180,7 @@ function PopulateFirstBeachByDistance() {
             $('#lnkBeachID3').attr("href", "#Beach?id=" + info[8]);
         }
         if (info[1] == lat4 && info[2] == lngt4) {
-                                     
+
             $('#b4_descr').html(dist4 + 'km) ' + info[0]);
             $('#lnkBeachID4').attr("href", "#Beach?id=" + info[8]);
         }
@@ -173,7 +191,7 @@ function PopulateFirstBeachByDistance() {
 
 
     }
-
+    
    /* alert('piaggia1 ' + dist1 + ' coordinate ' + lat1 + ' , ' + lngt1 + '\n' +
                                     'piaggia2 ' + dist2 + ' coordinate ' + lat2 + ' , ' + lngt2 + '\n' +
                                     'piaggia3 ' + dist3 + ' coordinate ' + lat3 + ' , ' + lngt3 + '\n' +

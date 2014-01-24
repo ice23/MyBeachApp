@@ -11,7 +11,7 @@ body {
 #slidein-panel {
   margin: 0;
   padding: 0;
-  background-color: #1CAFD6;
+  background-color: #1AC4F1;
   width: 250px;
 }
 
@@ -22,7 +22,7 @@ body {
 }
 
 #slidein-panel ul li {
-    background-color: #1CAFD6;
+    background-color: #1AC4F1;
     display: block;
     border-top: 1px solid #333333;
 }
@@ -56,13 +56,15 @@ body {
   line-height: 50px;
   font-size: 20px;
   padding: 0 5px;
-  background-color:#1CAFD6;
+  background-color:#1AC4F1;
   background-image:url(../../images/menu-alt-48.png);
   background-repeat:no-repeat;
   color: #FFFFFF;
   text-decoration: none;
-  text-align: center;
+  text-align: left;
   vertical-align: middle;
+  -moz-border-radius-bottomright: 35px;
+   border-bottom-right-radius: 35px;
 }
 
 
@@ -74,7 +76,7 @@ body {
 #slidein-panel_gmap {
   margin: 0;
   padding: 0;
-  background-color: #1CAFD6;
+  background-color: #1AC4F1;
   width: 250px;
 }
 
@@ -85,7 +87,7 @@ body {
 }
 
 #slidein-panel_gmap ul li {
-    background-color:#1CAFD6;
+    background-color:#1AC4F1;
     display: block;
     border-top: 1px solid #333333;
 }
@@ -119,7 +121,7 @@ body {
   line-height: 50px;
   font-size: 20px;
   padding: 0 5px;
-  background-color:#1CAFD6;
+  background-color:#1AC4F1;
   background-image:url(../../images/menu-alt-48.png);
   background-repeat:no-repeat;
   color: #FFFFFF;

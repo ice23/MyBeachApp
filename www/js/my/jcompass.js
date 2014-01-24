@@ -29,7 +29,7 @@ var watchID = null;
 document.addEventListener("deviceready", onDeviceReady, false);
 
 function onDeviceReady() {
-    bussola();
+   // bussola();
 }
 
 function bussola() {
@@ -38,10 +38,24 @@ function bussola() {
     watchID = navigator.compass.watchHeading(onSuccess, onError, options);
 }
 
+// Start watching the compass   
+function startWatch() {
+    // Update compass every 3 seconds
+    var options = { frequency: 700 };
+    watchID = navigator.compass.watchHeading(onSuccess, onError, options);
+}
+// Stop watching the compass     
+function stopWatch() {
+    if (watchID) {
+        navigator.compass.clearWatch(watchID);
+        watchID = null;
+    }
+}
+
 function onSuccess(heading) {
     //alert('onSuccess bussola');
     var element = document.getElementById('heading');
-    element.innerHTML = 'Heading: ' + heading.magneticHeading;
+    element.innerHTML = '' + Math.round( heading.magneticHeading)+'°';
     angle = heading.magneticHeading;
     drawCanvas();
 
