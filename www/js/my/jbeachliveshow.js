@@ -1,6 +1,9 @@
 ﻿$('#Beach').live('pageshow', function (event, ui) {
     var Beach_ID = getURLParameter('id');
-    //alert(Beach_ID);
+    //alert(Beach_ID + ' - ' + sites.length);
+    if (sites.length == 0) {
+        ReadXmlBeachById(Beach_ID);
+    }
     for (var i = 0; i < sites.length; i++) {
         var info = sites[i];
         var parking = info[6];
@@ -56,6 +59,8 @@
 
 
             //Direzione
+            localStorage.setItem("mylat", mylat);
+            localStorage.setItem("mylng", mylng);
             var start = mylat + "," + mylng;
             var end = info[1] + "," + info[2];
             //alert(start + '\n' + end);
@@ -96,7 +101,7 @@
                     var destinations = request.destination.split(',');
 
                     var myRoute = response.routes[0].legs[0];
-                    var instr = '<b> Distanza Totale : ' + distancekm +'km <b/></br>';
+                    var instr = '<b> Distanza Totale : ' + distancekm + 'km <b/></br>';
                     for (var i = 0; i < myRoute.steps.length; i++) {
                         var km = myRoute.steps[i].distance.text;
                         instr = instr + '<br/> ' + km + ')' + myRoute.steps[i].instructions;
@@ -110,7 +115,7 @@
         }
     }
 
-
+    //alert(Beach_ID + ' = ' + sites.length);
     $("div[class$='slidein-panel']").animate({ 'left': -$("div[class$='slidein-panel']").outerWidth() });
     status = 'close';
 
@@ -126,3 +131,4 @@ function getURLParameter(name) {
     }
     return vars[name];
 }
+
