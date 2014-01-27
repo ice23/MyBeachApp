@@ -230,6 +230,7 @@
     <script type="text/javascript" src="js/my/jcompass.js"></script>
     <script type="text/javascript" src="js/my/jforecast.js"></script>
     <script type="text/javascript" src="js/moment-with-langs.js"></script>
+     <script src="js/my/ReadXml.js" type="text/javascript"></script>
     <script type="text/javascript" charset="utf-8">
 
         var lat1 = 0;
@@ -372,7 +373,7 @@
             $('#bck5').click(function () {
                 parent.history.back();
                 return false;
-            }); 
+            });
 
             $('#rfh').click(function () {
                 UpdateMyPosition();
@@ -461,13 +462,38 @@
 
 
         function ReadXml(xmlDoc) {
-            $.ajax({
-                type: "GET",
-                url: "spiagge/1.xml",
-                dataType: "xml",
-                success: parseXml
-            });
+//            $.ajax({
+//                type: "GET",
+//                url: "spiagge/1.xml",
+//                dataType: "xml",
+//                success: parseXml
+//            });
+
+             ReadXmlBeach();
+           
+            
+                
+            
+
+
+            
+
+
+            //$.getJSON(url, parsexmlwcf).error(errorparsexmlscf);
+            
+            
+
         };
+
+        function parsexmlwcf(d) {
+            alert('success');
+        };
+
+        function errorparsexmlscf(e) {
+            alert('error' + e.status + ' ' + e.statusText);
+            
+        };
+
 
         sites = [];
         function parseXml(xmlDoc) {
@@ -490,9 +516,9 @@
                 var photo = spiaggia.find('foto').text();
                 var camper = spiaggia.find('foto').text();
                 //   
-                var beach = [nome, lat, lon, 1, descrizione, windNO, parking, bar, id, disabili, xbambini, surf, rent, photo, camper]
+                //var beach = [nome, lat, lon, 1, descrizione, windNO, parking, bar, id, disabili, xbambini, surf, rent, photo, camper]
                 //alert(beach);
-                sites.push(beach);
+               // sites.push(beach);
             });
             //alert('parseXmlEnd');
 
@@ -710,9 +736,9 @@
 
             lastday = 0;
             /* <li class="indpr-1 myindpr"><a href="#" class="nomar" data-ajax="false">
-                    <img src="images/palm_tree.png" class="picture" alt="winelovers420x260" />
-                    <p><div id="Div18">
-                        </div></p></a></li>*/
+            <img src="images/palm_tree.png" class="picture" alt="winelovers420x260" />
+            <p><div id="Div18">
+            </div></p></a></li>*/
             for (var i = 0; i < JSONobject.list.length; i++) {
 
                 var dt = new Date(JSONobject.list[i].dt * 1000 + time_zone);
@@ -725,7 +751,7 @@
                 var curr_date = dt.getDate();
                 var curr_month = dt.getMonth() + 1; //Months are zero based
                 var curr_year = dt.getFullYear();
-                
+
                 moment.lang('it')
                 var data = moment(dt).format('dddd Do MMMM YYYY');
                 //alert(data);
@@ -733,11 +759,11 @@
                 if (day != lastday) {
                     if (lastday != 0)
                         html = html + "</li></ul>";
-//                    html = html + "<li class='indpr-1 myindpr'><a href='#' class='nomar' data-ajax='false'>";
-//                    html = html + "<p><div>";
-//                    html = html + curr_date + '/' + curr_month + '/' + curr_year;
-//                    html = html + " Temp. min " + Math.round(ar_tmin.shift()) + " max " + Math.round(ar_tmax.shift()) + "°C";
-//                    html = html + "</div></p></a><ul  data-role=listview data-inset=true>";
+                    //                    html = html + "<li class='indpr-1 myindpr'><a href='#' class='nomar' data-ajax='false'>";
+                    //                    html = html + "<p><div>";
+                    //                    html = html + curr_date + '/' + curr_month + '/' + curr_year;
+                    //                    html = html + " Temp. min " + Math.round(ar_tmin.shift()) + " max " + Math.round(ar_tmax.shift()) + "°C";
+                    //                    html = html + "</div></p></a><ul  data-role=listview data-inset=true>";
                     html = html + "<li class=indpr-1 myindpr><h3>" + data + "</h3> \
 			<p>Temp. min " + Math.round(ar_tmin.shift()) + " max " +
 				Math.round(ar_tmax.shift()) + "°C</p><ul  data-role=listview data-inset=true>";
@@ -1270,9 +1296,8 @@
         </div>
         <div data-role="content" id="Div4">
             <ul data-role="listview" data-inset="true">
-                <li id="Li1"><span id="Span1">
-                    
-                    <a style="float:right;" href="#forecast" data-ajax="false">nei prossimi giorni</a>
+                <li id="Li1"><span id="Span1"><a style="float: right;" href="#forecast" data-ajax="false">
+                    nei prossimi giorni</a>
                     <h3 id="city_name">
                     </h3>
                 </span></li>
@@ -1551,10 +1576,10 @@
                 <li id="Li4"><span id="Span7">
                     <h3 id="H3">
                     </h3>
-                </span><span id="Span8">Meteo dei prossimi giorni a  <a id="forecast_title"></a></span></li>
+                </span><span id="Span8">Meteo dei prossimi giorni a <a id="forecast_title"></a></span>
+                </li>
             </ul>
             <h3>
-
             </h3>
             <div id='forecast_list_ul'>
             </div>
