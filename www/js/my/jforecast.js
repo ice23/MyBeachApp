@@ -1,4 +1,19 @@
-﻿$('#forecast').live('pageshow', function (event, ui) {
+﻿
+var now = new Date();
+var minLast_forecast = 0;  
+$('#forecast').live('pageshow', function (event, ui) {
+    minLast_forecast = 0; (now - dt_Last_meteo) / 1000 / 60;
+    // alert(minLast_meteo + ' - ' + meteo_already_open);
+    if (minLast_forecast > 10 || forecast_already_open == 0) {
+        UpdateForecast();
+    }
+    
+   
+});
+
+function UpdateForecast() {
+    forecast_already_open = 1;
+    dt_Last_forecast = now;
     var units = 'metric';
     if (get_cookie('units') == 'imperial') units = 'imperial';
 
@@ -6,17 +21,17 @@
     if (get_cookie('lang') == 'en') units = 'en';
 
     var myhref = "http://api.openweathermap.org/data/2.5/forecast?callback=?&id=" + current_city_id + '&units=' + units + '&lang=' + lang;
-   //alert(myhref);
-    $.mobile.showPageLoadingMsg();
+    //alert('forecast live');
+    //$.mobile.showPageLoadingMsg();
     $.getJSON(myhref, getDataForecast);
-});
+}
 
 // Add back button in heder nested list
-$(':jqmData(url^=forecast)').live('pagebeforecreate',
+/*$(':jqmData(url^=forecast)').live('pagebeforecreate',
   function (event) {
       $(this).filter(':jqmData(url*=ui-page)').find(':jqmData(role=header)')
-      .prepend('<a href="#" data-rel="back" data-icon="back">Back</a>')
-  });
+      /*.prepend('<a href="#" data-rel="back" data-icon="back">Back</a>')*/
+  });*/
 
 function getDataForecast(JSONobject) {
     //JSONobject = ParseJson(JSONtext);
@@ -110,5 +125,5 @@ function getDataForecast(JSONobject) {
     $("#forecast_list_ul").html(html);
     $("#forecast_list_data").listview();
 
-    $.mobile.hidePageLoadingMsg();
+   // $.mobile.hidePageLoadingMsg();
 };

@@ -228,9 +228,21 @@
     <script type="text/javascript" src="js/my/jmeteoliveshow.js"></script>
     <script type="text/javascript" src="js/my/JchartLiveShow.js"></script>
     <script type="text/javascript" src="js/my/jcompass.js"></script>
-    <script type="text/javascript" src="js/my/jforecast.js"></script>
     <script type="text/javascript" src="js/moment-with-langs.js"></script>
-     <script src="js/my/ReadXml.js" type="text/javascript"></script>
+    <script src="js/my/ReadXml.js" type="text/javascript"></script>
+
+
+    <link rel="stylesheet" href="js/lib/jquery.mobile-1.0a4.1/jquery.mobile-1.0a4.1.min.css" />
+    <link href="js/lib/photoswipe.css" type="text/css" rel="stylesheet" />
+	<style type="text/css">
+		div.gallery-row:after { clear: both; content: "."; display: block; height: 0; visibility: hidden; }
+		div.gallery-item { float: left; width: 33.333333%; }
+		div.gallery-item a { display: block; margin: 5px; border: 1px solid #3c3c3c; }
+		div.gallery-item img { display: block; width: 100%; height: auto; }
+		#Gallery1 .ui-content, #Gallery2 .ui-content { overflow: hidden; }
+	</style>
+    <script type="text/javascript" src="js/lib/simple-inheritance.min.js"></script>
+	<script type="text/javascript" src="js/lib/code-photoswipe-jQuery-1.0.11.min.js"></script>
     <script type="text/javascript" charset="utf-8">
 
         var lat1 = 0;
@@ -266,6 +278,11 @@
         var markerMyPosition = null;
         var flipView = 'N';
         var slideBussola = 'N';
+        var meteo_already_open = 0;
+        var forecast_already_open = 0;
+        var dt_Last_meteo = new Date();
+        var dt_Last_forecast = new Date();
+
 
         var lat1click = 0;
         var lng1click = 0;
@@ -349,6 +366,14 @@
         }
 
         $(document).ready(function () {
+            $('div.gallery-page').live('pageshow', function (e) {
+
+                // Re-initialize with the photos for the current page
+                $("div.gallery a", e.target).photoSwipe();
+                return true;
+
+            })
+
             $('#backbt').click(function () {
                 parent.history.back();
                 return false;
@@ -377,6 +402,11 @@
 
             $('#rfh').click(function () {
                 UpdateMyPosition();
+            });
+
+
+            $('#rfh2').click(function () {
+                UpdateMeteo();
             });
 
 
@@ -462,26 +492,26 @@
 
 
         function ReadXml(xmlDoc) {
-//            $.ajax({
-//                type: "GET",
-//                url: "spiagge/1.xml",
-//                dataType: "xml",
-//                success: parseXml
-//            });
+            //            $.ajax({
+            //                type: "GET",
+            //                url: "spiagge/1.xml",
+            //                dataType: "xml",
+            //                success: parseXml
+            //            });
 
-             ReadXmlBeach();
-           
-            
-                
-            
+            ReadXmlBeach();
 
 
-            
+
+
+
+
+
 
 
             //$.getJSON(url, parsexmlwcf).error(errorparsexmlscf);
-            
-            
+
+
 
         };
 
@@ -491,7 +521,7 @@
 
         function errorparsexmlscf(e) {
             alert('error' + e.status + ' ' + e.statusText);
-            
+
         };
 
 
@@ -518,7 +548,7 @@
                 //   
                 //var beach = [nome, lat, lon, 1, descrizione, windNO, parking, bar, id, disabili, xbambini, surf, rent, photo, camper]
                 //alert(beach);
-               // sites.push(beach);
+                // sites.push(beach);
             });
             //alert('parseXmlEnd');
 
@@ -958,11 +988,21 @@
 
         });
 
-
+        var now = new Date();
+        var minLast_forecast = 0;
         $('#forecast').live('pageshow', function (event, ui) {
-            $("div[class$='slidein-panel']").animate({ 'left': -$("div[class$='slidein-panel']").outerWidth() });
-            status = 'close';
+            minLast_forecast = 0; (now - dt_Last_meteo) / 1000 / 60;
+            // alert(minLast_meteo + ' - ' + meteo_already_open);
+            if (minLast_forecast > 10 || forecast_already_open == 0) {
+                UpdateForecast();
+            }
 
+
+        });
+
+        function UpdateForecast() {
+            forecast_already_open = 1;
+            dt_Last_forecast = now;
             var units = 'metric';
             if (get_cookie('units') == 'imperial') units = 'imperial';
 
@@ -970,16 +1010,18 @@
             if (get_cookie('lang') == 'en') units = 'en';
 
             var myhref = "http://api.openweathermap.org/data/2.5/forecast?callback=?&id=" + current_city_id + '&units=' + units + '&lang=' + lang;
-            $.mobile.showPageLoadingMsg();
+            //alert('forecast live');
+            //$.mobile.showPageLoadingMsg();
             $.getJSON(myhref, getDataForecast);
-        });
+        }
+
 
         // Add back button in heder nested list
-        $(':jqmData(url^=forecast)').live('pagebeforecreate',
-  function (event) {
-      $(this).filter(':jqmData(url*=ui-page)').find(':jqmData(role=header)')
-      .prepend('<a href="#" data-rel="back" data-icon="back">Back</a>')
-  });
+        //        $(':jqmData(url^=forecast)').live('pagebeforecreate',
+        //  function (event) {
+        //      $(this).filter(':jqmData(url*=ui-page)').find(':jqmData(role=header)')
+        //      .prepend('<a href="#" data-rel="back" data-icon="back">Back</a>')
+        //  });
 
 
         $('li #install').live('vclick', function (event, ui) {
@@ -1356,6 +1398,9 @@
                             </div>
                 </a></li>
             </ul>
+            <center>
+                <input type="image" src="images/Refresh.png" id="rfh2" />
+            </center>
         </div>
         <div id="Div10">
             <img id="Img2" src="images/footer_wave.png">
@@ -1416,16 +1461,51 @@
                     <h3>
                         Descrizione</h3>
                     <p>
-                        <h3 id="beach_Ds">
+                        <div style=" text-transform:lowercase; font-family:Arial; font-size:smaller; " id="beach_Ds">
                             questa piaggia vfdjvlfdmv ldsv jdknvckm vcdmc skjm ldjkdnlvmdc,sbvjsd, vkjdsnlkvmd,ms
                             vkjjdsknvkjdhslkv kjdvlkds vbdskjc dskjcnmds hvbkds vndbsjvnmdsbvjkndsv kjdsn vdshvksd
                             kvbkdsl fhdbfksdfjdslkfm jdsnfbsdf jkdhf dfndsmfbjds fbsdlkf
-                        </h3>
+                        </div>
                     </p>
                 </div>
                 <div data-role="collapsible" id="set2" data-collapsed="true">
                     <h3>
                         Galleria</h3>
+                    <div class="gallery">
+                        <div class="gallery-row">
+                            <div class="gallery-item">
+                                <a href="html/images/full/001.jpg" rel="external">
+                                    <img src="html/images/thumb/001.jpg" alt="Image 001" /></a></div>
+                            <div class="gallery-item">
+                                <a href="html/images/full/002.jpg" rel="external">
+                                    <img src="html/images/thumb/002.jpg" alt="Image 002" /></a></div>
+                            <div class="gallery-item">
+                                <a href="html/images/full/003.jpg" rel="external">
+                                    <img src="html/images/thumb/003.jpg" alt="Image 003" /></a></div>
+                        </div>
+                        <div class="gallery-row">
+                            <div class="gallery-item">
+                                <a href="html/images/full/004.jpg" rel="external">
+                                    <img src="html/images/thumb/004.jpg" alt="Image 004" /></a></div>
+                            <div class="gallery-item">
+                                <a href="html/images/full/005.jpg" rel="external">
+                                    <img src="html/images/thumb/005.jpg" alt="Image 005" /></a></div>
+                            <div class="gallery-item">
+                                <a href="html/images/full/006.jpg" rel="external">
+                                    <img src="html/images/thumb/006.jpg" alt="Image 006" /></a></div>
+                        </div>
+                        <div class="gallery-row">
+                            <div class="gallery-item">
+                                <a href="html/images/full/007.jpg" rel="external">
+                                    <img src="html/images/thumb/007.jpg" alt="Image 007" /></a></div>
+                            <div class="gallery-item">
+                                <a href="html/images/full/008.jpg" rel="external">
+                                    <img src="html/images/thumb/008.jpg" alt="Image 008" /></a></div>
+                            <div class="gallery-item">
+                                <a href="html/images/full/009.jpg" rel="external">
+                                    <img src="html/images/thumb/009.jpg" alt="Image 009" /></a></div>
+                        </div>
+                    </div>
                 </div>
             </div>
             <br />
