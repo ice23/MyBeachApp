@@ -33,7 +33,6 @@
   <preference name="disable-cursor" value="false" />
   <preference name="android-minSdkVersion" value="7" />
   <preference name="android-installLocation" value="auto" />
-  <icon src="icon.png" />
   <access origin="*" />
   
  
