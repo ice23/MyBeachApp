@@ -140,6 +140,21 @@
 
 
             });
+            $('#rotating-item-wrapperBeach').cycle({
+                fx: 'scrollHorzTouch',
+                timeout: 1000,
+                pager: '#nav',
+                speedIn: 400,
+                speedOut: 400,
+                slideExpr: 'img',
+                next: '#nextBt',
+                prev: '#prevBt',
+                before: beforeSlide,
+                after: afterSlide,
+                startingSlide: 0
+
+
+            });
 
 
 
@@ -166,6 +181,32 @@
             },
                 swipeLeft: function () { $('#rotating-item-wrapper').cycle('next'); },
                 swipeRight: function () { $('#rotating-item-wrapper').cycle('prev'); }
+
+
+            });
+            $('#rotating-item-wrapperBeach').swipe({ swipeMoving: function (pageX) {
+
+                if (slideFlag) return;
+
+                var newLeft = currentLeft - pageX;
+
+                currenSlide.css('left', newLeft + 'px');
+
+                var $slides = $(sliderExpr, $('#rotating-item-wrapperBeach'));
+                var scrollSlide;
+
+                nextSlideLeft = newLeft > 0 ? newLeft - currenSlide.width() : newLeft + currenSlide.width();
+                flag = newLeft > 0 ? -1 : 1;
+                scrollSlide = slideNumber + flag;
+                if (scrollSlide < 0 || scrollSlide > ($slides.length - 1)) {
+                    scrollSlide = scrollSlide < 0 ? $slides.length - 1 : 0;
+                }
+
+                $slides.eq(scrollSlide).css('left', nextSlideLeft + 'px');
+                $slides.eq(scrollSlide).show();
+            },
+                swipeLeft: function () { $('#rotating-item-wrapperBeach').cycle('next'); },
+                swipeRight: function () { $('#rotating-item-wrapperBeach').cycle('prev'); }
 
 
             });
@@ -230,8 +271,7 @@
     <script type="text/javascript" src="js/my/jcompass.js"></script>
     <script type="text/javascript" src="js/moment-with-langs.js"></script>
     <script src="js/my/ReadXml.js" type="text/javascript"></script>
-
-
+    <!--<link rel="stylesheet" href="js/lib/jquery.mobile-1.0a4.1/jquery.mobile-1.0a4.1.min.css" />
     <link href="js/lib/photoswipe.css" type="text/css" rel="stylesheet" />
 	<style type="text/css">
 		div.gallery-row:after { clear: both; content: "."; display: block; height: 0; visibility: hidden; }
@@ -241,7 +281,39 @@
 		#Gallery1 .ui-content, #Gallery2 .ui-content { overflow: hidden; }
 	</style>
     <script type="text/javascript" src="js/lib/simple-inheritance.min.js"></script>
-	<script type="text/javascript" src="js/lib/code-photoswipe-jQuery-1.0.11.min.js"></script>
+	<script type="text/javascript" src="js/lib/code-photoswipe-jQuery-1.0.11.min.js"></script>-->
+    <link href="js/lib/photoswipe.css" type="text/css" rel="stylesheet" />
+    <style type="text/css">
+        div.gallery-row:after
+        {
+            clear: both;
+            content: ".";
+            display: block;
+            height: 0;
+            visibility: hidden;
+        }
+        div.gallery-item
+        {
+            float: left;
+            width: 33.333333%;
+        }
+        div.gallery-item a
+        {
+            display: block;
+            margin: 5px;
+            border: 1px solid #3c3c3c;
+        }
+        div.gallery-item img
+        {
+            display: block;
+            width: 100%;
+            height: auto;
+        }
+        #Gallery1 .ui-content, #Gallery2 .ui-content
+        {
+            overflow: hidden;
+        }
+    </style>
     <script type="text/javascript" charset="utf-8">
 
         var lat1 = 0;
@@ -395,6 +467,10 @@
                 return false;
             });
             $('#bck5').click(function () {
+                parent.history.back();
+                return false;
+            });
+            $('#bck6').click(function () {
                 parent.history.back();
                 return false;
             });
@@ -1460,7 +1536,7 @@
                     <h3>
                         Descrizione</h3>
                     <p>
-                        <div style=" text-transform:lowercase; font-family:Arial; font-size:smaller; " id="beach_Ds">
+                        <div style="text-transform: lowercase; font-family: Arial; font-size: smaller;" id="beach_Ds">
                             questa piaggia vfdjvlfdmv ldsv jdknvckm vcdmc skjm ldjkdnlvmdc,sbvjsd, vkjdsnlkvmd,ms
                             vkjjdsknvkjdhslkv kjdvlkds vbdskjc dskjcnmds hvbkds vndbsjvnmdsbvjkndsv kjdsn vdshvksd
                             kvbkdsl fhdbfksdfjdslkfm jdsnfbsdf jkdhf dfndsmfbjds fbsdlkf
@@ -1473,36 +1549,25 @@
                     <div class="gallery">
                         <div class="gallery-row">
                             <div class="gallery-item">
-                                <a href="images/full/001.jpg" rel="external">
+                                <a href="#Gallery" rel="external">
                                     <img src="html/images/thumb/001.jpg" alt="Image 001" /></a></div>
                             <div class="gallery-item">
-                                <a href="images/full/002.jpg" rel="external">
+                                <a href="#Gallery" rel="external">
                                     <img src="images/thumb/002.jpg" alt="Image 002" /></a></div>
                             <div class="gallery-item">
-                                <a href="images/full/003.jpg" rel="external">
+                                <a href="#Gallery" rel="external">
                                     <img src="images/thumb/003.jpg" alt="Image 003" /></a></div>
                         </div>
                         <div class="gallery-row">
                             <div class="gallery-item">
-                                <a href="images/full/004.jpg" rel="external">
+                               <a href="#Gallery" rel="external">
                                     <img src="images/thumb/004.jpg" alt="Image 004" /></a></div>
                             <div class="gallery-item">
-                                <a href="images/full/005.jpg" rel="external">
+                                <a href="#Gallery" rel="external">
                                     <img src="images/thumb/005.jpg" alt="Image 005" /></a></div>
                             <div class="gallery-item">
-                                <a href="images/full/006.jpg" rel="external">
+                                <a href="#Gallery" rel="external">
                                     <img src="images/thumb/006.jpg" alt="Image 006" /></a></div>
-                        </div>
-                        <div class="gallery-row">
-                            <div class="gallery-item">
-                                <a href="images/full/007.jpg" rel="external">
-                                    <img src="images/thumb/007.jpg" alt="Image 007" /></a></div>
-                            <div class="gallery-item">
-                                <a href="images/full/008.jpg" rel="external">
-                                    <img src="images/thumb/008.jpg" alt="Image 008" /></a></div>
-                            <div class="gallery-item">
-                                <a href="images/full/009.jpg" rel="external">
-                                    <img src="images/thumb/009.jpg" alt="Image 009" /></a></div>
                         </div>
                     </div>
                 </div>
@@ -1584,6 +1649,56 @@
         </script>
         <div style="display: none">
             <div id="Div26" style="width: 900px; height: 529px;">
+            </div>
+        </div>
+    </div>
+    <div data-role="page" id="Gallery">
+        <div class="banner" style="z-index: 99999" data-role="header" role="banner" data-theme="c">
+            <input type="image" style="float: left; top: -20px" src="images/back.png" id="bck6" />
+            <center>
+                <div style="vertical-align: middle;">
+                    <br />
+                    <a id="A6">Galleria</a>
+                </div>
+            </center>
+        </div>
+        <div data-role="content" id="Div20">
+            <div id="wrapperBeach" style="height: 300px">
+                <div id="rotating-item-wrapperBeach">
+                    <a href="javascript:void(0);">
+                        <img class="rotating-item swipe" alt="" src="images/beach/imagestest.jpg" /></a>
+                    <a href="javascript:void(0);">
+                        <img class="rotating-item swipe" alt="" src="images/beach/imagestest2.jpg" /></a>
+                    <a href="javascript:void(0);">
+                        <img class="rotating-item swipe" alt="" src="images/beach/imagestest3.jpg" /></a>
+                    <a href="javascript:void(0);">
+                        <img class="rotating-item swipe" alt="" src="images/beach/imagestest4.jpg" /></a>
+                    <div id="Div31" style="visibility: hidden">
+                    </div>
+                    <div id="Div36" style="opacity: 1;">
+                        <a id="A7" href="#"></a>
+                    </div>
+                    <div id="Div37" style="opacity: 1;">
+                        <a id="A8" href="#"></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /content -->
+        <div id="Div32">
+            <img id="Img7" src="images/footer_wave.png">
+        </div>
+        <div id="Div33">
+        </div>
+        <div data-role="footer" id="Div34">
+        </div>
+        <script type="text/javascript" src="js/jquery.countdown.min.js?m=1368543442"></script>
+        <script type="text/javascript" src="js/mob-generic.js?m=1368543444"></script>
+        <script>
+            $('#cdcount #countdown-field').countdown({ until: new Date(2015, 1 - 1, 16, 17, 00, 00), format: 'dHM', timezone: -5, layout: '<div class="countdown_section">' + '<span class="countdown_amount">{dnn}</span>D' + '<span class="countdown_amount">{hnn}</span>H' + '<span class="countdown_amount">{mnn}</span>M' });
+        </script>
+        <div style="display: none">
+            <div id="Div35" style="width: 900px; height: 529px;">
             </div>
         </div>
     </div>
