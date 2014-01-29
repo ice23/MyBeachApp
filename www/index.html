@@ -450,6 +450,11 @@
                 return false;
             });
 
+
+            $('#bt_gallery').click(function () {
+                window.location.href ='#Gallery';
+                return false;
+            });
             $('#bck1').click(function () {
                 parent.history.back();
                 return false;
@@ -1494,7 +1499,8 @@
     </div>
     <div data-role="page" id="Beach" class="type-index">
         <div class="banner" style="z-index: 99999" data-role="header" role="banner" data-theme="c">
-            <input type="image" style="float: left; top: -20px" src="images/back.png" id="bck1" />
+            <input type="image"  style=" position:relative; top: 10px;vertical-align: middle;float: left;" src="images/back_.png" id="bck1" />
+             <input type="image" id="bt_gallery"  style="float: right; top: 20px; bottom:30px" src="images/gallery.png" id="Image1" />
             <center>
                 <div style="vertical-align: middle;">
                     <br />
@@ -1507,30 +1513,29 @@
                 <img id="beach_Img" src="images/beach/imagestest4.jpg" />
             </div>
             <center>
-                <table style="border: 0; border-style: none; border-width: 0" cellpadding="5" cellspacing="5">
+                <table style="border: 0; border-style: none; border-width: 0" cellpadding="2" cellspacing="2">
                     <tr>
                         <td>
-                            <img id="img_parcheggio" src="images/icona-parcheggio.png" height="50px" width="50px" />
+                            <img id="img_parcheggio" src="#" height="50px" width="50px" />
                         </td>
                         <td>
-                            <img id="img_bar" src="images/icona-bar.png" height="50px" width="50px" />
+                            <img id="img_bar" src="#" height="50px" width="50px" />
                         </td>
                         <td>
-                            <img id="img_bambini" src="images/icona-bambini.png" height="50px" width="50px" />
+                            <img id="img_bambini" src="#" height="50px" width="50px" />
                         </td>
                         <td>
-                            <img id="img_disabili" src="images/icona-hand.png" height="50px" width="50px" />
+                            <img id="img_disabili" src="#" height="50px" width="50px" />
                         </td>
                         <td>
-                            <img id="img_noleggio" src="images/icona-noleggio.png" height="50px" width="50px" />
+                            <img id="img_noleggio" src="#" height="50px" width="50px" />
                         </td>
                         <td>
-                            <img id="img_camper" src="images/icona-camper.png" height="50px" width="50px" />
+                            <img id="img_camper" src="#" height="50px" width="50px" />
                         </td>
                     </tr>
                 </table>
             </center>
-            <br />
             <div data-role="collapsible-set" data-content-theme="a" data-iconpos="right" id="set">
                 <div data-role="collapsible" id="set1" data-collapsed="true">
                     <h3>
@@ -1543,36 +1548,8 @@
                         </div>
                     </p>
                 </div>
-                <div data-role="collapsible" id="set2" data-collapsed="true">
-                    <h3>
-                        Galleria</h3>
-                    <div class="gallery">
-                        <div class="gallery-row">
-                            <div class="gallery-item">
-                                <a href="#Gallery" rel="external">
-                                    <img src="html/images/thumb/001.jpg" alt="Image 001" /></a></div>
-                            <div class="gallery-item">
-                                <a href="#Gallery" rel="external">
-                                    <img src="images/thumb/002.jpg" alt="Image 002" /></a></div>
-                            <div class="gallery-item">
-                                <a href="#Gallery" rel="external">
-                                    <img src="images/thumb/003.jpg" alt="Image 003" /></a></div>
-                        </div>
-                        <div class="gallery-row">
-                            <div class="gallery-item">
-                               <a href="#Gallery" rel="external">
-                                    <img src="images/thumb/004.jpg" alt="Image 004" /></a></div>
-                            <div class="gallery-item">
-                                <a href="#Gallery" rel="external">
-                                    <img src="images/thumb/005.jpg" alt="Image 005" /></a></div>
-                            <div class="gallery-item">
-                                <a href="#Gallery" rel="external">
-                                    <img src="images/thumb/006.jpg" alt="Image 006" /></a></div>
-                        </div>
-                    </div>
-                </div>
+              
             </div>
-            <br />
             <div id="divDs" style="width: 100%; height: 320px;">
                 <hr />
                 <h3>
@@ -1599,7 +1576,7 @@
     </div>
     <div data-role="page" id="Setting" class="type-index">
         <div class="banner" style="z-index: 99999" data-role="header" role="banner" data-theme="c">
-            <input type="image" style="float: left; top: -20px" src="images/back.png" id="bck2" />
+               <input type="image"  style=" position:relative; top: 10px;vertical-align: middle;float: left;" src="images/back_.png" id="bck2" />
             <center>
                 <div style="vertical-align: middle;">
                     <br />
@@ -1654,7 +1631,7 @@
     </div>
     <div data-role="page" id="Gallery">
         <div class="banner" style="z-index: 99999" data-role="header" role="banner" data-theme="c">
-            <input type="image" style="float: left; top: -20px" src="images/back.png" id="bck6" />
+               <input type="image"  style=" position:relative; top: 10px;vertical-align: middle;float: left;" src="images/back_.png" id="bck6" />
             <center>
                 <div style="vertical-align: middle;">
                     <br />
@@ -1704,7 +1681,7 @@
     </div>
     <div data-role="page" id="chart">
         <div class="banner" style="z-index: 99999" data-role="header" role="banner" data-theme="c">
-            <input type="image" style="float: left; top: -20px" src="images/back.png" id="bck5" />
+               <input type="image"  style=" position:relative; top: 10px;vertical-align: middle;float: left;" src="images/back_.png" id="bck5" />
             <center>
                 <div style="vertical-align: middle;">
                     <br />
@@ -1757,7 +1734,7 @@
     </div>
     <div data-role="page" id="forecast">
         <div class="banner" style="z-index: 99999" data-role="header" role="banner" data-theme="c">
-            <input type="image" style="float: left; top: -20px" src="images/back.png" id="bck3" />
+               <input type="image"  style=" position:relative; top: 10px;vertical-align: middle;float: left;" src="images/back_.png" id="bck3" />
             <center>
                 <div style="vertical-align: middle;">
                     <br />

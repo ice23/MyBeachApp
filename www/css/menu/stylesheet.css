@@ -128,4 +128,6 @@ body {
   text-decoration: none;
   text-align: center;
   vertical-align: middle;
+   -moz-border-radius-bottomright: 35px;
+   border-bottom-right-radius: 35px;
 }
