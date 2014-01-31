@@ -36,13 +36,13 @@ function getWindRose() {
         else {
             tbfreq = tbfreq + '<td class="data">0.00</td>'
         }
-        if (WindSpeed > 0.5 && WindSpeed <= 2) {
+        if (WindSpeed > 0.5 && WindSpeed <= 3) {
             tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
         }
         else {
             tbfreq = tbfreq + '<td class="data">0.00</td>'
         }
-        if (WindSpeed > 4 && WindSpeed <= 6) {
+        if (WindSpeed > 3 && WindSpeed <= 6) {
             tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
         }
         else {
@@ -83,13 +83,13 @@ function getWindRose() {
         else {
             tbfreq = tbfreq + '<td class="data">0.00</td>'
         }
-        if (WindSpeed > 0.5 && WindSpeed <= 2) {
+        if (WindSpeed > 0.5 && WindSpeed <= 3) {
             tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
         }
         else {
             tbfreq = tbfreq + '<td class="data">0.00</td>'
         }
-        if (WindSpeed > 4 && WindSpeed <= 6) {
+        if (WindSpeed > 3 && WindSpeed <= 6) {
             tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
         }
         else {
@@ -130,13 +130,13 @@ function getWindRose() {
         else {
             tbfreq = tbfreq + '<td class="data">0.00</td>'
         }
-        if (WindSpeed > 0.5 && WindSpeed <= 2) {
+        if (WindSpeed > 0.5 && WindSpeed <= 3) {
             tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
         }
         else {
             tbfreq = tbfreq + '<td class="data">0.00</td>'
         }
-        if (WindSpeed > 4 && WindSpeed <= 6) {
+        if (WindSpeed > 3 && WindSpeed <= 6) {
             tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
         }
         else {
@@ -176,13 +176,13 @@ function getWindRose() {
         else {
             tbfreq = tbfreq + '<td class="data">0.00</td>'
         }
-        if (WindSpeed > 0.5 && WindSpeed <= 2) {
+        if (WindSpeed > 0.5 && WindSpeed <= 3) {
             tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
         }
         else {
             tbfreq = tbfreq + '<td class="data">0.00</td>'
         }
-        if (WindSpeed > 4 && WindSpeed <= 6) {
+        if (WindSpeed > 3 && WindSpeed <= 6) {
             tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
         }
         else {
@@ -222,13 +222,13 @@ function getWindRose() {
         else {
             tbfreq = tbfreq + '<td class="data">0.00</td>'
         }
-        if (WindSpeed > 0.5 && WindSpeed <= 2) {
+        if (WindSpeed > 0.5 && WindSpeed <= 3) {
             tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
         }
         else {
             tbfreq = tbfreq + '<td class="data">0.00</td>'
         }
-        if (WindSpeed > 4 && WindSpeed <= 6) {
+        if (WindSpeed > 3 && WindSpeed <= 6) {
             tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
         }
         else {
@@ -268,13 +268,13 @@ function getWindRose() {
         else {
             tbfreq = tbfreq + '<td class="data">0.00</td>'
         }
-        if (WindSpeed > 0.5 && WindSpeed <= 2) {
+        if (WindSpeed > 0.5 && WindSpeed <= 3) {
             tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
         }
         else {
             tbfreq = tbfreq + '<td class="data">0.00</td>'
         }
-        if (WindSpeed > 4 && WindSpeed <= 6) {
+        if (WindSpeed > 3 && WindSpeed <= 6) {
             tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
         }
         else {
@@ -314,13 +314,13 @@ function getWindRose() {
         else {
             tbfreq = tbfreq + '<td class="data">0.00</td>'
         }
-        if (WindSpeed > 0.5 && WindSpeed <= 2) {
+        if (WindSpeed > 0.5 && WindSpeed <= 3) {
             tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
         }
         else {
             tbfreq = tbfreq + '<td class="data">0.00</td>'
         }
-        if (WindSpeed > 4 && WindSpeed <= 6) {
+        if (WindSpeed > 3 && WindSpeed <= 6) {
             tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
         }
         else {
@@ -360,13 +360,13 @@ function getWindRose() {
         else {
             tbfreq = tbfreq + '<td class="data">0.00</td>'
         }
-        if (WindSpeed > 0.5 && WindSpeed <= 2) {
+        if (WindSpeed > 0.5 && WindSpeed <= 3) {
             tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
         }
         else {
             tbfreq = tbfreq + '<td class="data">0.00</td>'
         }
-        if (WindSpeed > 4 && WindSpeed <= 6) {
+        if (WindSpeed > 3 && WindSpeed <= 6) {
             tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
         }
         else {
@@ -406,13 +406,13 @@ function getWindRose() {
         else {
             tbfreq = tbfreq + '<td class="data">0.00</td>'
         }
-        if (WindSpeed > 0.5 && WindSpeed <= 2) {
+        if (WindSpeed > 0.5 && WindSpeed <= 3) {
             tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
         }
         else {
             tbfreq = tbfreq + '<td class="data">0.00</td>'
         }
-        if (WindSpeed > 4 && WindSpeed <= 6) {
+        if (WindSpeed > 3 && WindSpeed <= 6) {
             tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
         }
         else {
@@ -452,13 +452,13 @@ function getWindRose() {
         else {
             tbfreq = tbfreq + '<td class="data">0.00</td>'
         }
-        if (WindSpeed > 0.5 && WindSpeed <= 2) {
+        if (WindSpeed > 0.5 && WindSpeed <= 3) {
             tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
         }
         else {
             tbfreq = tbfreq + '<td class="data">0.00</td>'
         }
-        if (WindSpeed > 4 && WindSpeed <= 6) {
+        if (WindSpeed > 3 && WindSpeed <= 6) {
             tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
         }
         else {
@@ -498,13 +498,13 @@ function getWindRose() {
         else {
             tbfreq = tbfreq + '<td class="data">0.00</td>'
         }
-        if (WindSpeed > 0.5 && WindSpeed <= 2) {
+        if (WindSpeed > 0.5 && WindSpeed <= 3) {
             tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
         }
         else {
             tbfreq = tbfreq + '<td class="data">0.00</td>'
         }
-        if (WindSpeed > 4 && WindSpeed <= 6) {
+        if (WindSpeed > 3 && WindSpeed <= 6) {
             tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
         }
         else {
@@ -544,13 +544,13 @@ function getWindRose() {
         else {
             tbfreq = tbfreq + '<td class="data">0.00</td>'
         }
-        if (WindSpeed > 0.5 && WindSpeed <= 2) {
+        if (WindSpeed > 0.5 && WindSpeed <= 3) {
             tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
         }
         else {
             tbfreq = tbfreq + '<td class="data">0.00</td>'
         }
-        if (WindSpeed > 4 && WindSpeed <= 6) {
+        if (WindSpeed > 3 && WindSpeed <= 6) {
             tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
         }
         else {
@@ -590,13 +590,13 @@ function getWindRose() {
         else {
             tbfreq = tbfreq + '<td class="data">0.00</td>'
         }
-        if (WindSpeed > 0.5 && WindSpeed <= 2) {
+        if (WindSpeed > 0.5 && WindSpeed <= 3) {
             tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
         }
         else {
             tbfreq = tbfreq + '<td class="data">0.00</td>'
         }
-        if (WindSpeed > 4 && WindSpeed <= 6) {
+        if (WindSpeed > 3 && WindSpeed <= 6) {
             tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
         }
         else {
@@ -636,13 +636,13 @@ function getWindRose() {
         else {
             tbfreq = tbfreq + '<td class="data">0.00</td>'
         }
-        if (WindSpeed > 0.5 && WindSpeed <= 2) {
+        if (WindSpeed > 0.5 && WindSpeed <= 3) {
             tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
         }
         else {
             tbfreq = tbfreq + '<td class="data">0.00</td>'
         }
-        if (WindSpeed > 4 && WindSpeed <= 6) {
+        if (WindSpeed > 3 && WindSpeed <= 6) {
             tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
         }
         else {
@@ -676,19 +676,20 @@ function getWindRose() {
     tbfreq = tbfreq + '<tr nowrap bgcolor="#DDDDDD">'
     tbfreq = tbfreq + '<td class="dir">NW</td>'
     if (WindDir == 'NW') {
+        
         if (WindSpeed <= 0.5) {
             tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
         }
         else {
             tbfreq = tbfreq + '<td class="data">0.00</td>'
         }
-        if (WindSpeed > 0.5 && WindSpeed <= 2) {
+        if (WindSpeed > 0.5 && WindSpeed <= 3) {
             tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
         }
         else {
             tbfreq = tbfreq + '<td class="data">0.00</td>'
         }
-        if (WindSpeed > 4 && WindSpeed <= 6) {
+        if (WindSpeed > 3 && WindSpeed <= 6) {
             tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
         }
         else {
@@ -728,13 +729,13 @@ function getWindRose() {
         else {
             tbfreq = tbfreq + '<td class="data">0.00</td>'
         }
-        if (WindSpeed > 0.5 && WindSpeed <= 2) {
+        if (WindSpeed > 0.5 && WindSpeed <= 3) {
             tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
         }
         else {
             tbfreq = tbfreq + '<td class="data">0.00</td>'
         }
-        if (WindSpeed > 4 && WindSpeed <= 6) {
+        if (WindSpeed > 3 && WindSpeed <= 6) {
             tbfreq = tbfreq + '<td class="data">' + WindSpeed + '</td>'
         }
         else {
