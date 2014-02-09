@@ -489,7 +489,7 @@
                 return false;
             });
 
-          
+
 
 
             $('#rfh2').click(function () {
@@ -1222,109 +1222,104 @@
     <script type="text/javascript">
         app.initialize();
     </script>
+    <link rel="stylesheet" type="text/css" href="js/menu2/css/normalize.css" />
+    <link rel="stylesheet" type="text/css" href="js/menu2/css/demo_.css" />
+    <link rel="stylesheet" type="text/css" href="js/menu2/css/component.css" />
+    <script src="js/menu2/js/modernizr.custom.25376.js"></script>
     <div data-role="page" id="main" class="type-index">
-        <div class="banner" style="z-index: 99999" data-role="header" role="banner" data-theme="c">
-            <center>
-                <div style="vertical-align: middle;">
-                    <br />
-                    <a id="A1">Sardinia Beach Finder</a>
-                </div>
-            </center>
-            <div id="slidein-panel" class="slidein-panel" style="z-index: 99999">
-                <!-- SlidePanel Button Container -->
-                <div id="slidein-panel-container" class="slidein-panel-container">
-                    <a class="slidein-panel-btn" id="slidein-panel-btn" href="#"></a>
-                </div>
-                <!-- /SlidePanel Button Container -->
-                <!-- SlidePanel Content -->
-                <ul>
-                    <li><a href="#main">
-                        <img src="images/flip_flops.png" height="18px" width="18px" />
-                        &nbsp; Spiagge più vicine</a></li>
-                    <li><a href="#gmap">
-                        <img src="images/flip_flops.png" height="18px" width="18px" />&nbsp; Mappa Spiagge
-                        x te</a></li>
-                    <li><a href="#meteo">
-                        <img src="images/flip_flops.png" height="18px" width="18px" />&nbsp; Meteo</a></li>
-                    <li><a href="#chart">
-                        <img src="images/flip_flops.png" height="18px" width="18px" />&nbsp; Rosa dei venti</a></li>
-                    <li><a href="#Setting">
-                        <img src="images/flip_flops.png" height="18px" width="18px" />&nbsp; Impostazioni</a></li>
-                </ul>
-                <!-- /SlidePanel Content -->
-            </div>
-        </div>
-        <!-- /navbar -->
-        <div id="wrapper" style="height: 120px">
-            <div id="rotating-item-wrapper">
-                <a href="javascript:void(0);">
-                    <img class="rotating-item swipe" alt="" src="images/beach/imagestest.jpg" /></a>
-                <a href="javascript:void(0);">
-                    <img class="rotating-item swipe" alt="" src="images/beach/imagestest2.jpg" /></a>
-                <a href="javascript:void(0);">
-                    <img class="rotating-item swipe" alt="" src="images/beach/imagestest3.jpg" /></a>
-                <a href="javascript:void(0);">
-                    <img class="rotating-item swipe" alt="" src="images/beach/imagestest4.jpg" /></a>
-                <div id="nav" style="visibility: hidden">
-                </div>
-                <div id="next" style="opacity: 1;">
-                    <a id="nextBt" href="#"></a>
-                </div>
-                <div id="previous" style="opacity: 1;">
-                    <a id="prevBt" href="#"></a>
-                </div>
-            </div>
-        </div>
-        <div data-role="content" id="home-ct">
-            <ul data-role="listview" data-inset="true">
-                <li id="ft"><span id="lns">Spiagge piu vicine</span><span id="viall"><a href="#gmap"
-                    data-ajax="false">Tutte&nbsp;&nbsp;&nbsp;</a>
-                    <input type="image" src="images/Refresh.png" id="rfh" />
-                </span></li>
-                <li class="indpr-1 myindpr"><a id="lnkBeachID1" href="#Beach?id=1" class="nomar"
-                    data-ajax="false">
-                    <img src="images/palm_tree.png" alt="winelovers420x260" />
-                    <h3 id="b1_descr" class="grl">
-                    </h3>
-                </a></li>
-                <li class="indpr-1 myindpr"><a id="lnkBeachID2" href="#Beach?id=1" class="nomar"
-                    data-ajax="false">
-                    <img src="images/palm_tree.png" alt="winelovers420x260" />
-                    <h3 id="b2_descr" class="grl">
-                    </h3>
-                </a></li>
-                <li class="indpr-1 myindpr"><a id="lnkBeachID3" href="#Beach?id=1" class="nomar"
-                    data-ajax="false">
-                    <img src="images/palm_tree.png" alt="winelovers420x260" />
-                    <h3 id="b3_descr" class="grl">
-                    </h3>
-                </a></li>
-                <li class="indpr-1 myindpr"><a id="lnkBeachID4" href="#Beach?id=1" class="nomar"
-                    data-ajax="false">
-                    <img src="images/palm_tree.png" alt="winelovers420x260" />
-                    <h3 id="b4_descr" class="grl">
-                    </h3>
-                </a></li>
-            </ul>
-            <div id="section-vid" style="height: 150px">
-                <ul data-role="listview" data-inset="true">
-                    <li>
-                        <div class="icbody">
-                            <h3 class="grl">
-                                Le distanze sono calcolate dalla posizione :" <a id="OriginPosition"></a>"
-                            </h3>
-                            <a href="#" data-ajax="false" style="text-decoration: none;"><strong></strong></a>
+        <div id="perspective" class="perspective effect-airbnb">
+            <div class="container">
+                <!-- wrapper -->
+                <div class="banner" style="z-index: 99999" data-role="header" role="banner" data-theme="c">
+                     <div class="wrapper" style=" float:left; top:-10;" >
+                        <!-- wrapper needed for scroll -->
+                        <div class="main clearfix" style=" float:left; top:-10;">
+                            <div class="column" style=" float:left; top:-10;">
+                                    <input type="image" id="showMenu" src="images/menu.jpg" />
+                            </div>
                         </div>
-                    </li>
-                </ul>
-            </div>
-        </div>
-        <!-- /content -->
-        <div id="cdcount">
-            <img id="wavef" src="images/footer_wave.png">
-        </div>
-        <div id="btsocial">
-            <!--<ul id="social-tools">
+                        <!-- /main -->
+                    </div>
+                    <center>
+                        <div style="vertical-align: middle;">
+                            <br />
+                            <a id="A1">Sardinia Beach Finder</a>
+                        </div>
+                    </center>
+                    <!-- wrapper -->
+                   
+                </div>
+                <!-- /navbar -->
+                <div id="wrapper" style="height: 120px">
+                    <div id="rotating-item-wrapper">
+                        <a href="javascript:void(0);">
+                            <img class="rotating-item swipe" alt="" src="images/beach/imagestest.jpg" /></a>
+                        <a href="javascript:void(0);">
+                            <img class="rotating-item swipe" alt="" src="images/beach/imagestest2.jpg" /></a>
+                        <a href="javascript:void(0);">
+                            <img class="rotating-item swipe" alt="" src="images/beach/imagestest3.jpg" /></a>
+                        <a href="javascript:void(0);">
+                            <img class="rotating-item swipe" alt="" src="images/beach/imagestest4.jpg" /></a>
+                        <div id="nav" style="visibility: hidden">
+                        </div>
+                        <div id="next" style="opacity: 1;">
+                            <a id="nextBt" href="#"></a>
+                        </div>
+                        <div id="previous" style="opacity: 1;">
+                            <a id="prevBt" href="#"></a>
+                        </div>
+                    </div>
+                </div>
+                <div data-role="content" id="home-ct">
+                    <ul data-role="listview" data-inset="true">
+                        <li id="ft"><span id="lns">Spiagge piu vicine</span><span id="viall"><a href="#gmap"
+                            data-ajax="false">Tutte&nbsp;&nbsp;&nbsp;</a>
+                            <input type="image" src="images/Refresh.png" id="rfh" />
+                        </span></li>
+                        <li class="indpr-1 myindpr"><a id="lnkBeachID1" href="#Beach?id=1" class="nomar"
+                            data-ajax="false">
+                            <img src="images/palm_tree.png" alt="winelovers420x260" />
+                            <h3 id="b1_descr" class="grl">
+                            </h3>
+                        </a></li>
+                        <li class="indpr-1 myindpr"><a id="lnkBeachID2" href="#Beach?id=1" class="nomar"
+                            data-ajax="false">
+                            <img src="images/palm_tree.png" alt="winelovers420x260" />
+                            <h3 id="b2_descr" class="grl">
+                            </h3>
+                        </a></li>
+                        <li class="indpr-1 myindpr"><a id="lnkBeachID3" href="#Beach?id=1" class="nomar"
+                            data-ajax="false">
+                            <img src="images/palm_tree.png" alt="winelovers420x260" />
+                            <h3 id="b3_descr" class="grl">
+                            </h3>
+                        </a></li>
+                        <li class="indpr-1 myindpr"><a id="lnkBeachID4" href="#Beach?id=1" class="nomar"
+                            data-ajax="false">
+                            <img src="images/palm_tree.png" alt="winelovers420x260" />
+                            <h3 id="b4_descr" class="grl">
+                            </h3>
+                        </a></li>
+                    </ul>
+                    <div id="section-vid" style="height: 150px">
+                        <ul data-role="listview" data-inset="true">
+                            <li>
+                                <div class="icbody">
+                                    <h3 class="grl">
+                                        Le distanze sono calcolate dalla posizione :" <a id="OriginPosition"></a>"
+                                    </h3>
+                                    <a href="#" data-ajax="false" style="text-decoration: none;"><strong></strong></a>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <!-- /content -->
+                <div id="cdcount">
+                    <img id="wavef" src="images/footer_wave.png">
+                </div>
+                <div id="btsocial">
+                    <!--<ul id="social-tools">
                 <li><a href="http://m.facebook.com/Norwegiancruiseline" class="iconix" rel="facebook"
                     target="_blank"></a></li>
                 <li><a href="http://mobile.twitter.com/CruiseNorwegian" rel="twitter" class="iconix"
@@ -1332,18 +1327,31 @@
                 <li><a class="last" href="http://m.youtube.com/user/nclfreestyle?feature=results_main"
                     rel="youtube" class="iconix" target="_blank"></a></li>
             </ul>-->
-        </div>
-        <div data-role="footer" id="footer">
-        </div>
-        <script type="text/javascript" src="js/jquery.countdown.min.js?m=1368543442"></script>
-        <script type="text/javascript" src="js/mob-generic.js?m=1368543444"></script>
-        <script>
-            $('#cdcount #countdown-field').countdown({ until: new Date(2015, 1 - 1, 16, 17, 00, 00), format: 'dHM', timezone: -5, layout: '<div class="countdown_section">' + '<span class="countdown_amount">{dnn}</span>D' + '<span class="countdown_amount">{hnn}</span>H' + '<span class="countdown_amount">{mnn}</span>M' });
-        </script>
-        <div style="display: none">
-            <div id="map3d" style="width: 900px; height: 529px;">
+                </div>
+                <div data-role="footer" id="footer">
+                </div>
+                <script type="text/javascript" src="js/jquery.countdown.min.js?m=1368543442"></script>
+                <script type="text/javascript" src="js/mob-generic.js?m=1368543444"></script>
+                <script>
+                    $('#cdcount #countdown-field').countdown({ until: new Date(2015, 1 - 1, 16, 17, 00, 00), format: 'dHM', timezone: -5, layout: '<div class="countdown_section">' + '<span class="countdown_amount">{dnn}</span>D' + '<span class="countdown_amount">{hnn}</span>H' + '<span class="countdown_amount">{mnn}</span>M' });
+                </script>
+                <div style="display: none">
+                    <div id="map3d" style="width: 900px; height: 529px;">
+                    </div>
+                </div>
             </div>
+            <!-- /container -->
+            <nav class="outer-nav left vertical">
+		        <a href="#main" class="icon-home">Spiagge più vicine</a>
+		        <a href="#gmap" class="icon-news">Mappa Spiagge</a>
+		        <a href="#meteo" class="icon-image">Meteo</a>
+		        <a href="#chart" class="icon-upload">Rosa dei venti</a>
+		        <a href="#Setting" class="icon-star">Impostazioni</a>
+
+	        </nav>
         </div>
+        <script src="js/menu2/js/classie.js"></script>
+        <script src="js/menu2/js/menu.js"></script>
     </div>
     <div data-role="page" id="gmap" class="type-index">
         <div class="banner" style="z-index: 99999" data-role="header" role="banner" data-theme="c">
@@ -1506,8 +1514,10 @@
     </div>
     <div data-role="page" id="Beach" class="type-index">
         <div class="banner" style="z-index: 99999" data-role="header" role="banner" data-theme="c">
-            <input type="image"  style=" position:relative; top: 10px;vertical-align: middle;float: left;" src="images/back_.png" id="bck1" />
-             <input type="image" id="bt_gallery"  style="float: right; top: 20px; bottom:30px" src="images/gallery.png" id="Image1" />
+            <input type="image" style="position: relative; top: 10px; vertical-align: middle;
+                float: left;" src="images/back_.png" id="bck1" />
+            <input type="image" id="bt_gallery" style="float: right; top: 20px; bottom: 30px"
+                src="images/gallery.png" id="Image1" />
             <center>
                 <div style="vertical-align: middle;">
                     <br />
@@ -1555,7 +1565,6 @@
                         </div>
                     </p>
                 </div>
-              
             </div>
             <div id="divDs" style="width: 100%; height: 320px;">
                 <hr />
@@ -1583,7 +1592,8 @@
     </div>
     <div data-role="page" id="Setting" class="type-index">
         <div class="banner" style="z-index: 99999" data-role="header" role="banner" data-theme="c">
-               <input type="image"  style=" position:relative; top: 10px;vertical-align: middle;float: left;" src="images/back_.png" id="bck2" />
+            <input type="image" style="position: relative; top: 10px; vertical-align: middle;
+                float: left;" src="images/back_.png" id="bck2" />
             <center>
                 <div style="vertical-align: middle;">
                     <br />
@@ -1638,7 +1648,8 @@
     </div>
     <div data-role="page" id="Gallery">
         <div class="banner" style="z-index: 99999" data-role="header" role="banner" data-theme="c">
-               <input type="image"  style=" position:relative; top: 10px;vertical-align: middle;float: left;" src="images/back_.png" id="bck6" />
+            <input type="image" style="position: relative; top: 10px; vertical-align: middle;
+                float: left;" src="images/back_.png" id="bck6" />
             <center>
                 <div style="vertical-align: middle;">
                     <br />
@@ -1647,7 +1658,7 @@
             </center>
         </div>
         <div data-role="content" id="Div20">
-            <div id="wrapperBeach" style="height: 300px; width:100%">
+            <div id="wrapperBeach" style="height: 300px; width: 100%">
                 <div id="rotating-item-wrapperBeach">
                     <a href="javascript:void(0);">
                         <img class="rotating-item swipe" alt="" src="images/beach/imagestest.jpg" /></a>
@@ -1688,7 +1699,8 @@
     </div>
     <div data-role="page" id="chart">
         <div class="banner" style="z-index: 99999" data-role="header" role="banner" data-theme="c">
-               <input type="image"  style=" position:relative; top: 10px;vertical-align: middle;float: left;" src="images/back_.png" id="bck5" />
+            <input type="image" style="position: relative; top: 10px; vertical-align: middle;
+                float: left;" src="images/back_.png" id="bck5" />
             <center>
                 <div style="vertical-align: middle;">
                     <br />
@@ -1741,7 +1753,8 @@
     </div>
     <div data-role="page" id="forecast">
         <div class="banner" style="z-index: 99999" data-role="header" role="banner" data-theme="c">
-               <input type="image"  style=" position:relative; top: 10px;vertical-align: middle;float: left;" src="images/back_.png" id="bck3" />
+            <input type="image" style="position: relative; top: 10px; vertical-align: middle;
+                float: left;" src="images/back_.png" id="bck3" />
             <center>
                 <div style="vertical-align: middle;">
                     <br />
