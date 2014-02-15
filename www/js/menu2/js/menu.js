@@ -21,6 +21,12 @@
         return check;
     }
 
+    var mytransition = 'flip';
+    if (localStorage.getItem('Transition') != null) {
+        mytransition = localStorage.getItem('Transition');
+        //alert(mytransition);
+    }
+
     var docElem = window.document.documentElement,
     // support transitions
 		support = Modernizr.csstransitions,
@@ -59,7 +65,7 @@
             setTimeout(function () { classie.add(perspectiveWrapper, 'animate'); }, 25);
         });
 
-        
+
 
 
         container.addEventListener(clickevent, function (ev) {
@@ -91,6 +97,8 @@
         var gmap1 = document.getElementById('gmap1');
         var meteo1 = document.getElementById('meteo1');
         var chart1 = document.getElementById('chart1');
+        var setting1 = document.getElementById('setting1');
+
         main1.addEventListener(clickevent, function (ev) {
             close1(ev, '#main');
         });
@@ -102,6 +110,9 @@
         });
         chart1.addEventListener(clickevent, function (ev) {
             close1(ev, '#chart');
+        });
+        setting1.addEventListener(clickevent, function (ev) {
+            close1(ev, '#Setting');
         });
         function close1(ev, page) {
             if (classie.has(perspectiveWrapper, 'animate')) {
@@ -115,7 +126,8 @@
                     // change top of contentWrapper
                     contentWrapper.style.top = '0px';
                     //alert(page);
-                    window.location = page;
+                    //window.location = page;
+                    $.mobile.changePage(page, { transition: mytransition });
                 };
                 if (support) {
                     perspectiveWrapper.addEventListener(transEndEventName, onEndTransFn);
@@ -155,6 +167,8 @@
         var gmap2 = document.getElementById('gmap2');
         var meteo2 = document.getElementById('meteo2');
         var chart2 = document.getElementById('chart2');
+        var setting2 = document.getElementById('setting2');
+
         main2.addEventListener(clickevent, function (ev) {
             close2(ev, '#main');
         });
@@ -167,12 +181,14 @@
         chart2.addEventListener(clickevent, function (ev) {
             close2(ev, '#chart');
         });
-
+        setting2.addEventListener(clickevent, function (ev) {
+            close2(ev, '#Setting');
+        });
         containergmap.addEventListener(clickevent, function (ev) {
             close2(ev, '#gmap');
         });
         function close2(ev, page) {
-           
+
             if (classie.has(perspectiveWrappergmap, 'animate')) {
 
                 var onEndTransFn = function (ev) {
@@ -185,14 +201,15 @@
                     // change top of contentWrapper
                     contentWrapper.style.top = '0px';
                     //alert(page);
-                    window.location = page;
+                    //window.location = page;
+                    $.mobile.changePage(page, { transition: mytransition });
                 };
                 if (support) {
-                   // alert('closegmap');
+                    // alert('closegmap');
                     perspectiveWrappergmap.addEventListener(transEndEventName, onEndTransFn);
                 }
                 else {
-                   // alert('closegmap2');
+                    // alert('closegmap2');
                     onEndTransFn.call();
                 }
                 classie.remove(perspectiveWrappergmap, 'animate');
@@ -226,6 +243,8 @@
         var gmap3 = document.getElementById('gmap3');
         var meteo3 = document.getElementById('meteo3');
         var chart3 = document.getElementById('chart3');
+        var setting3 = document.getElementById('setting3');
+
         main3.addEventListener(clickevent, function (ev) {
             close2(ev, '#main');
         });
@@ -237,6 +256,9 @@
         });
         chart3.addEventListener(clickevent, function (ev) {
             close3(ev, '#chart');
+        });
+        setting3.addEventListener(clickevent, function (ev) {
+            close3(ev, '#Setting');
         });
 
         containergmeteo.addEventListener(clickevent, function (ev) {
@@ -256,7 +278,8 @@
                     // change top of contentWrapper
                     contentWrapper.style.top = '0px';
                     //alert(page);
-                    window.location = page;
+                    // window.location = page;
+                    $.mobile.changePage(page, { transition: mytransition });
                 };
                 if (support) {
                     // alert('closegmap');
@@ -269,7 +292,7 @@
                 classie.remove(perspectiveWrappermeteo, 'animate');
             }
         }
-        
+
 
         perspectiveWrapper.addEventListener(clickevent, function (ev) { return false; });
         perspectiveWrappergmap.addEventListener(clickevent, function (ev) { return false; });

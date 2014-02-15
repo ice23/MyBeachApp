@@ -141,7 +141,7 @@
 
             });
 
-           
+
 
 
             $('#rotating-item-wrapperBeachg').cycle({
@@ -188,7 +188,7 @@
 
 
             });
-           
+
             $('#rotating-item-wrapperBeachg').swipe({ swipeMoving: function (pageX) {
 
                 if (slideFlag) return;
@@ -226,12 +226,12 @@
             var slidesAdded = false;
 
             function beforeSlideb(curr, next, opts) {
-                
+
                 // Make sure not to call addSlide before it is defined 
-                if ( slidesAdded)
+                if (slidesAdded)
                     return;
 
-                
+
                 // Add slides for images 3 - 8 or whatever number of slides you want to add. Just amend the var i=3; < x; i++ functions below where x is any number.
                 // Also ensure you have this number of pictures available or you will get grey placeholders instead!
                 // Slides can be a DOM element, a jQuery object, or a string 
@@ -240,9 +240,9 @@
                 slidesAdded = true;
 
                 alert('before');
-            }; 
+            };
 
-           
+
 
             // Call this function after the slide start
             function afterSlide(curr, next, opt) {
@@ -289,6 +289,7 @@
     <script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyC5ukXmt0pQ3lvvi3NrfZX7LJKyW67TgK0&sensor=false"
         type="text/javascript"></script>
     <script type="text/javascript" src="js/my/jmain.js"></script>
+    <script type="text/javascript" src="js/my/jSetting.js"></script>
     <script type="text/javascript" src="js/my/jmapliveshow.js"></script>
     <script type="text/javascript" src="js/my/googleutils.js"></script>
     <script type="text/javascript" src="js/my/jbeachliveshow.js"></script>
@@ -479,6 +480,9 @@
 
             $('#rfh').click(function () {
                 //addLastPosition('123', '456', 'Villa');
+                if (navigator != null && navigator.notification != null) {
+                    navigator.notification.activityStart("Calcolo", "Calcolo delle distanze in corso...");
+                }
                 UpdateMyPosition();
             });
 
@@ -667,6 +671,9 @@
             });
             //alert('parseXmlEnd');
 
+            if (navigator != null && navigator.notification != null) {
+                navigator.notification.activityStart("Calcolo", "Calcolo delle distanze in corso...");
+            }
             UpdateMyPosition();
         };
 
@@ -692,7 +699,9 @@
             var Geo = {};
             if (navigator.geolocation) {
                 //alert('navigator.geolocation on')
-                navigator.geolocation.getCurrentPosition(success, onError, { maximumAge: 60000, timeout: 60000, enableHighAccuracy: true });
+               
+                    navigator.geolocation.getCurrentPosition(success, onError, { maximumAge: 60000, timeout: 60000, enableHighAccuracy: true });
+                
             }
             else {
                 alert('navigator.geolocation off')
@@ -703,6 +712,14 @@
             //alert('success');
             mylat = position.coords.latitude;
             mylng = position.coords.longitude;
+            if (localStorage.getItem('Position') != null) {
+                var Position = localStorage.getItem('Position');
+                if (Position == 'NOAUTO') {
+                    mylat = localStorage.getItem('lat');
+                    mylng = localStorage.getItem('lng');
+                }
+            }
+                
 
             var geocoder = null;
             geocoder = new google.maps.Geocoder();
@@ -741,7 +758,9 @@
             }
             PopulateFirstBeachByDistance();
 
-
+            if (navigator != null && navigator.notification != null) {
+                navigator.notification.activityStop();
+            }
         }
 
         function onError(error) {
@@ -1352,7 +1371,7 @@
 		        <a  id="gmap1" class="icon-news">Mappa Spiagge</a>
 		        <a  id="meteo1" class="icon-image">Meteo</a>
 		        <a  id="chart1" class="icon-upload">Rosa dei venti</a>
-		        <a href="#Setting" id="setting1" class="icon-star">Impostazioni</a>
+		        <a  id="setting1" class="icon-star">Impostazioni</a>
 
 	        </nav>
         </div>
@@ -1421,7 +1440,7 @@
 		        <a id="gmap2" class="icon-news">Mappa Spiagge</a>
 		        <a id="meteo2" class="icon-image">Meteo</a>
 		        <a id="chart2" class="icon-upload">Rosa dei venti</a>
-		        <a href="#Setting" class="icon-star">Impostazioni</a>
+		        <a id="setting2" class="icon-star">Impostazioni</a>
 
 	        </nav>
         </div>
@@ -1521,7 +1540,7 @@
 		        <a id="gmap3" class="icon-news">Mappa Spiagge</a>
 		        <a id="meteo3" class="icon-image">Meteo</a>
 		        <a id="chart3" class="icon-upload">Rosa dei venti</a>
-		        <a href="#Setting" class="icon-star">Impostazioni</a>
+		        <a id="setting3" class="icon-star">Impostazioni</a>
 	        </nav>
             <script src="js/menu2/js/classie.js"></script>
             <script src="js/menu2/js/menu.js"></script>
@@ -1548,9 +1567,7 @@
                             <div id="MyGallery1">
                                 <a href="#Gallery">
                                     <img class="rotating-item swipe" alt="" src="images/beach/imagestest.jpg" /></a>
-                               
                             </div>
-                            
                             <div id="Div31" style="visibility: hidden">
                             </div>
                             <div id="Div36" style="opacity: 1;">
@@ -1613,62 +1630,6 @@
             </div>
             <div id="Div14">
                 <img id="Img3" src="images/footer_wave.png">
-            </div>
-        </div>
-    </div>
-    <div data-role="page" id="Setting" class="type-index">
-        <div class="banner" style="z-index: 99999" data-role="header" role="banner" data-theme="c">
-            <input type="image" style="position: relative; top: 10px; vertical-align: middle;
-                float: left;" src="images/back_.png" id="bck2" />
-            <center>
-                <div style="vertical-align: middle;">
-                    <br />
-                    <a id="A2">Impostazioni</a>
-                </div>
-            </center>
-        </div>
-        <div data-role="content" id="Div21">
-            <ul data-role="listview" data-inset="true">
-                <li id="Li2"><span id="Span3">La tua posizione</span><span id="Span4"></span></li>
-                <li class="indpr-1 myindpr">
-                    <img src="images/flip_flops.png" alt="winelovers420x260" />
-                    <h3 id="H1" class="grl">
-                        La tua posizione può essere letta in automatico o specifica un altra
-                    </h3>
-                </li>
-            </ul>
-            <ul data-role="listview" data-inset="true">
-                <li id="Li3"><span id="Span5">La tua posizione</span><span id="Span6"></span></li>
-                <li class="indpr-1 myindpr">
-                    <img src="images/flip_flops.png" alt="winelovers420x260" />
-                    <h3 id="H2" class="grl">
-                    </h3>
-                </li>
-            </ul>
-        </div>
-        <!-- /content -->
-        <div id="Div23">
-            <img id="Img4" src="images/footer_wave.png">
-        </div>
-        <div id="Div24">
-            <!--<ul id="social-tools">
-                <li><a href="http://m.facebook.com/Norwegiancruiseline" class="iconix" rel="facebook"
-                    target="_blank"></a></li>
-                <li><a href="http://mobile.twitter.com/CruiseNorwegian" rel="twitter" class="iconix"
-                    target="_blank"></a></li>
-                <li><a class="last" href="http://m.youtube.com/user/nclfreestyle?feature=results_main"
-                    rel="youtube" class="iconix" target="_blank"></a></li>
-            </ul>-->
-        </div>
-        <div data-role="footer" id="Div25">
-        </div>
-        <script type="text/javascript" src="js/jquery.countdown.min.js?m=1368543442"></script>
-        <script type="text/javascript" src="js/mob-generic.js?m=1368543444"></script>
-        <script>
-            $('#cdcount #countdown-field').countdown({ until: new Date(2015, 1 - 1, 16, 17, 00, 00), format: 'dHM', timezone: -5, layout: '<div class="countdown_section">' + '<span class="countdown_amount">{dnn}</span>D' + '<span class="countdown_amount">{hnn}</span>H' + '<span class="countdown_amount">{mnn}</span>M' });
-        </script>
-        <div style="display: none">
-            <div id="Div26" style="width: 900px; height: 529px;">
             </div>
         </div>
     </div>
@@ -1780,6 +1741,86 @@
         <!-- /content -->
         <div id="Div27">
             <img id="Img6" src="images/footer_wave.png">
+        </div>
+    </div>
+    <div data-role="page" id="Setting" class="type-index">
+        <div id="Div3" class="perspective effect-airbnb">
+            <div class="banner" style="z-index: 99999" data-role="header" role="banner" data-theme="c">
+                <input type="image" style="position: relative; top: 10px; vertical-align: middle;
+                    float: left;" src="images/back_.png" id="bck2" />
+                <center>
+                    <div style="vertical-align: middle;">
+                        <br />
+                        <a id="A2">Impostazioni</a>
+                    </div>
+                </center>
+            </div>
+            <div data-role="content" id="Div21" data-theme="a">
+                <ul data-role="listview" data-inset="true">
+                    <li id="Li2"><span id="Span3">La tua posizione</span><span id="Span4"></span></li>
+                    <li class="indpr-1 myindpr">
+                        <table>
+                            <tr>
+                                <td valign="middle">
+                                    <img src="images/flip_flops.png" alt="winelovers420x260" />
+                                </td>
+                                <td>
+                                    <fieldset data-role="controlgroup" data-mini="true" style="width:300px">
+                                        <input style="width:100%" type="radio" name="radio-mini" id="radio-mini-1" value="auto" checked="checked" />
+                                        <label for="radio-mini-1" style="width:100%">
+                                            Letta in automatico</label>
+                                        <input type="radio" name="radio-mini" id="radio-mini-2" value="other" />
+                                        <label for="radio-mini-2">
+                                            Specifica</label>
+                                        <table>
+                                            <tr>
+                                                <td>
+                                                    <input style="float: left;" type="text" id="MyPosition" />
+                                                </td>
+                                                <td>
+                                                    <input style="float: right;" id="SearchPosition" type="image" src="images/search.png" />
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </fieldset>
+                                </td>
+                            </tr>
+                        </table>
+                    </li>
+                </ul>
+                <ul data-role="listview" data-inset="true">
+                    <li id="Li3"><span id="Span5">Effetto di transazione tra le pagine</span><span id="Span6"></span></li>
+                    <li class="indpr-1 myindpr">
+                        <table>
+                            <tr>
+                                <td valign="middle">
+                                    <img src="images/flip_flops.png" alt="winelovers420x260" />
+                                </td>
+                                <td>
+                                    <fieldset data-role="controlgroup2" data-mini="true" style="width:300px">
+                                        <input type="radio" name="radio-mini" id="radio-mini-flip" value="Flip" checked="checked" />
+                                        <label for="radio-mini-flip">
+                                            Flip</label>
+                                        <input type="radio" name="radio-mini" id="radio-mini-pop" value="Pop" />
+                                        <label for="radio-mini-pop">
+                                            Pop</label>
+                                        <input type="radio" name="radio-mini" id="radio-mini-turn" value="Turn" />
+                                        <label for="radio-mini-turn">
+                                            Turn</label>
+                                        <input type="radio" name="radio-mini" id="radio-mini-flow" value="Flow" />
+                                        <label for="radio-mini-flow">
+                                            Flow</label>
+                                        <input type="radio" name="radio-mini" id="radio-mini-none" value="none" />
+                                        <label for="radio-mini-none">
+                                            Nessuno</label>
+                                    </fieldset>
+                                </td>
+                            </tr>
+                        </table>
+                    </li>
+                </ul>
+            </div>
+            <!-- /content -->
         </div>
     </div>
 </body>

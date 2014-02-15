@@ -114,7 +114,7 @@ $('#Beach').live('pageshow', function (event, ui) {
                     var instr = '<b> Distanza Totale : ' + distancekm + 'km <b/></br>';
                     for (var i = 0; i < myRoute.steps.length; i++) {
                         var km = myRoute.steps[i].distance.text;
-                        instr = instr + '<br/> ' + km + ')' + myRoute.steps[i].instructions;
+                        instr = instr + '<br/> ' + km + ' - ' + myRoute.steps[i].instructions;
                     }
 
 
@@ -245,7 +245,7 @@ $('#Beach').live("pagebeforecreate", function (event) {
                     var instr = '<b> Distanza Totale : ' + distancekm + 'km <b/></br>';
                     for (var i = 0; i < myRoute.steps.length; i++) {
                         var km = myRoute.steps[i].distance.text;
-                        instr = instr + '<br/> ' + km + ')' + myRoute.steps[i].instructions;
+                        instr = instr + '<br/> ' + km + ' -' + myRoute.steps[i].instructions;
                     }
 
 
