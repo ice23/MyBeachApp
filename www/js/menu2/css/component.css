@@ -34,6 +34,19 @@ html, body, .perspective {
 	z-index: 10;
 }
 
+.containermeteo {
+	min-height: 100%;
+	position: relative;
+	outline: 1px solid rgba(0,0,0,0);
+	z-index: 10;
+}
+.containerg {
+	min-height: 100%;
+	position: relative;
+	outline: 1px solid rgba(0,0,0,0);
+	z-index: 10;
+}
+
 .container::after {
 	content: '';
 	position: absolute;
@@ -51,6 +64,33 @@ html, body, .perspective {
 
 
 .containergmap::after {
+	content: '';
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 0px;
+	opacity: 0;
+	background: rgba(0,0,0,0.2);
+	/* the transition delay of the height needs to be synced with the container transition time */
+	-webkit-transition: opacity 0.4s, height 0s 0.4s;
+	transition: opacity 0.4s, height 0s 0.4s;
+}
+
+.containermeteo::after {
+	content: '';
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 0px;
+	opacity: 0;
+	background: rgba(0,0,0,0.2);
+	/* the transition delay of the height needs to be synced with the container transition time */
+	-webkit-transition: opacity 0.4s, height 0s 0.4s;
+	transition: opacity 0.4s, height 0s 0.4s;
+}
+.containerg::after {
 	content: '';
 	position: absolute;
 	top: 0;
@@ -103,6 +143,26 @@ html, body, .perspective {
 	backface-visibility: hidden;
 }
 
+.modalview .containermeteo {
+	position: absolute;
+	overflow: hidden;
+	width: 100%;
+	height: 100%;
+	cursor: pointer;
+	-webkit-backface-visibility: hidden;
+	backface-visibility: hidden;
+}
+
+.modalview .containerg {
+	position: absolute;
+	overflow: hidden;
+	width: 100%;
+	height: 100%;
+	cursor: pointer;
+	-webkit-backface-visibility: hidden;
+	backface-visibility: hidden;
+}
+
 .modalview .wrapper {
 	-webkit-transform: translateZ(-1px); /* solves a rendering bug in Chrome on Windows */
 }
@@ -116,6 +176,20 @@ html, body, .perspective {
 
 
 .animate .containergmap::after {
+	opacity: 1;
+	height: 101%;
+	-webkit-transition: opacity 0.3s;
+	transition: opacity 0.3s;
+}
+
+
+.animate .containermeteo::after {
+	opacity: 1;
+	height: 101%;
+	-webkit-transition: opacity 0.3s;
+	transition: opacity 0.3s;
+}
+.animate .containerg::after {
 	opacity: 1;
 	height: 101%;
 	-webkit-transition: opacity 0.3s;
@@ -233,6 +307,20 @@ html, body, .perspective {
 	transform-origin: 50% 50%;
 }
 
+.effect-airbnb .containermeteo {
+	-webkit-transition: -webkit-transform 0.4s;
+	transition: transform 0.4s;
+	-webkit-transform-origin: 50% 50%;
+	transform-origin: 50% 50%;
+}
+
+.effect-airbnb .containerg {
+	-webkit-transition: -webkit-transform 0.4s;
+	transition: transform 0.4s;
+	-webkit-transform-origin: 50% 50%;
+	transform-origin: 50% 50%;
+}
+
 .effect-airbnb.animate .container {
 	-webkit-transform: translateZ(-1500px) translateX(100%) rotateY(-45deg);
 	transform: translateZ(-1500px) translateX(100%) rotateY(-45deg);
@@ -250,6 +338,32 @@ html, body, .perspective {
 .no-csstransforms3d .effect-airbnb.animate .containergmap {
 	left: 75%;
 }
+
+
+
+.effect-airbnb.animate .containermeteo {
+	-webkit-transform: translateZ(-1500px) translateX(100%) rotateY(-45deg);
+	transform: translateZ(-1500px) translateX(100%) rotateY(-45deg);
+}
+
+.no-csstransforms3d .effect-airbnb.animate .containermeteo {
+	left: 75%;
+}
+
+
+
+
+.effect-airbnb.animate .containerg {
+	-webkit-transform: translateZ(-1500px) translateX(100%) rotateY(-45deg);
+	transform: translateZ(-1500px) translateX(100%) rotateY(-45deg);
+}
+
+.no-csstransforms3d .effect-airbnb.animate .containerg {
+	left: 75%;
+}
+
+
+
 
 .effect-airbnb .outer-nav a {
 	opacity: 0;
@@ -339,6 +453,59 @@ html, body, .perspective {
 .no-csstransforms3d .effect-moveleft.animate .containergmap {
 	left: -75%;
 }
+
+
+
+
+.effect-moveleft .containermeteo {
+	-webkit-transition: -webkit-transform 0.4s;
+	transition: transform 0.4s;
+	-webkit-transform-origin: 50% 50%;
+	transform-origin: 50% 50%;
+}
+
+.effect-moveleft .containermeteo::after {
+	background: rgba(255,255,255,0.6);
+}
+
+.effect-moveleft.animate .containermeteo {
+	-webkit-transform: translateX(-50%) rotateY(45deg) translateZ(-50px);
+	transform: translateX(-50%) rotateY(45deg) translateZ(-50px);
+}
+
+.no-csstransforms3d .effect-moveleft.animate .containermeteo {
+	left: -75%;
+}
+
+
+
+
+
+
+
+
+.effect-moveleft .containerg {
+	-webkit-transition: -webkit-transform 0.4s;
+	transition: transform 0.4s;
+	-webkit-transform-origin: 50% 50%;
+	transform-origin: 50% 50%;
+}
+
+.effect-moveleft .containerg::after {
+	background: rgba(255,255,255,0.6);
+}
+
+.effect-moveleft.animate .containerg {
+	-webkit-transform: translateX(-50%) rotateY(45deg) translateZ(-50px);
+	transform: translateX(-50%) rotateY(45deg) translateZ(-50px);
+}
+
+.no-csstransforms3d .effect-moveleft.animate .containerg {
+	left: -75%;
+}
+
+
+
 
 .effect-moveleft .outer-nav a {
 	color: #e86a32;
@@ -437,6 +604,60 @@ html, body, .perspective {
 	left: -75%;
 }
 
+
+
+
+
+.effect-rotateleft .containermeteo {
+	-webkit-transition: -webkit-transform 0.4s;
+	transition: transform 0.4s;
+	-webkit-transform-origin: 0% 50%;
+	transform-origin: 0% 50%;
+}
+
+.effect-rotateleft .containermeteo::after {
+	background: rgba(255,255,255,0.6);
+}
+
+.effect-rotateleft.animate .containermeteo {
+	-webkit-transform: translateZ(-1800px) translateX(-50%) rotateY(45deg);
+	transform: translateZ(-1800px) translateX(-50%) rotateY(45deg);
+}
+
+.no-csstransforms3d .effect-rotateleft.animate .containermeteo {
+	left: -75%;
+}
+
+
+
+
+
+
+
+.effect-rotateleft .containerg {
+	-webkit-transition: -webkit-transform 0.4s;
+	transition: transform 0.4s;
+	-webkit-transform-origin: 0% 50%;
+	transform-origin: 0% 50%;
+}
+
+.effect-rotateleft .containerg::after {
+	background: rgba(255,255,255,0.6);
+}
+
+.effect-rotateleft.animate .containerg {
+	-webkit-transform: translateZ(-1800px) translateX(-50%) rotateY(45deg);
+	transform: translateZ(-1800px) translateX(-50%) rotateY(45deg);
+}
+
+.no-csstransforms3d .effect-rotateleft.animate .containerg {
+	left: -75%;
+}
+
+
+
+
+
 .effect-rotateleft .outer-nav a {
 	opacity: 0;
 	-webkit-transform: translateX(350px) translateZ(-1000px);
@@ -506,6 +727,11 @@ html, body, .perspective {
 	top: 75%;
 }
 
+
+
+
+
+
 .effect-movedown .containergmap {
 	-webkit-transition: -webkit-transform 0.4s;
 	transition: transform 0.4s;
@@ -525,6 +751,35 @@ html, body, .perspective {
 .no-csstransforms3d .effect-movedown.animate .containergmap {
 	top: 75%;
 }
+
+
+
+
+
+
+
+.effect-movedown .containermeteo {
+	-webkit-transition: -webkit-transform 0.4s;
+	transition: transform 0.4s;
+	-webkit-transform-origin: 50% 50%;
+	transform-origin: 50% 50%;
+}
+
+.effect-movedown .containermeteo::after {
+	background: rgba(52, 73, 94, 0.5);
+}
+
+.effect-movedown.animate .containermeteo {
+	-webkit-transform: translateY(100%) translateZ(-1500px);
+	transform: translateY(100%) translateZ(-1500px);
+}
+
+.no-csstransforms3d .effect-movedown.animate .containermeteo {
+	top: 75%;
+}
+
+
+
 
 
 .effect-movedown .outer-nav a {
@@ -625,6 +880,38 @@ html, body, .perspective {
 	top: -75%;
 }
 
+
+
+
+
+
+
+
+.effect-rotatetop .containermeteo {
+	-webkit-transition: -webkit-transform 0.4s;
+	transition: transform 0.4s;
+	-webkit-transform-origin: 50% 50%;
+	transform-origin: 50% 50%;
+}
+
+.effect-rotatetop .containermeteo::after {
+	background: rgba(94,59,43,0.6);
+}
+
+.effect-rotatetop.animate .containermeteo {
+	-webkit-transform: translateZ(-1500px) translateY(-50%) rotateX(-45deg);
+	transform: translateZ(-1500px) translateY(-50%) rotateX(-45deg);
+}
+
+.no-csstransforms3d .effect-rotatetop.animate .containermeteo {
+	top: -75%;
+}
+
+
+
+
+
+
 .effect-rotatetop .outer-nav a {
 	opacity: 0;
 	color: #ed8151;
@@ -714,6 +1001,30 @@ html, body, .perspective {
 .no-csstransforms3d .effect-laydown.animate .containergmap {
 	top: 75%;
 }
+
+
+
+
+
+
+.effect-laydown .containermeteo {
+	-webkit-transition: -webkit-transform 0.4s;
+	transition: transform 0.4s;
+	-webkit-transform-origin: 50% 150%;
+	transform-origin: 50% 150%;
+}
+
+.effect-laydown.animate .containermeteo {
+	-webkit-transform: translateZ(-1500px) rotateX(80deg);
+	transform: translateZ(-1500px) rotateX(80deg);
+}
+
+.no-csstransforms3d .effect-laydown.animate .containermeteo {
+	top: 75%;
+}
+
+
+
 
 .effect-laydown .outer-nav a {
 	opacity: 0;

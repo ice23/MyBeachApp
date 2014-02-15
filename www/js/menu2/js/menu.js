@@ -43,10 +43,6 @@
 			container = perspectiveWrapper.querySelector('.container'),
 			contentWrapper = container.querySelector('.wrapper');
 
-        var showMenugmap = document.getElementById('showMenugmap'),
-			perspectiveWrappergmap = document.getElementById('perspectivegmap'),
-			containergmap = perspectiveWrappergmap.querySelector('.containergmap');
-
 
         showMenu.addEventListener(clickevent, function (ev) {
             //alert('showMenu');
@@ -63,20 +59,8 @@
             setTimeout(function () { classie.add(perspectiveWrapper, 'animate'); }, 25);
         });
 
-        showMenugmap.addEventListener(clickevent, function (ev) {
-            //alert('showMenugmap');
-            ev.stopPropagation();
-            ev.preventDefault();
-            docscroll = scrollY();
-            // change top of contentWrapper
-            contentWrapper.style.top = docscroll * -1 + 'px';
-            // mac chrome issue:
-            document.body.scrollTop = document.documentElement.scrollTop = 0;
-            // add modalview class
-            classie.add(perspectiveWrappergmap, 'modalview');
-            // animate..
-            setTimeout(function () { classie.add(perspectiveWrappergmap, 'animate'); }, 25);
-        });
+        
+
 
         container.addEventListener(clickevent, function (ev) {
             if (classie.has(perspectiveWrapper, 'animate')) {
@@ -100,30 +84,196 @@
             }
         });
 
-        containergmap.addEventListener(clickevent, function (ev) {
-            if (classie.has(perspectiveWrappergmap, 'animate')) {
-                //alert('closegmap');
+
+
+
+        var main1 = document.getElementById('main1');
+        var gmap1 = document.getElementById('gmap1');
+        var meteo1 = document.getElementById('meteo1');
+        var chart1 = document.getElementById('chart1');
+        main1.addEventListener(clickevent, function (ev) {
+            close1(ev, '#main');
+        });
+        gmap1.addEventListener(clickevent, function (ev) {
+            close1(ev, '#gmap');
+        });
+        meteo1.addEventListener(clickevent, function (ev) {
+            close1(ev, '#meteo');
+        });
+        chart1.addEventListener(clickevent, function (ev) {
+            close1(ev, '#chart');
+        });
+        function close1(ev, page) {
+            if (classie.has(perspectiveWrapper, 'animate')) {
+                //alert('close1');
                 var onEndTransFn = function (ev) {
                     if (support && (ev.target.className !== 'container' || ev.propertyName.indexOf('transform') == -1)) return;
+                    this.removeEventListener(transEndEventName, onEndTransFn);
+                    classie.remove(perspectiveWrapper, 'modalview');
+                    // mac chrome issue:
+                    document.body.scrollTop = document.documentElement.scrollTop = docscroll;
+                    // change top of contentWrapper
+                    contentWrapper.style.top = '0px';
+                    //alert(page);
+                    window.location = page;
+                };
+                if (support) {
+                    perspectiveWrapper.addEventListener(transEndEventName, onEndTransFn);
+                    //alert('close3');
+                }
+                else {
+                    onEndTransFn.call();
+                    //alert('close4');
+                }
+                classie.remove(perspectiveWrapper, 'animate');
+                //alert('close5');
+            }
+        }
+
+
+        var showMenugmap = document.getElementById('showMenugmap'),
+			perspectiveWrappergmap = document.getElementById('perspectivegmap'),
+			containergmap = perspectiveWrappergmap.querySelector('.containergmap');
+
+        showMenugmap.addEventListener(clickevent, function (ev) {
+            //alert('showMenugmap');
+            ev.stopPropagation();
+            ev.preventDefault();
+            docscroll = scrollY();
+            // change top of contentWrapper
+            contentWrapper.style.top = docscroll * -1 + 'px';
+            // mac chrome issue:
+            document.body.scrollTop = document.documentElement.scrollTop = 0;
+            // add modalview class
+            classie.add(perspectiveWrappergmap, 'modalview');
+            // animate..
+            setTimeout(function () { classie.add(perspectiveWrappergmap, 'animate'); }, 25);
+        });
+
+
+        var main2 = document.getElementById('main2');
+        var gmap2 = document.getElementById('gmap2');
+        var meteo2 = document.getElementById('meteo2');
+        var chart2 = document.getElementById('chart2');
+        main2.addEventListener(clickevent, function (ev) {
+            close2(ev, '#main');
+        });
+        gmap2.addEventListener(clickevent, function (ev) {
+            close2(ev, '#gmap');
+        });
+        meteo2.addEventListener(clickevent, function (ev) {
+            close2(ev, '#meteo');
+        });
+        chart2.addEventListener(clickevent, function (ev) {
+            close2(ev, '#chart');
+        });
+
+        containergmap.addEventListener(clickevent, function (ev) {
+            close2(ev, '#gmap');
+        });
+        function close2(ev, page) {
+           
+            if (classie.has(perspectiveWrappergmap, 'animate')) {
+
+                var onEndTransFn = function (ev) {
+                    //alert('closegmap3');
+                    if (support && (ev.target.className !== 'containergmap' || ev.propertyName.indexOf('transform') == -1)) return;
                     this.removeEventListener(transEndEventName, onEndTransFn);
                     classie.remove(perspectiveWrappergmap, 'modalview');
                     // mac chrome issue:
                     document.body.scrollTop = document.documentElement.scrollTop = docscroll;
                     // change top of contentWrapper
                     contentWrapper.style.top = '0px';
+                    //alert(page);
+                    window.location = page;
                 };
                 if (support) {
+                   // alert('closegmap');
                     perspectiveWrappergmap.addEventListener(transEndEventName, onEndTransFn);
                 }
                 else {
+                   // alert('closegmap2');
                     onEndTransFn.call();
                 }
                 classie.remove(perspectiveWrappergmap, 'animate');
             }
+        }
+
+
+
+
+        var showMenumeteo = document.getElementById('showMenumeteo'),
+			perspectiveWrappermeteo = document.getElementById('perspectivemeteo'),
+			containermeteo = perspectiveWrappermeteo.querySelector('.containermeteo');
+
+        showMenumeteo.addEventListener(clickevent, function (ev) {
+            //alert('showMenugmap');
+            ev.stopPropagation();
+            ev.preventDefault();
+            docscroll = scrollY();
+            // change top of contentWrapper
+            contentWrapper.style.top = docscroll * -1 + 'px';
+            // mac chrome issue:
+            document.body.scrollTop = document.documentElement.scrollTop = 0;
+            // add modalview class
+            classie.add(perspectiveWrappermeteo, 'modalview');
+            // animate..
+            setTimeout(function () { classie.add(perspectiveWrappermeteo, 'animate'); }, 25);
         });
+
+
+        var main3 = document.getElementById('main3');
+        var gmap3 = document.getElementById('gmap3');
+        var meteo3 = document.getElementById('meteo3');
+        var chart3 = document.getElementById('chart3');
+        main3.addEventListener(clickevent, function (ev) {
+            close2(ev, '#main');
+        });
+        gmap3.addEventListener(clickevent, function (ev) {
+            close3(ev, '#gmap');
+        });
+        meteo3.addEventListener(clickevent, function (ev) {
+            close3(ev, '#meteo');
+        });
+        chart3.addEventListener(clickevent, function (ev) {
+            close3(ev, '#chart');
+        });
+
+        containergmeteo.addEventListener(clickevent, function (ev) {
+            close3(ev, '#gmap');
+        });
+        function close3(ev, page) {
+
+            if (classie.has(perspectiveWrappermeteo, 'animate')) {
+
+                var onEndTransFn = function (ev) {
+                    //alert('closegmap3');
+                    if (support && (ev.target.className !== 'containermeteo' || ev.propertyName.indexOf('transform') == -1)) return;
+                    this.removeEventListener(transEndEventName, onEndTransFn);
+                    classie.remove(perspectiveWrappermeteo, 'modalview');
+                    // mac chrome issue:
+                    document.body.scrollTop = document.documentElement.scrollTop = docscroll;
+                    // change top of contentWrapper
+                    contentWrapper.style.top = '0px';
+                    //alert(page);
+                    window.location = page;
+                };
+                if (support) {
+                    // alert('closegmap');
+                    perspectiveWrappermeteo.addEventListener(transEndEventName, onEndTransFn);
+                }
+                else {
+                    // alert('closegmap2');
+                    onEndTransFn.call();
+                }
+                classie.remove(perspectiveWrappermeteo, 'animate');
+            }
+        }
+        
 
         perspectiveWrapper.addEventListener(clickevent, function (ev) { return false; });
         perspectiveWrappergmap.addEventListener(clickevent, function (ev) { return false; });
+        perspectiveWrappermeteo.addEventListener(clickevent, function (ev) { return false; });
     }
 
     init();

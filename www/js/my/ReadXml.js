@@ -35,7 +35,7 @@
                 var xbambini = this.xbambini;
                 var surf = this.surf;
                 var rent = this.rent;
-                var photo = this.photo;
+                var photo = this.foto;
                 var camper = this.camper;
                 //   
                 var beach = [nome, lat, lon, 1, descrizione, windNO, parking, bar, id, disabili, xbambini, surf, rent, photo, camper]
