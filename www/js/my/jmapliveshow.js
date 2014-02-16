@@ -78,8 +78,11 @@ function setMarkers(map, markers) {
         var bar = sites[7];
         var child = sites[10];
         var hand = sites[9];
+        var surf = sites[11];
         var rent = sites[12];
         var camper = sites[14];
+        var sub = sites[15];
+        var d = sites[16];
 
         var valid = 0;
 
@@ -154,7 +157,37 @@ function setMarkers(map, markers) {
                 valid = 1;
             }
         }
-
+        if (beachfinderby == 'sub') {
+            if (sub == '1') {
+                valid = 1;
+            }
+        }
+        if (beachfinderby == 'surf') {
+            if (surf == '1') {
+                valid = 1;
+            }
+        }
+        if (beachfinderby == 'dB') {
+            if (d == 'B') {
+                valid = 1;
+            }
+        }
+        if (beachfinderby == 'dM') {
+            if (d == 'M') {
+                valid = 1;
+            }
+        }
+        if (beachfinderby == 'dA') {
+            if (d == 'A') {
+                valid = 1;
+            }
+            if (d == 'H') {
+                valid = 1;
+            }
+        }
+        if (beachfinderby == '-') {
+                valid = 1;
+        }
        
         var siteLatLng = new google.maps.LatLng(sites[1], sites[2]);
         //alert(sites[8]);

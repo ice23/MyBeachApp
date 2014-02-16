@@ -29,7 +29,7 @@
                 var lon = this.lon;
                 var descrizione = this.descrizione;
                 var windNO = this.windNO;
-                var parking = this.parking;
+                var parking = this.parcheggio;
                 var bar = this.bar;
                 var disabili = this.disabili;
                 var xbambini = this.xbambini;
@@ -37,8 +37,10 @@
                 var rent = this.rent;
                 var photo = this.foto;
                 var camper = this.camper;
+                var attivsub = this.attivsub;
+                var densita = this.densita;
                 //   
-                var beach = [nome, lat, lon, 1, descrizione, windNO, parking, bar, id, disabili, xbambini, surf, rent, photo, camper]
+                var beach = [nome, lat, lon, 1, descrizione, windNO, parking, bar, id, disabili, xbambini, surf, rent, photo, camper, attivsub, densita]
                 sites.push(beach);
                 //alert(beach);
 //                localStorage.setItem("beachs " + i, beach);
@@ -96,7 +98,7 @@ function ReadXmlBeachById(Beach_ID) {
                 var lon = this.lon;
                 var descrizione = this.descrizione;
                 var windNO = this.windNO;
-                var parking = this.parking;
+                var parking = this.parcheggio;
                 var bar = this.bar;
                 var disabili = this.disabili;
                 var xbambini = this.xbambini;
@@ -104,8 +106,10 @@ function ReadXmlBeachById(Beach_ID) {
                 var rent = this.rent;
                 var photo = this.photo;
                 var camper = this.camper;
+                var attivsub = this.attivsub;
+                var densita = this.densita;
                 //   
-                var beach = [nome, lat, lon, 1, descrizione, windNO, parking, bar, id, disabili, xbambini, surf, rent, photo, camper]
+                var beach = [nome, lat, lon, 1, descrizione, windNO, parking, bar, id, disabili, xbambini, surf, rent, photo, camper, attivsub, densita]
                 sites.push(beach);
                 //alert(beach);
                 //localStorage.setItem("beachs " + i, beach);
@@ -127,52 +131,79 @@ function ReadXmlBeachById(Beach_ID) {
                 var rent = info[12];
                 var photo = info[13];
                 var camper = info[14];
+                var attivsub = info[15];
+                var densita = info[16];
                 //var beach=[nome, lat,lon, 1, descrizione,windNO,parking,bar,id,disabili,xbambini,surf,rent,photo]
                 if (Beach_ID == id) {
                     //Info
                     var nome = info[0];
                     var ds = info[4];
-                    //alert(info[0]);
+                    //alert('info3 ' + info[0]);
                     $('#beach_Name').html(nome);
                     $('#beach_Ds').html(ds);
 
 
                     //Img
                     if (parking == '1') {
-                        $('#img_parcheggio').attr('src', 'images/icona-parcheggio_ok.png');
+                        $('#td_parcheggio').show();
                     }
                     else {
-                        $('#img_parcheggio').attr('src', 'images/icona-parcheggio_ko.png');
+                        $('#td_parcheggio').hide();
                     }
                     if (bar == '1') {
-                        $('#img_bar').attr('src', 'images/icona-bar_ok.png');
+                        $('#td_bar').show();
                     }
                     else {
-                        $('#img_bar').attr('src', 'images/icona-bar_ko.png');
+                        $('#td_bar').hide();
                     }
                     if (disabili == '1') {
-                        $('#img_disabili').attr('src', 'images/icona-hand_ok.png');
+                        $('#td_disabili').show();
                     }
                     else {
-                        $('#img_disabili').attr('src', 'images/icona-hand_ko.png');
+                        $('#td_disabili').hide();
                     }
                     if (xbambini == '1') {
-                        $('#img_bambini').attr('src', 'images/icona-bambini_ok.png');
+                        $('#td_xbambini').show();
                     }
                     else {
-                        $('#img_bambini').attr('src', 'images/icona-bambini_ko.png');
+                        $('#td_xbambini').hide();
                     }
                     if (rent == '1') {
-                        $('#img_noleggio').attr('src', 'images/icona-noleggio_ok.png');
+                        $('#td_attrezzata').show();
                     }
                     else {
-                        $('#img_noleggio').attr('src', 'images/icona-noleggio_ko.png');
+                        $('#td_attrezzata').hide();
+                    }
+                    if (attivsub == '1') {
+                        $('#td_attivsub').show();
+                    }
+                    else {
+                        $('#td_attivsub').hide();
+                    }
+                    if (camper == '1') {
+                        $('#td_camper').show();
+                    }
+                    else {
+                        $('#td_camper').hide();
+                    }
+                    $('#td_densita').hide();
+                    if (densita == 'B') {
+                        $('#img_densita').attr('src', 'images/densitaB.gif');
+                        $('#td_densita').show();
+                    }
+                    if (densita == 'M') {
+                        $('#img_densita').attr('src', 'images/densitaM.gif');
+                        $('#td_densita').show();
+                    }
+                    if (densita == 'A') {
+                        $('#img_densita').attr('src', 'images/densitaB.gif');
+                        $('#td_densita').show();
                     }
 
 
                     //Direzione
                     mylat = localStorage.getItem("mylat");
-                    mylng=localStorage.getItem("mylng");
+                    mylng = localStorage.getItem("mylng");
                     var start = mylat + "," + mylng;
                     var end = info[1] + "," + info[2];
                     //alert(start + '\n' + end);

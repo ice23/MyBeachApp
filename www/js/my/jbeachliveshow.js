@@ -2,6 +2,34 @@
 //  alert( "This page was just inserted into the dom!" );
 //});
 
+$(document).ready(function () {
+    $('#img_parcheggio').click(function () {
+        alert('Ampio Parcheggio');
+    });
+    $('#img_bar').click(function () {
+        alert('Prensenza di un bar');
+    });
+    $('#img_bambini').click(function () {
+        alert('Adatta ai bambini');
+    });
+    $('#img_disabili').click(function () {
+        alert('Attrezzata per i disabili');
+    });
+    $('#img_attrezzata').click(function () {
+        alert('Possibilità di noleggio sdraio e ombrelloni');
+    });
+    $('#img_camper').click(function () {
+        alert('Adatta ai camper');
+    });
+    $('#img_attivsub').click(function () {
+        alert('Possibilità di fare attivita subacquee');
+    });
+    $('#img_densita').click(function () {
+        var densita = $('#hdd_densita').val();
+        alert('Livello di densità ' + densita);
+    });
+});
+
 $('#Beach').live('pageshow', function (event, ui) {
     var Beach_ID = getURLParameter('id');
 
@@ -14,6 +42,7 @@ $('#Beach').live('pageshow', function (event, ui) {
     for (var i = 0; i < sites.length; i++) {
         var info = sites[i];
 
+
         var parking = info[6];
         var bar = info[7];
         var id = info[8];
@@ -23,49 +52,83 @@ $('#Beach').live('pageshow', function (event, ui) {
         var rent = info[12];
 
         var camper = info[14];
-        //var beach=[nome, lat,lon, 1, descrizione,windNO,parking,bar,id,disabili,xbambini,surf,rent,photo]
+        var attivsub = info[15];
+        var densita = info[16];
+        // var beach = [nome, lat, lon, 1, descrizione, windNO, parking, bar, id, disabili, xbambini, surf, rent, photo, camper, attivsub, densita]
+
         if (Beach_ID == id) {
             //Info
             //alert(info);
+            //alert('Beach_ID ' + Beach_ID + ' - 6:' + info[6] + ' - 7:' + info[7] + ' - 8:' + info[8] + ' - 9:' + info[9] + ' - 10:' + info[10] + ' - ');
             photo = info[13];
             var nome = info[0];
             var ds = info[4];
-            //alert(info[0]);
+            //alert('info1 ' + info);
             $('#beach_Name').html(nome);
             $('#beach_Ds').html(ds);
 
+            //alert('parking:' + parking);
 
             //Img
             if (parking == '1') {
-                $('#img_parcheggio').attr('src', 'images/icona-parcheggio_ok.png');
+                $('#td_parcheggio').show();
             }
             else {
-                $('#img_parcheggio').attr('src', 'images/icona-parcheggio_ko.png');
+                $('#td_parcheggio').hide();
             }
             if (bar == '1') {
-                $('#img_bar').attr('src', 'images/icona-bar_ok.png');
+                $('#td_bar').show();
             }
             else {
-                $('#img_bar').attr('src', 'images/icona-bar_ko.png');
+                $('#td_bar').hide();
             }
             if (disabili == '1') {
-                $('#img_disabili').attr('src', 'images/icona-hand_ok.png');
+                $('#td_disabili').show();
             }
             else {
-                $('#img_disabili').attr('src', 'images/icona-hand_ko.png');
+                $('#td_disabili').hide();
             }
             if (xbambini == '1') {
-                $('#img_bambini').attr('src', 'images/icona-bambini_ok.png');
+                $('#td_xbambini').show();
             }
             else {
-                $('#img_bambini').attr('src', 'images/icona-bambini_ko.png');
+                $('#td_xbambini').hide();
             }
             if (rent == '1') {
-                $('#img_noleggio').attr('src', 'images/icona-noleggio_ok.png');
+                $('#td_attrezzata').show();
             }
             else {
-                $('#img_noleggio').attr('src', 'images/icona-noleggio_ko.png');
+                $('#td_attrezzata').hide();
             }
+            if (attivsub == '1') {
+                $('#td_attivsub').show();
+            }
+            else {
+                $('#td_attivsub').hide();
+            }
+            if (camper == '1') {
+                $('#td_camper').show();
+            }
+            else {
+                $('#td_camper').hide();
+            }
+            $('#td_densita').hide();
+            if (densita == 'B') {
+                $('#img_densita').attr('src', 'images/densitaB.gif');
+                $('#td_densita').show();
+                $('#hdd_densita').val('Bassa');
+            }
+            if (densita == 'M') {
+                $('#img_densita').attr('src', 'images/densitaM.gif');
+                $('#td_densita').show();
+                $('#hdd_densita').val('Medio');
+            }
+            if (densita == 'A') {
+                $('#img_densita').attr('src', 'images/densitaB.gif');
+                $('#td_densita').show();
+                $('#hdd_densita').val('Alta');
+            }
+
 
 
             //Direzione
@@ -124,16 +187,18 @@ $('#Beach').live('pageshow', function (event, ui) {
             });
         }
     }
-    
+
 
 
     //alert(Beach_ID + ' = ' + sites.length);
     $("div[class$='slidein-panel']").animate({ 'left': -$("div[class$='slidein-panel']").outerWidth() });
     status = 'close';
 
+    //window.location.reload();
+
 });
 
-$('#Beach').live("pagebeforecreate", function (event) {
+$('#Beach').live("pageshow", function (event) {
     var Beach_ID = getURLParameter('id');
 
 
@@ -154,6 +219,9 @@ $('#Beach').live("pagebeforecreate", function (event) {
         var rent = info[12];
 
         var camper = info[14];
+        var attivsub = info[15];
+        var densita = info[16];
+
         //var beach=[nome, lat,lon, 1, descrizione,windNO,parking,bar,id,disabili,xbambini,surf,rent,photo]
         if (Beach_ID == id) {
             //Info
@@ -161,42 +229,12 @@ $('#Beach').live("pagebeforecreate", function (event) {
             photo = info[13];
             var nome = info[0];
             var ds = info[4];
-            //alert(info[0]);
+            //alert('info2 ' + info[0]);
             $('#beach_Name').html(nome);
             $('#beach_Ds').html(ds);
 
 
-            //Img
-            if (parking == '1') {
-                $('#img_parcheggio').attr('src', 'images/icona-parcheggio_ok.png');
-            }
-            else {
-                $('#img_parcheggio').attr('src', 'images/icona-parcheggio_ko.png');
-            }
-            if (bar == '1') {
-                $('#img_bar').attr('src', 'images/icona-bar_ok.png');
-            }
-            else {
-                $('#img_bar').attr('src', 'images/icona-bar_ko.png');
-            }
-            if (disabili == '1') {
-                $('#img_disabili').attr('src', 'images/icona-hand_ok.png');
-            }
-            else {
-                $('#img_disabili').attr('src', 'images/icona-hand_ko.png');
-            }
-            if (xbambini == '1') {
-                $('#img_bambini').attr('src', 'images/icona-bambini_ok.png');
-            }
-            else {
-                $('#img_bambini').attr('src', 'images/icona-bambini_ko.png');
-            }
-            if (rent == '1') {
-                $('#img_noleggio').attr('src', 'images/icona-noleggio_ok.png');
-            }
-            else {
-                $('#img_noleggio').attr('src', 'images/icona-noleggio_ko.png');
-            }
+            
 
 
             //Direzione
@@ -259,11 +297,11 @@ $('#Beach').live("pagebeforecreate", function (event) {
     
     //alert('photos : ' + photo);
     //alert(lastBeachID + " - " + Beach_ID);
-
+    $("#MyGallery1").html('');
     if (photo != null && photo.length > 0) {
         // <a href="#Gallery"> <img class="rotating-item swipe" alt="" src="images/beach/imagestest.jpg" /></a>
 
-        //alert('photo.length : ' + photo.length);
+        //alert('photo : ' + photo);
         var photoArray = photo.split(';');
         var gallery = "";
         for (var i = 0; i < photoArray.length; i++) {
@@ -273,7 +311,7 @@ $('#Beach').live("pagebeforecreate", function (event) {
         }
 
         //alert('append');
-        $("#MyGallery1").append(gallery);
+        $("#MyGallery1").html(gallery);
 
         /* Swipe Variables */
         $.fn.cycle.transitions.scrollHorzTouch = function ($cont, $slides, opts) {

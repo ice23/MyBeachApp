@@ -370,7 +370,7 @@
         var shape = null;
         var WindDir = '';
         var WindSpeed = 0;
-        var beachfinderby = 'wind';
+        var beachfinderby = '-';
         var Hpa = 0;
         var mylng = 0;
         var mylat = 0;
@@ -476,6 +476,8 @@
                 return true;
 
             })
+
+
 
 
             $('#rfh').click(function () {
@@ -699,9 +701,9 @@
             var Geo = {};
             if (navigator.geolocation) {
                 //alert('navigator.geolocation on')
-               
-                    navigator.geolocation.getCurrentPosition(success, onError, { maximumAge: 60000, timeout: 60000, enableHighAccuracy: true });
-                
+
+                navigator.geolocation.getCurrentPosition(success, onError, { maximumAge: 60000, timeout: 60000, enableHighAccuracy: true });
+
             }
             else {
                 alert('navigator.geolocation off')
@@ -719,7 +721,7 @@
                     mylng = localStorage.getItem('lng');
                 }
             }
-                
+
 
             var geocoder = null;
             geocoder = new google.maps.Geocoder();
@@ -1296,7 +1298,7 @@
                     <!-- wrapper -->
                 </div>
                 <!-- /navbar -->
-                <div id="wrapper" style="height: 80px">
+                <div id="wrapper" style="height: 80px; visibility:collapse" >
                     <div id="rotating-item-wrapper" style="height: 105px!important">
                         <a href="javascript:void(0);">
                             <img class="rotating-item swipe" alt="" src="images/beach/imagestest.jpg" /></a>
@@ -1325,25 +1327,25 @@
                         <li class="indpr-1 myindpr"><a id="lnkBeachID1" href="#Beach?id=1" class="nomar"
                             data-ajax="false">
                             <img src="images/palm_tree.png" alt="winelovers420x260" />
-                            <h3 id="b1_descr" class="grl">
+                            <h3 style="vertical-align:middle;padding-top:20px!important;padding-left:8px!Important" id="b1_descr" class="grl">
                             </h3>
                         </a></li>
                         <li class="indpr-1 myindpr"><a id="lnkBeachID2" href="#Beach?id=1" class="nomar"
                             data-ajax="false">
                             <img src="images/palm_tree.png" alt="winelovers420x260" />
-                            <h3 id="b2_descr" class="grl">
+                            <h3 style="vertical-align:middle;padding-top:20px!important;padding-left:8px!Important" id="b2_descr" class="grl">
                             </h3>
                         </a></li>
                         <li class="indpr-1 myindpr"><a id="lnkBeachID3" href="#Beach?id=1" class="nomar"
                             data-ajax="false">
                             <img src="images/palm_tree.png" alt="winelovers420x260" />
-                            <h3 id="b3_descr" class="grl">
+                            <h3 style="vertical-align:middle;padding-top:20px!important;padding-left:8px!Important" id="b3_descr" class="grl">
                             </h3>
                         </a></li>
                         <li class="indpr-1 myindpr"><a id="lnkBeachID4" href="#Beach?id=1" class="nomar"
                             data-ajax="false">
                             <img src="images/palm_tree.png" alt="winelovers420x260" />
-                            <h3 id="b4_descr" class="grl">
+                            <h3 style="vertical-align:middle;padding-top:20px!important;padding-left:8px!Important" id="b4_descr" class="grl">
                             </h3>
                         </a></li>
                     </ul>
@@ -1351,8 +1353,8 @@
                         <ul data-role="listview" data-inset="true">
                             <li>
                                 <div class="icbody">
-                                    <h3 class="grl">
-                                        Le distanze sono calcolate dalla posizione :" <a id="OriginPosition"></a>"
+                                    <h3 class="grl" >
+                                        Le distanze sono calcolate dalla posizione: "<a id="OriginPosition"></a>"
                                     </h3>
                                     <a href="#" data-ajax="false" style="text-decoration: none;"><strong></strong></a>
                                 </div>
@@ -1395,14 +1397,19 @@
                         <center>
                             <div style="top: 10px">
                                 <select id="BeachFinderBy" name="BeachFinderBy">
-                                    <option value="wind" selected="selected">Direzione del Vento</option>
+                                    <option value="-" selected="selected">Seleziona la tipologia di spiaggia</option>
                                     <option value="near">Le 5 più vicine </option>
                                     <option value="parking">Con Parcheggio </option>
                                     <option value="bar">Con Bar </option>
                                     <option value="child">Adatta ai bambini </option>
                                     <option value="hand">Attrezzata per i disabili </option>
-                                    <option value="rent">Con possibilità di noleggi </option>
+                                    <option value="rent">Con possibilità di noleggio straio e ombrelloni </option>
                                     <option value="camper">Adatta per i Camper </option>
+                                    <option value="sub">Addata ad attivita subacquee </option>
+                                    <option value="surf">Adatta per fare surf </option>
+                                    <option value="dB">Densità bassa </option>
+                                    <option value="dM">Densità media </option>
+                                    <option value="dA">Densità alta </option>
                                 </select>
                             </div>
                         </center>
@@ -1584,23 +1591,30 @@
                         <table style="z-index: 9999; border: 0; border-style: none; border-width: 0" cellpadding="2"
                             cellspacing="2">
                             <tr>
-                                <td>
-                                    <img id="img_parcheggio" src="#" height="50px" width="50px" />
+                                <td id="td_parcheggio" style="visibility: visible">
+                                    <img id="img_parcheggio" src="images/parcheggio.gif" height="40px" width="40px" />
                                 </td>
-                                <td>
-                                    <img id="img_bar" src="#" height="50px" width="50px" />
+                                <td id="td_bar" style="visibility: visible">
+                                    <img id="img_bar" src="images/bar.gif" height="40px" width="40px" />
                                 </td>
-                                <td>
-                                    <img id="img_bambini" src="#" height="50px" width="50px" />
+                                <td id="td_xbambini" style="visibility: visible">
+                                    <img id="img_bambini" src="images/xbambini.gif" height="40px" width="40px" />
                                 </td>
-                                <td>
-                                    <img id="img_disabili" src="#" height="50px" width="50px" />
+                                <td id="td_disabili" style="visibility: visible">
+                                    <img id="img_disabili" src="images/disabili.gif" height="40px" width="40px" />
                                 </td>
-                                <td>
-                                    <img id="img_noleggio" src="#" height="50px" width="50px" />
+                                <td id="td_attrezzata" style="visibility: visible">
+                                    <img id="img_noleggio" src="images/attrezzata.gif" height="40px" width="40px" />
                                 </td>
-                                <td>
-                                    <img id="img_camper" src="#" height="50px" width="50px" />
+                                <td id="td_camper" style="visibility: visible">
+                                    <img id="img_camper" src="images/camper.gif" height="40px" width="40px" />
+                                </td>
+                                <td id="td_ativsub" style="visibility: visible">
+                                    <img id="img_attivsub" src="images/attivsub.gif" height="40px" width="40px" />
+                                </td>
+                                <td id="td_densita" style="visibility: visible">
+                                    <img id="img_densita" src="images/densitaM.gif" height="40px" width="40px" />
+                                    <input type="hidden" id="hdd_densita" />
                                 </td>
                             </tr>
                         </table>
@@ -1715,32 +1729,34 @@
         </div>
     </div>
     <div data-role="page" id="forecast">
-        <div class="banner" style="z-index: 99999" data-role="header" role="banner" data-theme="c">
-            <input type="image" style="position: relative; top: 10px; vertical-align: middle;
-                float: left;" src="images/back_.png" id="bck3" />
-            <center>
-                <div style="vertical-align: middle;">
-                    <br />
-                    <a id="A5">Forecast</a>
-                </div>
-            </center>
-        </div>
-        <div data-role="content" id="Div19">
-            <ul data-role="listview" data-inset="true">
-                <li id="Li4"><span id="Span7">
-                    <h3 id="H3">
-                    </h3>
-                </span><span id="Span8">Meteo dei prossimi giorni a <a id="forecast_title"></a></span>
-                </li>
-            </ul>
-            <h3>
-            </h3>
-            <div id='forecast_list_ul'>
+        <div id="Div13" class="perspective effect-airbnb">
+            <div class="banner" style="z-index: 99999" data-role="header" role="banner" data-theme="c">
+                <input type="image" style="position: relative; top: 10px; vertical-align: middle;
+                    float: left;" src="images/back_.png" id="bck3" />
+                <center>
+                    <div style="vertical-align: middle;">
+                        <br />
+                        <a id="A5">Forecast</a>
+                    </div>
+                </center>
             </div>
-        </div>
-        <!-- /content -->
-        <div id="Div27">
-            <img id="Img6" src="images/footer_wave.png">
+            <div data-role="content" id="Div19">
+                <ul data-role="listview" data-inset="true">
+                    <li id="Li4"><span id="Span7">
+                        <h3 id="H3">
+                        </h3>
+                    </span><span id="Span8">Meteo dei prossimi giorni a <a id="forecast_title"></a></span>
+                    </li>
+                </ul>
+                <h3>
+                </h3>
+                <div id='forecast_list_ul'>
+                </div>
+            </div>
+            <!-- /content -->
+            <div id="Div27">
+                <img id="Img6" src="images/footer_wave.png">
+            </div>
         </div>
     </div>
     <div data-role="page" id="Setting" class="type-index">
@@ -1765,9 +1781,10 @@
                                     <img src="images/flip_flops.png" alt="winelovers420x260" />
                                 </td>
                                 <td>
-                                    <fieldset data-role="controlgroup" data-mini="true" style="width:300px">
-                                        <input style="width:100%" type="radio" name="radio-mini" id="radio-mini-1" value="auto" checked="checked" />
-                                        <label for="radio-mini-1" style="width:100%">
+                                    <fieldset data-role="controlgroup" data-mini="true" style="width: 300px">
+                                        <input style="width: 100%" type="radio" name="radio-mini" id="radio-mini-1" value="auto"
+                                            checked="checked" />
+                                        <label for="radio-mini-1" style="width: 100%">
                                             Letta in automatico</label>
                                         <input type="radio" name="radio-mini" id="radio-mini-2" value="other" />
                                         <label for="radio-mini-2">
@@ -1786,7 +1803,7 @@
                                 </td>
                             </tr>
                         </table>
-                    </li>
+                        <a id="MyPositionStorage" style="font-size: small"></a></li>
                 </ul>
                 <ul data-role="listview" data-inset="true">
                     <li id="Li3"><span id="Span5">Effetto di transazione tra le pagine</span><span id="Span6"></span></li>
@@ -1797,7 +1814,7 @@
                                     <img src="images/flip_flops.png" alt="winelovers420x260" />
                                 </td>
                                 <td>
-                                    <fieldset data-role="controlgroup2" data-mini="true" style="width:300px">
+                                    <fieldset data-role="controlgroup2" data-mini="true" style="width: 300px">
                                         <input type="radio" name="radio-mini" id="radio-mini-flip" value="Flip" checked="checked" />
                                         <label for="radio-mini-flip">
                                             Flip</label>
@@ -1817,7 +1834,7 @@
                                 </td>
                             </tr>
                         </table>
-                    </li>
+                        <a id="MyTransitionStorage" style="font-size: small"></a></li>
                 </ul>
             </div>
             <!-- /content -->
