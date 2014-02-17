@@ -13,6 +13,7 @@
     <script src="js/jquery-1.7.1.min.js"></script>
     <script src="js/jquery.cycle.all.js"></script>
     <script src="js/jquery.easing.js"></script>
+    <script type="text/javascript" charset="utf-8" src="js/phonenavigator.js"></script>
     <script type="text/javascript" charset="utf-8">
         // Wait for PhoneGap to load
         var isDeviceOnline = 'NO';
@@ -23,6 +24,29 @@
             checkConnection();
 
             navigator.geolocation.getCurrentPosition(onSuccess, onError);
+
+
+            $("#go").click(function () {
+                alert('GO CLICKED');
+                navigateTo('40.256004', '9.625004', function () {
+                    console.log("Successfully opened navigator");
+                }, function () {
+                    console.log("Error opening navigator");
+                })
+            });
+        }
+
+
+        function navigateTo(lat, lon, successFn, errorFn) {
+            if (device.platform == "Android") {
+                cordova.require('cordova/plugin/phonenavigator').doNavigate(lat, lon, successFn, errorFn);
+            } else if (device.platform == "iOS") {
+                var url = "maps:daddr=" + lat + "," + lon;
+                successFn();
+                window.location = url;
+            } else {
+                console.error("Unknown platform");
+            }
         }
 
         function alertDismissed() {
@@ -1703,6 +1727,7 @@
                     <hr />
                     <h3 style="color: Black">
                         Indicazioni Stradali</h3>
+                        <button id="go" style="padding: 10px;">Navigate</button>
                     <div style="height: 100%;" id="map_canvas">
                     </div>
                     <a id="beach_Drive">gira a destra </a>
