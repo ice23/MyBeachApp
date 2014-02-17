@@ -42,7 +42,12 @@
 
         function navigateTo(lat, lon, successFn, errorFn) {
             alert('GO CLICKED');
-            alert(device.platform);
+            alert('Device Name: '     + device.name     + '\n' + 
+                            'Device Cordova: '  + device.cordova + '\n' + 
+                            'Device Platform: ' + device.platform + '\n>' + 
+                            'Device UUID: '     + device.uuid     + '<br />' + 
+                            'Device Model: '    + device.model     + '<br />' + 
+                            'Device Version: '  + device.version  + '<br />');
             if (device.platform == "Android") {
                 cordova.require('cordova/plugin/phonenavigator').doNavigate(lat, lon, successFn, errorFn);
             } else if (device.platform == "iOS") {
