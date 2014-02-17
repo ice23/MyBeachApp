@@ -16,9 +16,12 @@
   <feature name="Vibration">
     <param name="android-package" value="org.apache.cordova.vibration.Vibration" />
   </feature>
+  <feature name="Device">
+    <param name="android-package" value="org.apache.cordova.Device" />
+  </feature>
   <feature name="PhoneNavigator">
       <param name="android-package" value="org.apache.cordova.plugin.PhoneNavigator" />
-</feature>
+  </feature>
   <feature name="http://api.phonegap.com/1.0/geolocation" />
   <feature name="http://api.phonegap.com/1.0/device" />
   <preference name="permissions" value="none" />
