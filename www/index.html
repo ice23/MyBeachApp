@@ -18,6 +18,7 @@
     <script type="text/javascript" charset="utf-8">
         // Wait for PhoneGap to load
         var isDeviceOnline = 'NO';
+        var deviceType = '';
 
         document.addEventListener("deviceready", onDeviceReady, false);
         function onDeviceReady() {
@@ -41,17 +42,18 @@
 
 
         function navigateTo(lat, lon, successFn, errorFn) {
-            alert('GO CLICKED');
-            alert('Device Name: '     + device.name     + '\n' + 
-                            'Device Cordova: '  + device.cordova + '\n' + 
-                            'Device Platform: ' + device.platform + '\n>' + 
-                            'Device UUID: '     + device.uuid     + '<br />' + 
-                            'Device Model: '    + device.model     + '<br />' +
-                            'Device Version: ' + device.version + '<br />');
-            var deviceType = (navigator.userAgent.match(/iPad/i)) == "iPad" ? "iPad" : (navigator.userAgent.match(/iPhone/i)) == "iPhone" ? "iPhone" : (navigator.userAgent.match(/Android/i)) == "Android" ? "Android" : (navigator.userAgent.match(/BlackBerry/i)) == "BlackBerry" ? "BlackBerry" : "null";
+//            alert('GO CLICKED');
+//            alert('Device Name: '     + device.name     + '\n' + 
+//                            'Device Cordova: '  + device.cordova + '\n' + 
+//                            'Device Platform: ' + device.platform + '\n>' + 
+//                            'Device UUID: '     + device.uuid     + '<br />' + 
+//                            'Device Model: '    + device.model     + '<br />' +
+//                            'Device Version: ' + device.version + '<br />');
+            deviceType = (navigator.userAgent.match(/iPad/i)) == "iPad" ? "iPad" : (navigator.userAgent.match(/iPhone/i)) == "iPhone" ? "iPhone" : (navigator.userAgent.match(/Android/i)) == "Android" ? "Android" : (navigator.userAgent.match(/BlackBerry/i)) == "BlackBerry" ? "BlackBerry" : "null";
 
             alert(deviceType);
             if (deviceType == "Android") {
+               
                 cordova.require('cordova/plugin/phonenavigator').doNavigate(lat, lon, successFn, errorFn);
             } else if (device.platform == "iOS") {
                 var url = "maps:daddr=" + lat + "," + lon;
