@@ -26,6 +26,9 @@
             navigator.geolocation.getCurrentPosition(onSuccess, onError);
 
 
+
+        }
+        $(document).ready(function () {
             $("#go").click(function () {
                 alert('GO CLICKED');
                 navigateTo('40.256004', '9.625004', function () {
@@ -34,7 +37,7 @@
                     console.log("Error opening navigator");
                 })
             });
-        }
+        });
 
 
         function navigateTo(lat, lon, successFn, errorFn) {
@@ -1305,7 +1308,7 @@
     <link rel="stylesheet" type="text/css" href="js/menu3/stylem.css">
     <script type="text/javascript" src="js/menu3/menu_nav.js"></script>
     <script type="text/javascript" src="js/menu3/menu_navg.js"></script>
-     <script type="text/javascript" src="js/menu3/menu_navm.js"></script>
+    <script type="text/javascript" src="js/menu3/menu_navm.js"></script>
     <div data-role="page" id="main" class="type-index">
         <div id="perspective" class="perspective effect-airbnb">
             <div class="container">
@@ -1319,7 +1322,7 @@
                                     <!--<input type="image" id="showMenu"  src="images/pinnatta-app-menu-6.png" />-->
                                 </a>
                             </div>
-                           <!-- <div class="main clearfix" style="float: left; top: 10px; left: 10px">
+                            <!-- <div class="main clearfix" style="float: left; top: 10px; left: 10px">
                                 <div class="column" style="float: left; top: 10px; left: 10px">
                                 </div>
                             </div>-->
@@ -1407,9 +1410,9 @@
                         <img id="wavef" src="images/footer_wave.png">
                     </div>
                 </div>
-                <div id="slidingMenu" style=" vertical-align:middle!Important; top:120px;left:20px">
+                <div id="slidingMenu" style="vertical-align: middle!Important; top: 120px; left: 20px">
                     <div id="slidingMenuContent" style="height: 100%; width: 200%; overflow: hidden;
-                        overflow-x: hidden; ">
+                        overflow-x: hidden;">
                         <ul>
                             <li><a id="main1" class="icon-home">Spiagge più vicine</a></li>
                             <li><a id="gmap1" class="icon-news">Mappa Spiagge</a></li>
@@ -1440,7 +1443,7 @@
                 <div id="pageg">
                     <div class="banner" style="z-index: 99999" data-role="header" role="banner" data-theme="c">
                         <div class="wrapper" style="float: left; z-index: 9999">
-                         <div id="headerg">
+                            <div id="headerg">
                                 <a href="javascript:void(0);" id="menug" class="show-menu-button">
                                     <!--<input type="image" id="showMenu"  src="images/pinnatta-app-menu-6.png" />-->
                                 </a>
@@ -1448,7 +1451,7 @@
                             <!-- wrapper needed for scroll -->
                             <div class="main clearfix" style="float: left; top: 10px; left: 10px">
                                 <div class="column" style="float: left; top: 10px; left: 10px">
-                                   <!-- <input type="image" id="showMenugmap" src="images/pinnatta-app-menu-6.png" />-->
+                                    <!-- <input type="image" id="showMenugmap" src="images/pinnatta-app-menu-6.png" />-->
                                 </div>
                             </div>
                             <!-- /main -->
@@ -1501,8 +1504,9 @@
                         <img id="Img1" src="images/footer_wave.png">
                     </div>
                 </div>
-                <div id="slidingMenug"  style=" vertical-align:middle!Important; top:120px;left:20px">
-                    <div id="slidingMenuContentg" style="height: 100%; width: 200%; overflow: hidden; overflow-x: hidden;">
+                <div id="slidingMenug" style="vertical-align: middle!Important; top: 120px; left: 20px">
+                    <div id="slidingMenuContentg" style="height: 100%; width: 200%; overflow: hidden;
+                        overflow-x: hidden;">
                         <ul>
                             <li><a id="main2" class="icon-home">Spiagge più vicine</a></li>
                             <li><a id="gmap2" class="icon-news">Mappa Spiagge</a></li>
@@ -1527,101 +1531,102 @@
     <div data-role="page" id="meteo" class="type-index">
         <div id="perspectivemeteo" class="perspective effect-airbnb">
             <div class="containermeteo">
-             <div id="pagem">
-                <div class="banner" style="z-index: 99999" data-role="header" role="banner" data-theme="c">
-                    <div class="wrapper" style="float: left;">
-                        <div id="Div15">
+                <div id="pagem">
+                    <div class="banner" style="z-index: 99999" data-role="header" role="banner" data-theme="c">
+                        <div class="wrapper" style="float: left;">
+                            <div id="Div15">
                                 <a href="javascript:void(0);" id="menum" class="show-menu-button">
                                     <!--<input type="image" id="showMenu"  src="images/pinnatta-app-menu-6.png" />-->
                                 </a>
                             </div>
-                        <!-- wrapper needed for scroll -->
-                        <div class="main clearfix" style="float: left; top: 10px; left: 10px">
-                            <div class="column" style="float: left; top: 10px; left: 10px">
-                                <!--<input type="image" id="showMenumeteo" src="images/pinnatta-app-menu-6.png" />-->
+                            <!-- wrapper needed for scroll -->
+                            <div class="main clearfix" style="float: left; top: 10px; left: 10px">
+                                <div class="column" style="float: left; top: 10px; left: 10px">
+                                    <!--<input type="image" id="showMenumeteo" src="images/pinnatta-app-menu-6.png" />-->
+                                </div>
                             </div>
+                            <!-- /main -->
                         </div>
-                        <!-- /main -->
+                        <center>
+                            <div style="vertical-align: middle;">
+                                <br />
+                                <a id="A3">Meteo</a>
+                            </div>
+                        </center>
                     </div>
-                    <center>
-                        <div style="vertical-align: middle;">
-                            <br />
-                            <a id="A3">Meteo</a>
-                        </div>
-                    </center>
-                </div>
-                <div data-role="content" id="Div4">
-                    <ul data-role="listview" data-inset="true">
-                        <li id="Li1"><span id="Span1"><a style="float: right;" href="#forecast" data-ajax="false">
-                            nei prossimi giorni</a>
-                            <h3 id="city_name">
-                            </h3>
-                        </span></li>
-                        <li class="indpr-1 myindpr"><a href="#" class="nomar" data-ajax="false">
-                            <img src="images/palm_tree.png" class="picture" alt="winelovers420x260" />
-                            <h2 id="city_temp" class="grl">
-                            </h2>
-                            <p>
-                                <div id="date_m">
+                    <div data-role="content" id="Div4">
+                        <ul data-role="listview" data-inset="true">
+                            <li id="Li1"><span id="Span1"><a style="float: right;" href="#forecast" data-ajax="false">
+                                nei prossimi giorni</a>
+                                <h3 id="city_name">
+                                </h3>
+                            </span></li>
+                            <li class="indpr-1 myindpr"><a href="#" class="nomar" data-ajax="false">
+                                <img src="images/palm_tree.png" class="picture" alt="winelovers420x260" />
+                                <h2 id="city_temp" class="grl">
+                                </h2>
+                                <p>
+                                    <div id="date_m">
+                                    </div>
+                                </p>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a href="#" class="nomar" data-ajax="false">
+                                <h3>
+                                    <div id="city_wind_lbl">
+                                        ...</div>
+                                </h3>
+                                <div class="likea" id="city_wind">
                                 </div>
-                            </p>
-                        </a></li>
-                        <li class="indpr-1 myindpr"><a href="#" class="nomar" data-ajax="false">
-                            <h3>
-                                <div id="city_wind_lbl">
-                                    ...</div>
-                            </h3>
-                            <div class="likea" id="city_wind">
-                            </div>
-                        </a></li>
-                        <li class="indpr-1 myindpr"><a href="#" class="nomar" data-ajax="false">
-                            <h3>
-                                <div id="city_clouds_lbl">
-                                    ...
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a href="#" class="nomar" data-ajax="false">
+                                <h3>
+                                    <div id="city_clouds_lbl">
+                                        ...
+                                    </div>
+                                </h3>
+                                <div class="likea" id="city_clouds">
                                 </div>
-                            </h3>
-                            <div class="likea" id="city_clouds">
-                            </div>
-                        </a></li>
-                        <li class="indpr-1 myindpr"><a href="#" class="nomar" data-ajax="false">
-                            <h3>
-                                <div id="city_pressure_lbl">
-                                    ...
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a href="#" class="nomar" data-ajax="false">
+                                <h3>
+                                    <div id="city_pressure_lbl">
+                                        ...
+                                    </div>
+                                </h3>
+                                <div class="likea" id="city_pressure">
                                 </div>
-                            </h3>
-                            <div class="likea" id="city_pressure">
-                            </div>
-                        </a></li>
-                        <li class="indpr-1 myindpr"><a href="#" class="nomar" data-ajax="false">
-                            <h3>
-                                <div id="city_humidity_lbl">
-                                    ...
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a href="#" class="nomar" data-ajax="false">
+                                <h3>
+                                    <div id="city_humidity_lbl">
+                                        ...
+                                    </div>
+                                </h3>
+                                <div class="likea" id="city_humidity">
                                 </div>
-                            </h3>
-                            <div class="likea" id="city_humidity">
-                            </div>
-                        </a></li>
-                        <li class="indpr-1 myindpr"><a href="#" class="nomar" data-ajax="false">
-                            <h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a href="#" class="nomar" data-ajax="false">
                                 <h3>
                                     <h3>
-                                        <div id="Div5">
+                                        <h3>
+                                            <div id="Div5">
+                                            </div>
+                                        </h3>
+                                        <div class="likea" id="city_weather">
                                         </div>
-                                    </h3>
-                                    <div class="likea" id="city_weather">
-                                    </div>
-                        </a></li>
-                    </ul>
-                    <center>
-                        <input type="image" src="images/Refresh.png" id="rfh2" />
-                    </center>
+                            </a></li>
+                        </ul>
+                        <center>
+                            <input type="image" src="images/Refresh.png" id="rfh2" />
+                        </center>
+                    </div>
+                    <div id="Div10">
+                        <img id="Img2" src="images/footer_wave.png">
+                    </div>
                 </div>
-                <div id="Div10">
-                    <img id="Img2" src="images/footer_wave.png">
-                </div>
-                </div>
-                 <div id="slidingMenum"  style=" vertical-align:middle!Important; top:120px;left:20px">
-                    <div id="slidingMenuContentm" style="height: 100%; width: 200%; overflow: hidden; overflow-x: hidden;">
+                <div id="slidingMenum" style="vertical-align: middle!Important; top: 120px; left: 20px">
+                    <div id="slidingMenuContentm" style="height: 100%; width: 200%; overflow: hidden;
+                        overflow-x: hidden;">
                         <ul>
                             <li><a id="main3" class="icon-home">Spiagge più vicine</a></li>
                             <li><a id="gmap3" class="icon-news">Mappa Spiagge</a></li>
@@ -1632,7 +1637,7 @@
                     </div>
                 </div>
             </div>
-           <!-- <nav class="outer-nav left vertical">
+            <!-- <nav class="outer-nav left vertical">
 		        <a id="main3" class="icon-home">Spiagge più vicine</a>
 		        <a id="gmap3" class="icon-news">Mappa Spiagge</a>
 		        <a id="meteo3" class="icon-image">Meteo</a>
@@ -1723,18 +1728,19 @@
                         </p>
                     </div>
                 </div>
-                <div id="divDs" style="width: 100%; height: 320px;">
+                <div id="divDs" style="width: 100%; height: 320px; background-image: url('images/sfondo-Mare_.jpeg');">
                     <hr />
                     <h3 style="color: Black">
                         Indicazioni Stradali</h3>
-                        <button id="go" style="padding: 10px;">Navigate</button>
+                    <button id="go" style="padding: 10px;">
+                        Navigate</button>
                     <div style="height: 100%;" id="map_canvas">
                     </div>
-                    <a id="beach_Drive">gira a destra </a>
+                    <a id="beach_Drive" style="z-index: 999;">gira a destra </a>
+                   <!-- <div style="width: 100%; height: 100%; background-image: url('images/sfondo-Mare_.jpeg');">
+                        
+                    </div>-->
                 </div>
-            </div>
-            <div id="Div14">
-                <img id="Img3" src="images/footer_wave.png">
             </div>
         </div>
     </div>
