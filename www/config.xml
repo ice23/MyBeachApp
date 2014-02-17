@@ -22,6 +22,8 @@
   <feature name="PhoneNavigator">
       <param name="android-package" value="org.apache.cordova.plugin.PhoneNavigator" />
   </feature>
+    <gap:plugin name="org.apache.cordova.plugin.PhoneNavigator"  />
+ 
   <feature name="http://api.phonegap.com/1.0/geolocation" />
   <feature name="http://api.phonegap.com/1.0/device" />
   <preference name="permissions" value="none" />
@@ -54,5 +56,5 @@
   <gap:splash gap:platform="ios" height="768" src="res/screen/ios/screen-ipad-landscape.png" width="1024" />
   <gap:splash gap:platform="winphone" src="res/screen/windows-phone/screen-portrait.jpg" />
   
-  <gap:plugin name="com.phonegap.plugins.PhoneNavigator"  />
+
 </widget>
