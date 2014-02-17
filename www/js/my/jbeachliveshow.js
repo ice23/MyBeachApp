@@ -60,6 +60,11 @@ $('#Beach').live('pageshow', function (event, ui) {
             //Info
             //alert(info);
             //alert('Beach_ID ' + Beach_ID + ' - 6:' + info[6] + ' - 7:' + info[7] + ' - 8:' + info[8] + ' - 9:' + info[9] + ' - 10:' + info[10] + ' - ');
+            ThisBeachLat = info[1];
+            ThisBeachLon = info[2];
+            localStorage.setItem('ThisBeachLat', ThisBeachLat);
+            localStorage.setItem('ThisBeachLon', ThisBeachLon);
+
             photo = info[13];
             var nome = info[0];
             var ds = info[4];

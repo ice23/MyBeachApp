@@ -31,6 +31,8 @@
         }
         $(document).ready(function () {
             $("#go").click(function () {
+                ThisBeachLat=localStorage.getItem('ThisBeachLat');
+                ThisBeachLon=localStorage.getItem('ThisBeachLon');
                 navigateTo(ThisBeachLat, ThisBeachLon, function () {
                     alert("Successfully opened navigator");
                 }, function () {
@@ -50,7 +52,7 @@
 //                            'Device Version: ' + device.version + '<br />');
             deviceType = (navigator.userAgent.match(/iPad/i)) == "iPad" ? "iPad" : (navigator.userAgent.match(/iPhone/i)) == "iPhone" ? "iPhone" : (navigator.userAgent.match(/Android/i)) == "Android" ? "Android" : (navigator.userAgent.match(/BlackBerry/i)) == "BlackBerry" ? "BlackBerry" : "null";
 
-            alert(deviceType + lat + lon);
+            alert(deviceType + 'lat:' + lat + 'lon:' + lon);
             if (deviceType == "Android") {
                 var url = "geo:" + lat + "," + lon + " +;u=35";
                 window.location = url;
