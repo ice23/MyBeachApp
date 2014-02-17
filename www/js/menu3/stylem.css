@@ -1,0 +1,103 @@
+* { 
+	margin: 0; 
+	padding: 0; 
+}
+
+body { 
+	background: #ffff; 
+	font-family: Verdana, Arial, Tahoma, sans-serif; 
+	font-size: 62.5%; 
+	line-height: 1; 
+}
+
+a { 
+	-webkit-tap-highlight-color: rgba(0,0,0,0); 
+	-webkit-touch-callout: none; 
+}
+
+p {
+	margin-top: 5px;
+}
+
+/* base components */
+#mobileContainer { 
+	position: relative; 
+	overflow: hidden; 
+}
+
+#pagem { 
+	position: relative; 
+	left: 0; 
+	top:0px; 
+	z-index: 99999; 
+}
+
+#slidingMenum { 
+	/*background: #475566; */
+	display: block; 
+	position: absolute;
+	overflow:hidden; 
+	width: auto;
+	height:auto;
+	left: 0px; 
+	top: 0px; 
+	z-index: 0;
+	visibility: hidden;	/* to block user interaction on wp7 (z-index wont work) */
+ }
+
+/* content property */
+#headerm {
+	display: block; 
+	height : 45px;
+	/*background: url('../../images/header_bgslide.png'); */
+}
+
+.show-menu-button { 
+	display: block; 
+	float: left; 
+	width: 45px; 
+	height: 45px; 
+	margin-top: 12px; 
+	margin-left: 11px;
+	background: url('../../images/pinnatta-app-menu-6.png') no-repeat; 
+}
+
+#pageContent { 
+	background: #fff; 
+	padding: 5px 12px; 
+	height: 100%; 
+	z-index: 9999; 
+}
+
+#slidingMenum ul { 
+	list-style: none; 
+	/*background: #33374b; */
+	height: 100%;
+	overflow:scroll; 
+}
+
+#slidingMenum ul li { 
+	display: block; 
+	border-bottom: 1px solid #414657;
+}
+
+.menu-icon { 
+	vertical-align: middle;
+	margin-right: 6px;
+	border:none; /* wp7 display a border on image link*/
+}
+
+#slidingMenum ul li a { 
+	position: relative; 
+	display: block;  
+	line-height: 45px;
+	padding-left: 20px; 
+	color: Black; 
+	font-size: large; 
+	text-decoration: none; 
+}
+
+#slidingMenum ul li a:hover { 
+	color: #999eac; 
+	text-decoration: none; 
+}

@@ -289,6 +289,7 @@
     <script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyC5ukXmt0pQ3lvvi3NrfZX7LJKyW67TgK0&sensor=false"
         type="text/javascript"></script>
     <script type="text/javascript" src="js/my/jmain.js"></script>
+    <script type="text/javascript" src="js/my/jMenu.js"></script>
     <script type="text/javascript" src="js/my/jSetting.js"></script>
     <script type="text/javascript" src="js/my/jmapliveshow.js"></script>
     <script type="text/javascript" src="js/my/googleutils.js"></script>
@@ -1271,196 +1272,249 @@
     <script type="text/javascript">
         app.initialize();
     </script>
-    <link rel="stylesheet" type="text/css" href="js/menu2/css/normalize.css" />
-    <link rel="stylesheet" type="text/css" href="js/menu2/css/demo_.css" />
+    <!-- <link rel="stylesheet" type="text/css" href="js/menu2/css/normalize.css" />
+    <link rel="stylesheet" type="text/css" href="js/menu2/css/demo_.css" />-->
     <link rel="stylesheet" type="text/css" href="js/menu2/css/component.css" />
-    <script src="js/menu2/js/modernizr.custom.25376.js"></script>
+    <!--<script src="js/menu2/js/modernizr.custom.25376.js"></script>-->
+    <link rel="stylesheet" type="text/css" href="js/menu3/style.css">
+    <link rel="stylesheet" type="text/css" href="js/menu3/styleg.css">
+    <link rel="stylesheet" type="text/css" href="js/menu3/stylem.css">
+    <script type="text/javascript" src="js/menu3/menu_nav.js"></script>
+    <script type="text/javascript" src="js/menu3/menu_navg.js"></script>
+     <script type="text/javascript" src="js/menu3/menu_navm.js"></script>
     <div data-role="page" id="main" class="type-index">
         <div id="perspective" class="perspective effect-airbnb">
             <div class="container">
-                <!-- wrapper -->
-                <div class="banner" style="z-index: 99999" data-role="header" role="banner" data-theme="c">
-                    <div class="wrapper" style="float: left; top: 10px; left: 10px">
-                        <!-- wrapper needed for scroll -->
-                        <div class="main clearfix" style="float: left; top: 10px; left: 10px">
-                            <div class="column" style="float: left; top: 10px; left: 10px">
-                                <input type="image" id="showMenu" src="images/pinnatta-app-menu-6.png" />
+                <div id="page">
+                    <!-- wrapper -->
+                    <div class="banner" style="z-index: 99999" data-role="header" role="banner" data-theme="c">
+                        <div class="wrapper" style="float: left; top: 0px; left: 0px">
+                            <!-- wrapper needed for scroll -->
+                            <div id="header">
+                                <a href="javascript:void(0);" id="menu" class="show-menu-button">
+                                    <!--<input type="image" id="showMenu"  src="images/pinnatta-app-menu-6.png" />-->
+                                </a>
+                            </div>
+                           <!-- <div class="main clearfix" style="float: left; top: 10px; left: 10px">
+                                <div class="column" style="float: left; top: 10px; left: 10px">
+                                </div>
+                            </div>-->
+                            <!-- /main -->
+                        </div>
+                        <center>
+                            <div style="vertical-align: middle;">
+                                <br />
+                                <a id="A1">Sardinia Beach Finder</a>
+                            </div>
+                        </center>
+                        <!-- wrapper -->
+                    </div>
+                    <!-- /navbar -->
+                    <div id="wrapper" style="height: 80px; visibility: collapse">
+                        <div id="rotating-item-wrapper" style="height: 105px!important">
+                            <a href="javascript:void(0);">
+                                <img class="rotating-item swipe" alt="" src="images/beach/imagestest.jpg" /></a>
+                            <a href="javascript:void(0);">
+                                <img class="rotating-item swipe" alt="" src="images/beach/imagestest2.jpg" /></a>
+                            <a href="javascript:void(0);">
+                                <img class="rotating-item swipe" alt="" src="images/beach/imagestest3.jpg" /></a>
+                            <a href="javascript:void(0);">
+                                <img class="rotating-item swipe" alt="" src="images/beach/imagestest4.jpg" /></a>
+                            <div id="nav" style="visibility: hidden">
+                            </div>
+                            <div id="next" style="opacity: 1;">
+                                <a id="nextBt" href="#"></a>
+                            </div>
+                            <div id="previous" style="opacity: 1;">
+                                <a id="prevBt" href="#"></a>
                             </div>
                         </div>
-                        <!-- /main -->
                     </div>
-                    <center>
-                        <div style="vertical-align: middle;">
-                            <br />
-                            <a id="A1">Sardinia Beach Finder</a>
-                        </div>
-                    </center>
-                    <!-- wrapper -->
-                </div>
-                <!-- /navbar -->
-                <div id="wrapper" style="height: 80px; visibility:collapse" >
-                    <div id="rotating-item-wrapper" style="height: 105px!important">
-                        <a href="javascript:void(0);">
-                            <img class="rotating-item swipe" alt="" src="images/beach/imagestest.jpg" /></a>
-                        <a href="javascript:void(0);">
-                            <img class="rotating-item swipe" alt="" src="images/beach/imagestest2.jpg" /></a>
-                        <a href="javascript:void(0);">
-                            <img class="rotating-item swipe" alt="" src="images/beach/imagestest3.jpg" /></a>
-                        <a href="javascript:void(0);">
-                            <img class="rotating-item swipe" alt="" src="images/beach/imagestest4.jpg" /></a>
-                        <div id="nav" style="visibility: hidden">
-                        </div>
-                        <div id="next" style="opacity: 1;">
-                            <a id="nextBt" href="#"></a>
-                        </div>
-                        <div id="previous" style="opacity: 1;">
-                            <a id="prevBt" href="#"></a>
-                        </div>
-                    </div>
-                </div>
-                <div data-role="content" id="home-ct">
-                    <ul data-role="listview" data-inset="true">
-                        <li id="ft"><span id="lns">Spiagge piu vicine</span><span id="viall"><a href="#gmap"
-                            data-ajax="false">TUTTE&nbsp;&nbsp;&nbsp;</a>
-                            <input type="image" src="images/Refresh.png" id="rfh" />
-                        </span></li>
-                        <li class="indpr-1 myindpr"><a id="lnkBeachID1" href="#Beach?id=1" class="nomar"
-                            data-ajax="false">
-                            <img src="images/palm_tree.png" alt="winelovers420x260" />
-                            <h3 style="vertical-align:middle;padding-top:20px!important;padding-left:8px!Important" id="b1_descr" class="grl">
-                            </h3>
-                        </a></li>
-                        <li class="indpr-1 myindpr"><a id="lnkBeachID2" href="#Beach?id=1" class="nomar"
-                            data-ajax="false">
-                            <img src="images/palm_tree.png" alt="winelovers420x260" />
-                            <h3 style="vertical-align:middle;padding-top:20px!important;padding-left:8px!Important" id="b2_descr" class="grl">
-                            </h3>
-                        </a></li>
-                        <li class="indpr-1 myindpr"><a id="lnkBeachID3" href="#Beach?id=1" class="nomar"
-                            data-ajax="false">
-                            <img src="images/palm_tree.png" alt="winelovers420x260" />
-                            <h3 style="vertical-align:middle;padding-top:20px!important;padding-left:8px!Important" id="b3_descr" class="grl">
-                            </h3>
-                        </a></li>
-                        <li class="indpr-1 myindpr"><a id="lnkBeachID4" href="#Beach?id=1" class="nomar"
-                            data-ajax="false">
-                            <img src="images/palm_tree.png" alt="winelovers420x260" />
-                            <h3 style="vertical-align:middle;padding-top:20px!important;padding-left:8px!Important" id="b4_descr" class="grl">
-                            </h3>
-                        </a></li>
-                    </ul>
-                    <div id="section-vid" style="height: 150px">
+                    <div data-role="content" id="home-ct">
                         <ul data-role="listview" data-inset="true">
-                            <li>
-                                <div class="icbody">
-                                    <h3 class="grl" >
-                                        Le distanze sono calcolate dalla posizione: "<a id="OriginPosition"></a>"
-                                    </h3>
-                                    <a href="#" data-ajax="false" style="text-decoration: none;"><strong></strong></a>
-                                </div>
-                            </li>
+                            <li id="ft"><span id="lns">Spiagge piu vicine</span><span id="viall"><a href="#gmap"
+                                data-ajax="false">TUTTE&nbsp;&nbsp;&nbsp;</a>
+                                <input type="image" src="images/Refresh.png" id="rfh" />
+                            </span></li>
+                            <li class="indpr-1 myindpr"><a id="lnkBeachID1" href="#Beach?id=1" class="nomar"
+                                data-ajax="false">
+                                <img src="images/palm_tree.png" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="b1_descr" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="lnkBeachID2" href="#Beach?id=1" class="nomar"
+                                data-ajax="false">
+                                <img src="images/palm_tree.png" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="b2_descr" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="lnkBeachID3" href="#Beach?id=1" class="nomar"
+                                data-ajax="false">
+                                <img src="images/palm_tree.png" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="b3_descr" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="lnkBeachID4" href="#Beach?id=1" class="nomar"
+                                data-ajax="false">
+                                <img src="images/palm_tree.png" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="b4_descr" class="grl">
+                                </h3>
+                            </a></li>
+                        </ul>
+                        <div id="section-vid" style="height: 150px">
+                            <ul data-role="listview" data-inset="true">
+                                <li>
+                                    <div class="icbody">
+                                        <h3 class="grl">
+                                            Le distanze sono calcolate dalla posizione: "<a id="OriginPosition"></a>"
+                                        </h3>
+                                        <a href="#" data-ajax="false" style="text-decoration: none;"><strong></strong></a>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <!-- /content -->
+                    <div id="cdcount">
+                        <img id="wavef" src="images/footer_wave.png">
+                    </div>
+                </div>
+                <div id="slidingMenu">
+                    <div id="slidingMenuContent" style="height: 100%; width: 200%; overflow: hidden;
+                        overflow-x: hidden;">
+                        <ul>
+                            <li><a id="main1" class="icon-home">Spiagge più vicine</a></li>
+                            <li><a id="gmap1" class="icon-news">Mappa Spiagge</a></li>
+                            <li><a id="meteo1" class="icon-image">Meteo</a></li>
+                            <li><a id="chart1" class="icon-upload">Rosa dei venti</a></li>
+                            <li><a id="setting1" class="icon-star">Impostazioni</a></li>
                         </ul>
                     </div>
                 </div>
-                <!-- /content -->
-                <div id="cdcount">
-                    <img id="wavef" src="images/footer_wave.png">
-                </div>
             </div>
-            <!-- /container -->
-            <nav class="outer-nav left vertical">
+        </div>
+        <!-- /container -->
+        <!--<nav class="outer-nav left vertical">
 		        <a  id="main1" class="icon-home">Spiagge più vicine</a>
 		        <a  id="gmap1" class="icon-news">Mappa Spiagge</a>
 		        <a  id="meteo1" class="icon-image">Meteo</a>
 		        <a  id="chart1" class="icon-upload">Rosa dei venti</a>
 		        <a  id="setting1" class="icon-star">Impostazioni</a>
 
-	        </nav>
-        </div>
-        <!-- <script src="js/menu2/js/classie.js"></script>
+	        </nav>-->
+    </div>
+    <!-- <script src="js/menu2/js/classie.js"></script>
         <script src="js/menu2/js/menu.js"></script>-->
     </div>
     <div data-role="page" id="gmap" class="type-index">
         <div id="perspectivegmap" class="perspective effect-airbnb">
             <div class="containergmap">
-                <div class="banner" style="z-index: 99999" data-role="header" role="banner" data-theme="c">
-                    <div class="wrapper" style="float: left; top: 10px; left: 10px; z-index: 9999">
-                        <!-- wrapper needed for scroll -->
-                        <div class="main clearfix" style="float: left; top: 10px; left: 10px">
-                            <div class="column" style="float: left; top: 10px; left: 10px">
-                                <input type="image" id="showMenugmap" src="images/pinnatta-app-menu-6.png" />
+                <div id="pageg">
+                    <div class="banner" style="z-index: 99999" data-role="header" role="banner" data-theme="c">
+                        <div class="wrapper" style="float: left; z-index: 9999">
+                         <div id="headerg">
+                                <a href="javascript:void(0);" id="menug" class="show-menu-button">
+                                    <!--<input type="image" id="showMenu"  src="images/pinnatta-app-menu-6.png" />-->
+                                </a>
                             </div>
+                            <!-- wrapper needed for scroll -->
+                            <div class="main clearfix" style="float: left; top: 10px; left: 10px">
+                                <div class="column" style="float: left; top: 10px; left: 10px">
+                                   <!-- <input type="image" id="showMenugmap" src="images/pinnatta-app-menu-6.png" />-->
+                                </div>
+                            </div>
+                            <!-- /main -->
                         </div>
-                        <!-- /main -->
+                        <div style="top: 10px">
+                            <center>
+                                <div style="top: 10px">
+                                    <select id="BeachFinderBy" name="BeachFinderBy">
+                                        <option value="-" selected="selected">Seleziona la tipologia di spiaggia</option>
+                                        <option value="near">Le 5 più vicine </option>
+                                        <option value="parking">Con Parcheggio </option>
+                                        <option value="bar">Con Bar </option>
+                                        <option value="child">Adatta ai bambini </option>
+                                        <option value="hand">Attrezzata per i disabili </option>
+                                        <option value="rent">Con possibilità di noleggio straio e ombrelloni </option>
+                                        <option value="camper">Adatta per i Camper </option>
+                                        <option value="sub">Addata ad attivita subacquee </option>
+                                        <option value="surf">Adatta per fare surf </option>
+                                        <option value="dB">Densità bassa </option>
+                                        <option value="dM">Densità media </option>
+                                        <option value="dA">Densità alta </option>
+                                    </select>
+                                </div>
+                            </center>
+                        </div>
                     </div>
-                    <div style="top: 10px">
+                    <center>
+                    </center>
+                    <div data-role="content" id="Div1">
+                        <div id="mapmap" style="width: 100%; height: 450px;">
+                        </div>
                         <center>
-                            <div style="top: 10px">
-                                <select id="BeachFinderBy" name="BeachFinderBy">
-                                    <option value="-" selected="selected">Seleziona la tipologia di spiaggia</option>
-                                    <option value="near">Le 5 più vicine </option>
-                                    <option value="parking">Con Parcheggio </option>
-                                    <option value="bar">Con Bar </option>
-                                    <option value="child">Adatta ai bambini </option>
-                                    <option value="hand">Attrezzata per i disabili </option>
-                                    <option value="rent">Con possibilità di noleggio straio e ombrelloni </option>
-                                    <option value="camper">Adatta per i Camper </option>
-                                    <option value="sub">Addata ad attivita subacquee </option>
-                                    <option value="surf">Adatta per fare surf </option>
-                                    <option value="dB">Densità bassa </option>
-                                    <option value="dM">Densità media </option>
-                                    <option value="dA">Densità alta </option>
+                            <div data-role="fieldcontain" style="width: 100% !important; visibility: collapse">
+                                <label for="flip-c" style="color: Blue; font-family: Comic Sans MS; font-style: italic;
+                                    font-size: small;">
+                                    Evidenzia solo le spiagge che rispettano la richiesta</label>
+                                <br />
+                                <select name="slider" id="flipView" data-role="slider" data-theme="e">
+                                    <option value="N">Attiva</option>
+                                    <option value="Y">Disattiva</option>
                                 </select>
                             </div>
                         </center>
-                    </div>
-                </div>
-                <center>
-                </center>
-                <div data-role="content" id="Div1">
-                    <div id="mapmap" style="width: 100%; height: 450px;">
-                    </div>
-                    <center>
-                        <div data-role="fieldcontain" style="width: 100% !important; visibility: collapse">
-                            <label for="flip-c" style="color: Blue; font-family: Comic Sans MS; font-style: italic;
-                                font-size: small;">
-                                Evidenzia solo le spiagge che rispettano la richiesta</label>
-                            <br />
-                            <select name="slider" id="flipView" data-role="slider" data-theme="e">
-                                <option value="N">Attiva</option>
-                                <option value="Y">Disattiva</option>
-                            </select>
-                        </div>
-                    </center>
-                    <!--<iframe src="http://www.facebook.com/plugins/like.php?href=http%3A%2F%2Fwww.meridiana.it%2Fit%2Findex.aspx&amp;width&amp;layout=button_count&amp;action=like&amp;show_faces=false&amp;share=false&amp;height=21"
+                        <!--<iframe src="http://www.facebook.com/plugins/like.php?href=http%3A%2F%2Fwww.meridiana.it%2Fit%2Findex.aspx&amp;width&amp;layout=button_count&amp;action=like&amp;show_faces=false&amp;share=false&amp;height=21"
                 scrolling="no" frameborder="0" style="border: none; overflow: hidden; height: 21px;"
                 allowtransparency="true"></iframe>-->
+                    </div>
+                    <!-- /content -->
+                    <div id="cdcount">
+                        <img id="Img1" src="images/footer_wave.png">
+                    </div>
                 </div>
-                <!-- /content -->
-                <div id="cdcount">
-                    <img id="Img1" src="images/footer_wave.png">
+                <div id="slidingMenug">
+                    <div id="slidingMenuContentg" style="height: 100%; width: 200%; overflow: hidden; overflow-x: hidden;">
+                        <ul>
+                            <li><a id="main2" class="icon-home">Spiagge più vicine</a></li>
+                            <li><a id="gmap2" class="icon-news">Mappa Spiagge</a></li>
+                            <li><a id="meteo2" class="icon-image">Meteo</a></li>
+                            <li><a id="chart2" class="icon-upload">Rosa dei venti</a></li>
+                            <li><a id="setting2" class="icon-star">Impostazioni</a></li>
+                        </ul>
+                    </div>
                 </div>
             </div>
             <!-- /container -->
-            <nav class="outer-nav left vertical">
+            <!--<nav class="outer-nav left vertical">
 		        <a id="main2" class="icon-home">Spiagge più vicine</a>
 		        <a id="gmap2" class="icon-news">Mappa Spiagge</a>
 		        <a id="meteo2" class="icon-image">Meteo</a>
 		        <a id="chart2" class="icon-upload">Rosa dei venti</a>
 		        <a id="setting2" class="icon-star">Impostazioni</a>
 
-	        </nav>
+	        </nav>-->
         </div>
     </div>
     <div data-role="page" id="meteo" class="type-index">
         <div id="perspectivemeteo" class="perspective effect-airbnb">
             <div class="containermeteo">
+             <div id="pagem">
                 <div class="banner" style="z-index: 99999" data-role="header" role="banner" data-theme="c">
-                    <div class="wrapper" style="float: left; top: 10px; left: 10px">
+                    <div class="wrapper" style="float: left;">
+                        <div id="Div15">
+                                <a href="javascript:void(0);" id="menum" class="show-menu-button">
+                                    <!--<input type="image" id="showMenu"  src="images/pinnatta-app-menu-6.png" />-->
+                                </a>
+                            </div>
                         <!-- wrapper needed for scroll -->
                         <div class="main clearfix" style="float: left; top: 10px; left: 10px">
                             <div class="column" style="float: left; top: 10px; left: 10px">
-                                <input type="image" id="showMenumeteo" src="images/pinnatta-app-menu-6.png" />
+                                <!--<input type="image" id="showMenumeteo" src="images/pinnatta-app-menu-6.png" />-->
                             </div>
                         </div>
                         <!-- /main -->
@@ -1541,8 +1595,20 @@
                 <div id="Div10">
                     <img id="Img2" src="images/footer_wave.png">
                 </div>
+                </div>
+                 <div id="slidingMenum">
+                    <div id="slidingMenuContentm" style="height: 100%; width: 200%; overflow: hidden; overflow-x: hidden;">
+                        <ul>
+                            <li><a id="main3" class="icon-home">Spiagge più vicine</a></li>
+                            <li><a id="gmap3" class="icon-news">Mappa Spiagge</a></li>
+                            <li><a id="meteo3" class="icon-image">Meteo</a></li>
+                            <li><a id="chart3" class="icon-upload">Rosa dei venti</a></li>
+                            <li><a id="setting3" class="icon-star">Impostazioni</a></li>
+                        </ul>
+                    </div>
+                </div>
             </div>
-            <nav class="outer-nav left vertical">
+           <!-- <nav class="outer-nav left vertical">
 		        <a id="main3" class="icon-home">Spiagge più vicine</a>
 		        <a id="gmap3" class="icon-news">Mappa Spiagge</a>
 		        <a id="meteo3" class="icon-image">Meteo</a>
@@ -1550,7 +1616,7 @@
 		        <a id="setting3" class="icon-star">Impostazioni</a>
 	        </nav>
             <script src="js/menu2/js/classie.js"></script>
-            <script src="js/menu2/js/menu.js"></script>
+            <script src="js/menu2/js/menu.js"></script>-->
         </div>
     </div>
     <div data-role="page" id="Beach" class="type-index">

@@ -124,7 +124,7 @@ $('#Beach').live('pageshow', function (event, ui) {
                 $('#hdd_densita').val('Medio');
             }
             if (densita == 'A') {
-                $('#img_densita').attr('src', 'images/densitaB.gif');
+                $('#img_densita').attr('src', 'images/densitaA.gif');
                 $('#td_densita').show();
                 $('#hdd_densita').val('Alta');
             }

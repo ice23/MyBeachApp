@@ -289,8 +289,9 @@ html, body, .perspective {
 
 /* Effect airbnb */
 .effect-airbnb {
-	background: #2AD8E7;
+	background: white;
 	background-image: url('../../../images/sfondo-Mare-1024x768.jpeg');
+	background-repeat:repeat-x;
 }
 
 .effect-airbnb .container {
