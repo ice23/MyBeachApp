@@ -10,12 +10,21 @@
     <link rel="stylesheet" href="css/jquery.mobile-1.1.1.min.css" />
     <link rel="stylesheet" href="css/jqm-docs.css" />
     <link rel="stylesheet" href="css/main.css" />
-    <script src="js/jquery-1.7.1.min.js"></script>
+    <!--<script src="js/jquery-1.7.1.min.js"></script>-->
     <script src="js/jquery.cycle.all.js"></script>
     <script src="js/jquery.easing.js"></script>
-   <!-- <script type="text/javascript" charset="utf-8" src="js/cordova-2.9.0.js"></script>-->
-    <!--<script type="text/javascript" charset="utf-8" src="js/phonenavigator.js"></script>-->
+    <script type="text/javascript" charset="utf-8" src="cordova-2.9.0.js"></script>
+    <script type="text/javascript" charset="utf-8" src="js/jquery-1.7.1.min.js"></script>
+    <script type="text/javascript" charset="utf-8" src="phonenavigator.js"></script>
     <script type="text/javascript" charset="utf-8">
+
+        $(document).bind("mobileinit", function () {
+            $.mobile.loadingMessageTextVisible = true;
+            // navigator.splashscreen.show();
+
+            //alert("mobileinit");
+        });
+
         // Wait for PhoneGap to load
         var isDeviceOnline = 'NO';
         var deviceType = '';
@@ -24,17 +33,27 @@
 
         document.addEventListener("deviceready", onDeviceReady, false);
         function onDeviceReady() {
-            //alert('checkConnection');
+            navigator.splashscreen.show();
+            
+            
             checkConnection();
+            //alert('splashscreen.show');
+            
 
             navigator.geolocation.getCurrentPosition(onSuccess, onError);
+
+
         }
         $(document).ready(function () {
+
+            $.mobile.showPageLoadingMsg("a", "Caricamento in corso...");
+
+
             $("#go").click(function () {
-                ThisBeachLat=localStorage.getItem('ThisBeachLat');
-                ThisBeachLon=localStorage.getItem('ThisBeachLon');
+                ThisBeachLat = localStorage.getItem('ThisBeachLat');
+                ThisBeachLon = localStorage.getItem('ThisBeachLon');
                 navigateTo(ThisBeachLat, ThisBeachLon, function () {
-                    alert("Successfully opened navigator");
+                    // alert("Successfully opened navigator");
                 }, function () {
                     alert("Error opening navigator");
                 })
@@ -43,20 +62,20 @@
 
 
         function navigateTo(lat, lon, successFn, errorFn) {
-//            alert('GO CLICKED');
-//            alert('Device Name: '     + device.name     + '\n' + 
-//                            'Device Cordova: '  + device.cordova + '\n' + 
-//                            'Device Platform: ' + device.platform + '\n>' + 
-//                            'Device UUID: '     + device.uuid     + '<br />' + 
-//                            'Device Model: '    + device.model     + '<br />' +
-//                            'Device Version: ' + device.version + '<br />');
+            //            alert('GO CLICKED');
+            //            alert('Device Name: '     + device.name     + '\n' + 
+            //                            'Device Cordova: '  + device.cordova + '\n' + 
+            //                            'Device Platform: ' + device.platform + '\n>' + 
+            //                            'Device UUID: '     + device.uuid     + '<br />' + 
+            //                            'Device Model: '    + device.model     + '<br />' +
+            //                            'Device Version: ' + device.version + '<br />');
             deviceType = (navigator.userAgent.match(/iPad/i)) == "iPad" ? "iPad" : (navigator.userAgent.match(/iPhone/i)) == "iPhone" ? "iPhone" : (navigator.userAgent.match(/Android/i)) == "Android" ? "Android" : (navigator.userAgent.match(/BlackBerry/i)) == "BlackBerry" ? "BlackBerry" : "null";
 
-            alert(deviceType + 'lat:' + lat + 'lon:' + lon);
+            // alert(deviceType + 'lat:' + lat + 'lon:' + lon);
             if (deviceType == "Android") {
                 var url = "geo:" + lat + "," + lon + " +;u=35";
-                window.location = url;
-                //cordova.require('cordova/plugin/phonenavigator').doNavigate(lat, lon, successFn, errorFn);
+                //window.location = url;
+                cordova.require('cordova/plugin/phonenavigator').doNavigate(lat, lon, successFn, errorFn);
             } else if (device.platform == "iOS") {
                 var url = "maps:daddr=" + lat + "," + lon;
                 window.location = url;
@@ -84,13 +103,16 @@
             if (states[networkState] != states[Connection.NONE]) {
                 isDeviceOnline = "YES"
             }
+            else {
+                navigator.notification.alert(
+                    states[networkState],  // message
+                    alertDismissed,         // callback
+                    'Attenzione Nessuna connessione dati trovata!!!',            // title
+                    'ok'                  // buttonName
+                );
+            }
 
-            navigator.notification.alert(
-                states[networkState],  // message
-                alertDismissed,         // callback
-                'Connection type',            // title
-                'Done'                  // buttonName
-            );
+           
         }
 
         // onSuccess Geolocation
@@ -114,9 +136,9 @@
               'message: ' + error.message + '\n');
         }
 
-        $(document).bind("mobileinit", function (event) {
-            $.extend($.mobile.zoom, { locked: true, enabled: false });
-        });
+//        $(document).bind("mobileinit", function (event) {
+//            $.extend($.mobile.zoom, { locked: true, enabled: false });
+//        });
     </script>
     <script src="js/jqm-docs.js"></script>
     <script src="js/jquery.mobile-1.1.1.js"></script>
@@ -319,7 +341,7 @@
     </style>
     <script type="text/javascript" src="js/highcharts/highcharts.js"></script>
     <script type="text/javascript" src="js/highcharts/highcharts-more.js"></script>
-    <script type="text/javascript" src="api/OpenLayers.js"></script>
+   
     <script type="text/javascript" src="js/highcharts/modules/data.js"></script>
     <script type="text/javascript" src="js/highcharts/modules/exporting.js"></script>
     <script type="text/javascript" src="js/charts_mini.js"></script>
@@ -328,7 +350,9 @@
     <script type="text/javascript" src="js/jquery.ui.map.min.js"></script>
     <script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyC5ukXmt0pQ3lvvi3NrfZX7LJKyW67TgK0&sensor=false"
         type="text/javascript"></script>
+    <script type="text/javascript" src="js/my/jsplash.js"></script>
     <script type="text/javascript" src="js/my/jmain.js"></script>
+    <script type="text/javascript" src="js/my/jSearch.js"></script>
     <script type="text/javascript" src="js/my/jMenu.js"></script>
     <script type="text/javascript" src="js/my/jSetting.js"></script>
     <script type="text/javascript" src="js/my/jmapliveshow.js"></script>
@@ -341,18 +365,7 @@
     <!--<script type="text/javascript" src="js/my/jforecast.js"></script>-->
     <script type="text/javascript" src="js/my/MyIndexeddb.js"></script>
     <script src="js/my/ReadXml.js" type="text/javascript"></script>
-    <!--<link rel="stylesheet" href="js/lib/jquery.mobile-1.0a4.1/jquery.mobile-1.0a4.1.min.css" />
-    <link href="js/lib/photoswipe.css" type="text/css" rel="stylesheet" />
-	<style type="text/css">
-		div.gallery-row:after { clear: both; content: "."; display: block; height: 0; visibility: hidden; }
-		div.gallery-item { float: left; width: 33.333333%; }
-		div.gallery-item a { display: block; margin: 5px; border: 1px solid #3c3c3c; }
-		div.gallery-item img { display: block; width: 100%; height: auto; }
-		#Gallery1 .ui-content, #Gallery2 .ui-content { overflow: hidden; }
-	</style>
-    <script type="text/javascript" src="js/lib/simple-inheritance.min.js"></script>
-	<script type="text/javascript" src="js/lib/code-photoswipe-jQuery-1.0.11.min.js"></script>-->
-    <link href="js/lib/photoswipe.css" type="text/css" rel="stylesheet" />
+   
     <style type="text/css">
         div.gallery-row:after
         {
@@ -508,6 +521,42 @@
         }
 
         $(document).ready(function () {
+
+
+            $.event.special.inputchange = {
+                setup: function () {
+                    var self = this, val;
+                    $.data(this, 'timer', window.setInterval(function () {
+                        val = self.value;
+                        if ($.data(self, 'cache') != val) {
+                            $.data(self, 'cache', val);
+                            $(self).trigger('inputchange');
+                        }
+                    }, 20));
+                },
+                teardown: function () {
+                    window.clearInterval($.data(this, 'timer'));
+                },
+                add: function () {
+                    $.data(this, 'cache', this.value);
+                }
+            };
+
+            $("input[data-type='search']").keyup(function () {
+                alert('ciao');
+
+            });
+            $("input[data-type='search']").change(function () {
+                alert('ciao change');
+
+            });
+            $("input[data-type='search']").textinput(function () {
+                alert('ciao textinput');
+
+            });
+
+
+
             //openDb();
             //addLastPosition('123', '456', 'Villa');
             $('div.gallery-page').live('pageshow', function (e) {
@@ -523,9 +572,11 @@
 
             $('#rfh').click(function () {
                 //addLastPosition('123', '456', 'Villa');
-                if (navigator != null && navigator.notification != null) {
-                    navigator.notification.activityStart("Calcolo", "Calcolo delle distanze in corso...");
-                }
+                //                if (navigator != null && navigator.notification != null) {
+                //                    navigator.notification.activityStart("Calcolo", "Calcolo delle distanze in corso...");
+                //                }
+                $.mobile.showPageLoadingMsg("b", "Caricamento in corso...");
+
                 UpdateMyPosition();
             });
 
@@ -563,6 +614,14 @@
                 parent.history.back();
                 return false;
             });
+            $('#bck7').click(function () {
+                parent.history.back();
+                return false;
+            });
+            $('#bck8').click(function () {
+                parent.history.back();
+                return false;
+            });
 
 
 
@@ -573,9 +632,9 @@
 
 
 
-            SetWeather();
+//            SetWeather();
 
-            ReadXml();
+//            ReadXml();
 
             $('select#slideBussola').change(function () {
                 slideBussola = $('select#slideBussola').val();
@@ -653,29 +712,7 @@
         });
 
 
-        function ReadXml(xmlDoc) {
-            //            $.ajax({
-            //                type: "GET",
-            //                url: "spiagge/1.xml",
-            //                dataType: "xml",
-            //                success: parseXml
-            //            });
-
-            ReadXmlBeach();
-
-
-
-
-
-
-
-
-
-            //$.getJSON(url, parsexmlwcf).error(errorparsexmlscf);
-
-
-
-        };
+       
 
         function parsexmlwcf(d) {
             alert('success');
@@ -689,7 +726,7 @@
 
         sites = [];
         function parseXml(xmlDoc) {
-            //alert('parseXml');
+            alert('parseXml');
             $(xmlDoc).find('spiaggia').each(function () {
                 //alert('a');
                 var spiaggia = $(this)
@@ -717,6 +754,8 @@
             if (navigator != null && navigator.notification != null) {
                 navigator.notification.activityStart("Calcolo", "Calcolo delle distanze in corso...");
             }
+
+            alert('UpdateMyPosition');
             UpdateMyPosition();
         };
 
@@ -782,9 +821,13 @@
                         });
                         OriginPosition = results[1].formatted_address;
                         $('#OriginPosition').html(OriginPosition);
+
+                        navigator.splashscreen.hide()
                         //alert(results[1].formatted_address);
                         //infowindow.setContent(results[1].formatted_address);
                         //infowindow.open(map, marker);
+
+
                     }
                 } else {
                     alert("Geocoder failed due to: " + status);
@@ -801,6 +844,7 @@
             }
             PopulateFirstBeachByDistance();
 
+            $.mobile.hidePageLoadingMsg();
             if (navigator != null && navigator.notification != null) {
                 navigator.notification.activityStop();
             }
@@ -1288,25 +1332,7 @@
     </script>
 </head>
 <body>
-    <div id="fb-root">
-    </div>
-    <script>        (function (d, s, id) {
-            var js, fjs = d.getElementsByTagName(s)[0];
-            if (d.getElementById(id)) return;
-            js = d.createElement(s); js.id = id;
-            js.src = "http://connect.facebook.net/it_IT/all.js#xfbml=1";
-            fjs.parentNode.insertBefore(js, fjs);
-        } (document, 'script', 'facebook-jssdk'));</script>
-    <div id="splash" style="display: none;" class="app">
-        <h1>
-            PhoneGap</h1>
-        <div id="deviceready" class="blink">
-            <p class="event listening">
-                Connecting to Device</p>
-            <p class="event received">
-                Device is Ready</p>
-        </div>
-    </div>
+
     <script type="text/javascript" src="phonegap.js"></script>
     <script type="text/javascript" src="js/index.js"></script>
     <script type="text/javascript">
@@ -1322,6 +1348,12 @@
     <script type="text/javascript" src="js/menu3/menu_nav.js"></script>
     <script type="text/javascript" src="js/menu3/menu_navg.js"></script>
     <script type="text/javascript" src="js/menu3/menu_navm.js"></script>
+    <div data-role="page" id="Splash" class="type-index">
+        <div id="Div25" class="perspective effect-airbnb">
+            <div data-role="content" id="Div26">
+            </div>
+        </div>
+    </div>
     <div data-role="page" id="main" class="type-index">
         <div id="perspective" class="perspective effect-airbnb">
             <div class="container">
@@ -1410,7 +1442,7 @@
                                 <li>
                                     <div class="icbody">
                                         <h3 class="grl">
-                                            Le distanze sono calcolate dalla posizione: "<a id="OriginPosition"></a>"
+                                            Le distanze sono calcolate dalla posizione: "<a href="#Setting" id="OriginPosition"></a>"
                                         </h3>
                                         <a href="#" data-ajax="false" style="text-decoration: none;"><strong></strong></a>
                                     </div>
@@ -1431,6 +1463,8 @@
                             <li><a id="gmap1" class="icon-news">Mappa Spiagge</a></li>
                             <li><a id="meteo1" class="icon-image">Meteo</a></li>
                             <li><a id="chart1" class="icon-upload">Rosa dei venti</a></li>
+                            <li><a id="search1" class="icon-upload">Cerca</a></li>
+                            <li><a id="like1" class="icon-upload">Preferite</a></li>
                             <li><a id="setting1" class="icon-star">Impostazioni</a></li>
                         </ul>
                     </div>
@@ -1525,6 +1559,8 @@
                             <li><a id="gmap2" class="icon-news">Mappa Spiagge</a></li>
                             <li><a id="meteo2" class="icon-image">Meteo</a></li>
                             <li><a id="chart2" class="icon-upload">Rosa dei venti</a></li>
+                            <li><a id="search2" class="icon-upload">Cerca</a></li>
+                            <li><a id="like2" class="icon-upload">Preferite</a></li>
                             <li><a id="setting2" class="icon-star">Impostazioni</a></li>
                         </ul>
                     </div>
@@ -1645,6 +1681,8 @@
                             <li><a id="gmap3" class="icon-news">Mappa Spiagge</a></li>
                             <li><a id="meteo3" class="icon-image">Meteo</a></li>
                             <li><a id="chart3" class="icon-upload">Rosa dei venti</a></li>
+                            <li><a id="search3" class="icon-upload">Cerca</a></li>
+                            <li><a id="like3" class="icon-upload">Preferite</a></li>
                             <li><a id="setting3" class="icon-star">Impostazioni</a></li>
                         </ul>
                     </div>
@@ -1665,13 +1703,13 @@
         <div id="Div2" class="perspective effect-airbnb">
             <div class="banner" style="z-index: 99999" data-role="header" role="banner" data-theme="c">
                 <input type="image" style="position: relative; top: 10px; vertical-align: middle;
-                    float: left;" src="images/back_.png" id="bck1" />
-                <input type="image" id="bt_gallery" style="float: right; top: 20px; bottom: 30px"
-                    src="images/gallery.png" id="Image1" />
+                    float: left; left: 10px" src="images/back_.png" id="bck1" />
+                <input type="image" id="go" style="float: right; top: 7px;position:relative; bottom: 30px; right:7px"  src="images/nav5.png" />
                 <center>
                     <div style="vertical-align: middle;">
                         <br />
                         <a id="beach_Name">Spiaggia</a>
+                        <input type="image" id="likethisbeach" src="images/notlike.png" />
                     </div>
                 </center>
             </div>
@@ -1729,7 +1767,7 @@
                     </div>
                 </center>
                 <div data-role="collapsible-set" data-content-theme="a" data-iconpos="right" id="set">
-                    <div data-role="collapsible" id="set1" data-collapsed="true">
+                   <!-- <div data-role="collapsible" id="set1" data-collapsed="true">
                         <h3>
                             Descrizione</h3>
                         <p>
@@ -1739,18 +1777,45 @@
                                 kvbkdsl fhdbfksdfjdslkfm jdsnfbsdf jkdhf dfndsmfbjds fbsdlkf
                             </div>
                         </p>
+                    </div>-->
+                    <div data-role="collapsible" id="set2" data-collapsed="true">
+                        <h3>
+                            Meteo</h3>
+                        <p>
+                            <center>
+                                <div style="text-transform: lowercase; font-family: Arial; font-size: smaller;" id="Div16">
+                                    <img src="images/palm_tree.png" class="pictureg" alt="winelovers420x260" />
+                                    <h2 id="city_nameg">
+                                    </h2>
+                                    <h2 id="city_tempg" class="grl">
+                                    </h2>
+                                    <h2 id="city_wind_lblg">
+                                        ...
+                                    </h2>
+                                    <h2 id="city_clouds_lblg">
+                                        ...
+                                    </h2>
+                                    <h2 id="city_pressure_lblg">
+                                        ...
+                                    </h2>
+                                    <h2 id="city_humidity_lblg">
+                                        ...
+                                    </h2>
+                                    <h2 class="likea" id="city_weatherg">
+                                    </h2>
+                                </div>
+                            </center>
+                        </p>
                     </div>
                 </div>
                 <div id="divDs" style="width: 100%; height: 320px; background-image: url('images/sfondo-Mare_.jpeg');">
                     <hr />
                     <h3 style="color: Black">
                         Indicazioni Stradali</h3>
-                    <button id="go" style="padding: 10px;">
-                        Navigate</button>
                     <div style="height: 100%;" id="map_canvas">
                     </div>
                     <a id="beach_Drive" style="z-index: 999;">gira a destra </a>
-                   <!-- <div style="width: 100%; height: 100%; background-image: url('images/sfondo-Mare_.jpeg');">
+                    <!-- <div style="width: 100%; height: 100%; background-image: url('images/sfondo-Mare_.jpeg');">
                         
                     </div>-->
                 </div>
@@ -1761,7 +1826,7 @@
         <div id="perspectiveg" class="perspective effect-airbnb">
             <div class="banner" style="z-index: 99999" data-role="header" role="banner" data-theme="c">
                 <input type="image" style="position: relative; top: 10px; vertical-align: middle;
-                    float: left;" src="images/back_.png" id="bck6" />
+                    float: left; left: 10px" src="images/back_.png" id="bck6" />
                 <center>
                     <div style="vertical-align: middle;">
                         <br />
@@ -1800,7 +1865,7 @@
     <div data-role="page" id="chart">
         <div class="banner" style="z-index: 99999" data-role="header" role="banner" data-theme="c">
             <input type="image" style="position: relative; top: 10px; vertical-align: middle;
-                float: left;" src="images/back_.png" id="bck5" />
+                float: left; left: 10px" src="images/back_.png" id="bck5" />
             <center>
                 <div style="vertical-align: middle;">
                     <br />
@@ -1842,7 +1907,7 @@
         <div id="Div13" class="perspective effect-airbnb">
             <div class="banner" style="z-index: 99999" data-role="header" role="banner" data-theme="c">
                 <input type="image" style="position: relative; top: 10px; vertical-align: middle;
-                    float: left;" src="images/back_.png" id="bck3" />
+                    float: left; left: 10px" src="images/back_.png" id="bck3" />
                 <center>
                     <div style="vertical-align: middle;">
                         <br />
@@ -1869,11 +1934,46 @@
             </div>
         </div>
     </div>
+    <script type="text/javascript">
+        function SearchgRedirect(id) {
+            alert('SearcgRedirect : ' + id);
+        }
+    </script>
+    <div data-role="page" id="search">
+        <div id="Div17" class="perspective effect-airbnb">
+            <div class="banner" style="z-index: 99999" data-role="header" role="banner" data-theme="c">
+                <input type="image" style="position: relative; top: 10px; vertical-align: middle;
+                    float: left; left: 10px" src="images/back_.png" id="bck8" />
+                <center>
+                    <div style="vertical-align: middle;">
+                        <br />
+                        <a id="A11">Ricerca</a>
+                    </div>
+                </center>
+            </div>
+            <div data-role="content" id="Div18">
+                <!-- <input type="text" id="searchField" placeholder="Cerca...">-->
+                <br />
+                <ul id="suggestions" data-role="listview" data-inset="true" data-filter="true" data-filter-reveal="true"
+                    data-filter-placeholder="Cerca la spiaggia...">
+                </ul>
+                <!--<ul data-role="listview" data-filter="true" data-filter-reveal="true" data-filter-placeholder="Search cars...">
+					<li><a style="vertical-align:middle!Important;top:30px!Important; href="#Beach?id"><img style="height:50px;width:50px"  alt="http://www.icesoft.it/SardiniaBeachXml/SPIAGGE/SpiaggiaLisciaRuia1.jpg" src="" /><div style="height:100% ;width:60%"><center>Spiaggia 1</center></div></a></li>
+					
+				</ul>-->
+                <
+            </div>
+            <!-- /content -->
+            <div id="Div23">
+                <img id="Img3" src="images/footer_wave.png">
+            </div>
+        </div>
+    </div>
     <div data-role="page" id="Setting" class="type-index">
         <div id="Div3" class="perspective effect-airbnb">
             <div class="banner" style="z-index: 99999" data-role="header" role="banner" data-theme="c">
                 <input type="image" style="position: relative; top: 10px; vertical-align: middle;
-                    float: left;" src="images/back_.png" id="bck2" />
+                    float: left; left: 10px" src="images/back_.png" id="bck2" />
                 <center>
                     <div style="vertical-align: middle;">
                         <br />
@@ -1945,6 +2045,26 @@
                             </tr>
                         </table>
                         <a id="MyTransitionStorage" style="font-size: small"></a></li>
+                </ul>
+            </div>
+            <!-- /content -->
+        </div>
+    </div>
+    <div data-role="page" id="likes" class="type-index">
+        <div id="Div22" class="perspective effect-airbnb">
+            <div class="banner" style="z-index: 99999" data-role="header" role="banner" data-theme="c">
+                <input type="image" style="position: relative; top: 10px; vertical-align: middle;
+                    float: left; left: 10px" src="images/back_.png" id="bck7" />
+                <center>
+                    <div style="vertical-align: middle;">
+                        <br />
+                        <a id="A12">Preferite</a>
+                    </div>
+                </center>
+            </div>
+            <div data-role="content" id="Div24">
+                <ul id="likesBeach" data-role="listview" data-inset="true" data-filter="true" data-filter-reveal="true"
+                    data-filter-placeholder="Cerca la spiaggia...">
                 </ul>
             </div>
             <!-- /content -->
