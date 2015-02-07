@@ -27,7 +27,7 @@ $(document).ready(function () {
         if (navigator != null && navigator.notification != null) {
             navigator.notification.activityStart("caricamento", "Ricerca spiagge in corso...");
         }
-        Search();
+        Search('-');
         if (navigator != null && navigator.notification != null) {
             navigator.notification.activityStop();
         }
@@ -54,7 +54,7 @@ $(document).ready(function () {
         if (navigator != null && navigator.notification != null) {
             navigator.notification.activityStart("caricamento", "Ricerca spiagge in corso...");
         }
-        Search();
+        Search('-');
         if (navigator != null && navigator.notification != null) {
             navigator.notification.activityStop();
         }
@@ -82,22 +82,25 @@ $(document).ready(function () {
         if (navigator != null && navigator.notification != null) {
             navigator.notification.activityStart("caricamento", "Ricerca spiagge in corso...");
         }
-        Search();
+        Search('-');
         if (navigator != null && navigator.notification != null) {
             navigator.notification.activityStop();
         }
     });
     $('#like1').click(function () {
-        changeP('#likes');
-        like();
+
+        changeP('#search');
+        Search('like');
     });
     $('#like2').click(function () {
-        changeP('#likes');
-        like();
+
+        changeP('#search');
+        Search('like');
     });
     $('#like3').click(function () {
-        changeP('#likes');
-        like();
+
+        changeP('#search');
+        Search('like');
     });
 
     function SearchgRedirect(id) {
@@ -138,15 +141,21 @@ $(document).ready(function () {
         sugList.listview("refresh");
     }
 
+    function getUrlVars() {
+        var vars = [], hash;
+        var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
+        for (var i = 0; i < hashes.length; i++) {
+            hash = hashes[i].split('=');
+            vars.push(hash[0]);
+            vars[hash[0]] = hash[1];
+        }
+        return vars;
+    }
+
+    function Search(mode) {
 
 
-    function Search() {
 
-        //alert('search');
-        //var sugList = $("#suggestions");
-        //$.mobile.showPageLoadingMsg("a", "Caricamento in corso...");
-        // $("#searchField").on("input", function (e) {
-        //alert(sugList);
         var str = '';
         for (var i = 0; i < sites.length; i++) {
             var info = sites[i];
@@ -172,12 +181,24 @@ $(document).ready(function () {
 
             var keyTitle = "f" + i;
             var keyImage = "i" + i;
+            var keyli = "li" + i;
 
-            $('#' + keyTitle).html(nome);
+           // $('#' + keyTitle).html(nome);
             $('#' + keyTitle).attr("href", "#Beach?id=" + id);
             $('#' + keyImage).attr("src", imgurl);
+            $('#' + keyli).find("label").html(nome);
 
+            if (mode == 'like') {
+                if (localStorage.getItem('like_beach_' + i) != null) {
+                    $('#' + keyli).show();
+                    alert(imgurl);
+                }
+                else {
+                    $('#' + keyli).hide();
+                }
+            }
         }
+        //alert('x');
         //$.mobile.hidePageLoadingMsg();
         //alert('popolato ' + sites.length);
         //sugList.html(str);

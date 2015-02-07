@@ -63,6 +63,7 @@ $(document).ready(function () {
         localStorage.setItem('rfh', '1');
         if ($("#radio-mini-1").attr("checked")) {
             localStorage.setItem('Position', 'AUTO');
+            alertify.alert('La posizione sarà letta in automatico');
             $('#MyPosition').val('');
         }
     });
@@ -72,6 +73,7 @@ $(document).ready(function () {
             localStorage.setItem('Position', 'NOAUTO');
             if (localStorage.getItem('MyPosition') != null) {
                 var MyPosition = localStorage.getItem('MyPosition');
+                alertify.alert('la tua posizione è ' + MyPosition);
                 $('#MyPosition').val(MyPosition);
             }
         }
@@ -83,7 +85,7 @@ $(document).ready(function () {
         if (navigator != null && navigator.notification != null) {
             navigator.notification.activityStart("ricerca", "Ricerca località in corso...");
         }
-        $.mobile.showPageLoadingMsg("a", "Ricerca località in corso...");
+        $.mobile.showPageLoadingMsg("b", "Ricerca località in corso...");
 
         var geocoder = new google.maps.Geocoder();
         var address = $('#MyPosition').val();
@@ -97,7 +99,7 @@ $(document).ready(function () {
                 localStorage.setItem('lat', lat);
                 localStorage.setItem('lng', lng);
                 localStorage.setItem('MyPosition', address);
-                
+
 
 
 
@@ -109,8 +111,8 @@ $(document).ready(function () {
                             if (navigator != null && navigator.notification != null) {
                                 navigator.notification.activityStop();
                             }
-                            $.mobile.hidePageLoadingMsg();
-                            alert("Luogo trovato: " + results[1].formatted_address);
+                            $.mobile.hidePageLoadingMsg('b');
+                            alertify.alert("Luogo trovato su Google Maps: " + results[1].formatted_address);
                             localStorage.setItem('Position', 'NOAUTO');
                             $('#MyPositionStorage').html('Attualmente la posizione è settata su <br/> <i>' + address + '</i>');
                         }
@@ -122,7 +124,7 @@ $(document).ready(function () {
 
             }
             else {
-                alert('Posizione non trovata su Google Map');
+                alertify.alert('Posizione non trovata su Google Map');
             }
         });
 

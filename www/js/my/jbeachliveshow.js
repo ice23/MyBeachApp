@@ -589,7 +589,7 @@ function getUrlVars() {
 $(document).on("pageshow", "#div_redirect", function (event) {
     $(document).ready(function () {
         alert('div_redirect');
-        alert(getUrlVars()["id"]);
+//        alert(getUrlVars()["id"]);
         //        $("a[id^='test']").click(function () {
         //            //             alert('..this.val()');
         //            var id = $(this).attr('name');
