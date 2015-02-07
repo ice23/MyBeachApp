@@ -3,20 +3,30 @@
 <head>
     <meta charset="utf-8" />
     <meta name="format-detection" content="telephone=no" />
-    <!-- WARNING: for iOS 7, remove the width=device-width and height=device-height attributes. See https://issues.apache.org/jira/browse/CB-4323 -->
-    <!--<meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />-->
+  
     <link rel="stylesheet" type="text/css" href="css/index.css" />
     <title>Sardinia Beach Finder</title>
     <link rel="stylesheet" href="css/jquery.mobile-1.1.1.min.css" />
     <link rel="stylesheet" href="css/jqm-docs.css" />
     <link rel="stylesheet" href="css/main.css" />
-    <!--<script src="js/jquery-1.7.1.min.js"></script>-->
-    <script src="js/jquery.cycle.all.js"></script>
-    <script src="js/jquery.easing.js"></script>
+
+    <script type="text/javascript" src="js/jquery.cycle.all.js"></script>
+    <script type="text/javascript" src="js/jquery.easing.js"></script>
     <script type="text/javascript" charset="utf-8" src="cordova-2.9.0.js"></script>
     <script type="text/javascript" charset="utf-8" src="js/jquery-1.7.1.min.js"></script>
     <script type="text/javascript" charset="utf-8" src="phonenavigator.js"></script>
+    
+    <link rel="stylesheet" href="js/alert/alertify.core.css" />
+	<link rel="stylesheet" href="js/alert/alertify.default.css" id="toggleCSS" />
+	<meta name="viewport" content="width=device-width">
+	<style>
+		.alertify-log-custom {
+			background: blue;
+		}
+	</style>
+    <script type="text/javascript" src="js/alert/alertify.min.js"></script>
     <script type="text/javascript" charset="utf-8">
+      
 
         $(document).bind("mobileinit", function () {
             $.mobile.loadingMessageTextVisible = true;
@@ -31,6 +41,8 @@
         var ThisBeachLat = '';
         var ThisBeachLon = '';
 
+        //alert('40.835188' - '39.576944');
+
         document.addEventListener("deviceready", onDeviceReady, false);
         function onDeviceReady() {
             navigator.splashscreen.show();
@@ -38,16 +50,19 @@
             
             checkConnection();
             //alert('splashscreen.show');
-            
 
-            navigator.geolocation.getCurrentPosition(onSuccess, onError);
-
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(onSuccess, onErrorMyPos);
+            }
+            else {
+                alert('Si consiglia di verificare nelle impostazioni del tuo dispositivo, che la geolocalizzazione sia abilitata.');
+            }
 
         }
         $(document).ready(function () {
 
             $.mobile.showPageLoadingMsg("a", "Caricamento in corso...");
-
+            alertdebug('ready1');
 
             $("#go").click(function () {
                 ThisBeachLat = localStorage.getItem('ThisBeachLat');
@@ -89,6 +104,7 @@
         }
 
         function checkConnection() {
+            alertdebug('checkConnection');
             var networkState = navigator.network.connection.type;
             var states = {};
             states[Connection.UNKNOWN] = 'Unknown connection';
@@ -132,23 +148,22 @@
         // onError Callback receives a PositionError object
         //
         function onError(error) {
-            alert('code: ' + error.code + '\n' +
-              'message: ' + error.message + '\n');
+            //alert('code: ' + error.code + '\n' + 'message: ' + error.message + '\n');
         }
 
-//        $(document).bind("mobileinit", function (event) {
-//            $.extend($.mobile.zoom, { locked: true, enabled: false });
-//        });
+
+
     </script>
     <script src="js/jqm-docs.js"></script>
     <script src="js/jquery.mobile-1.1.1.js"></script>
     <script type="text/javascript" src="js/jquery.cycle.all.js"></script>
     <script type="text/javascript" src="js/jquery.easing.js"></script>
     <script type="text/javascript" src="js/new-swipe.js"></script>
+    <script type="text/javascript" src="js/alertdebug.js"></script>
     <script type="text/javascript">
 
         $(document).ready(function () {
-
+            alertdebug('ready1');
             /* Swipe Variables */
             $.fn.cycle.transitions.scrollHorzTouch = function ($cont, $slides, opts) {
                 $cont.css('overflow', 'hidden').width();
@@ -188,6 +203,7 @@
             var slideFlag = false;
 
             $('#rotating-item-wrapper').cycle({
+               alertdebug('rotating-item-wrapper');
                 fx: 'scrollHorzTouch',
                 timeout: 1000,
                 pager: '#nav',
@@ -207,6 +223,7 @@
 
 
             $('#rotating-item-wrapperBeachg').cycle({
+                alertdebug('rotating-item-wrapperBeachg');
                 fx: 'scrollHorzTouch',
                 timeout: 1000,
                 pager: '#nav',
@@ -225,7 +242,7 @@
 
 
             $('#rotating-item-wrapper').swipe({ swipeMoving: function (pageX) {
-
+             alertdebug('swipe');
                 if (slideFlag) return;
 
                 var newLeft = currentLeft - pageX;
@@ -253,6 +270,7 @@
 
             $('#rotating-item-wrapperBeachg').swipe({ swipeMoving: function (pageX) {
 
+             alertdebug('swipebeach');
                 if (slideFlag) return;
 
                 var newLeft = currentLeft - pageX;
@@ -301,7 +319,7 @@
                     opts.addSlide('<img src="sliderimages/ride_448' + i + '.jpg" width="400" height="300" />');
                 slidesAdded = true;
 
-                alert('before');
+                //alert('before');
             };
 
 
@@ -324,7 +342,7 @@
     <link rel="stylesheet" href="css/menu/font-awesome.min.css" />
     <!-- SlidePanel Css -->
     <link rel="stylesheet" href="css/menu/stylesheet.css" />
-    <script src="js/menu/bootstrap.min.js"></script>
+    <script type="text/javascript"  src="js/menu/bootstrap.min.js"></script>
     <!-- SlidePanel jQuery -->
     <script src="js/menu/jquery.slidepanel.js"></script>
     <script type="text/javascript">
@@ -420,6 +438,7 @@
         var imgWindOK = null;
         var imgWindKO = null;
         var sites = null;
+        var sites5 = null;
         var status = 'close';
         var shape = null;
         var WindDir = '';
@@ -437,6 +456,7 @@
         var dt_Last_meteo = new Date();
         var dt_Last_forecast = new Date();
         var lastBeachID = 0;
+        var alreadyReadyMap = 0;
         //alert(lastBeachID);
 
         var lat1click = 0;
@@ -446,7 +466,7 @@
 
 
         imgWindOK = {
-            url: 'images/face-smile-big.png'
+            url: 'images/umbrella.png'
         };
 
         imgWindKO = {
@@ -460,6 +480,7 @@
 
 
         function get_cookie(name) {
+            //alertdebug('get_cookie');
             var matches = document.cookie.match(new RegExp(
 	      "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
 	    ))
@@ -468,6 +489,7 @@
 
 
         function set_cookie(name, value, expires) {
+            alertdebug('set_cookie');
             if (!expires) {
                 expires = new Date();
             }
@@ -497,7 +519,7 @@
         }
 
         function errorHandler(e) {
-            alert('a');
+      
             ShowAlertMess(e.status + ' ' + e.statusText);
         }
 
@@ -506,13 +528,13 @@
             try {
                 JSONobject = JSON.parse(JSONtext);
             } catch (e) {
-                alert('a1');
+                
                 ShowAlertMess('JSON Error');
                 return;
             }
 
             if (JSONobject.cod != '200') {
-                alert('a2');
+                
                 ShowAlertMess('Error ' + JSONobject.cod + ' (' + JSONobject.message + ')');
                 return;
             }
@@ -521,7 +543,7 @@
         }
 
         $(document).ready(function () {
-
+           
 
             $.event.special.inputchange = {
                 setup: function () {
@@ -543,15 +565,14 @@
             };
 
             $("input[data-type='search']").keyup(function () {
-                alert('ciao');
+
 
             });
             $("input[data-type='search']").change(function () {
-                alert('ciao change');
 
             });
             $("input[data-type='search']").textinput(function () {
-                alert('ciao textinput');
+
 
             });
 
@@ -571,12 +592,9 @@
 
 
             $('#rfh').click(function () {
-                //addLastPosition('123', '456', 'Villa');
-                //                if (navigator != null && navigator.notification != null) {
-                //                    navigator.notification.activityStart("Calcolo", "Calcolo delle distanze in corso...");
-                //                }
-                $.mobile.showPageLoadingMsg("b", "Caricamento in corso...");
 
+                $.mobile.showPageLoadingMsg("b", "Caricamento in corso...");
+                localStorage.setItem('RfhPos', '1');
                 UpdateMyPosition();
             });
 
@@ -591,6 +609,7 @@
                 return false;
             });
             $('#bck1').click(function () {
+        
                 parent.history.back();
                 return false;
             });
@@ -627,16 +646,18 @@
 
 
             $('#rfh2').click(function () {
+                alertdebug('updatemeteo');
                 UpdateMeteo();
             });
 
 
 
-//            SetWeather();
+            //            SetWeather();
 
-//            ReadXml();
+            //            ReadXml();
 
             $('select#slideBussola').change(function () {
+                alertdebug('slidebussolachange');
                 slideBussola = $('select#slideBussola').val();
                 if (slideBussola == 'Y') {
                     stopWatch();
@@ -647,6 +668,7 @@
             });
 
             $('select#flipView').change(function () {
+                alertdebug('flipviewchange');
                 flipView = $('select#flipView').val();
                 beachfinderby = this.value;
 
@@ -678,10 +700,11 @@
 
         $(document).ready(function () {
             $('#bt_view_ds').click(function () {
-                alert('bt_view_ds');
+                
             });
 
             $('#BeachFinderBy').change(function () {
+                alertdebug('beachfinderby change');
                 beachfinderby = this.value;
 
                 var centerMap = map.getCenter();
@@ -715,18 +738,18 @@
        
 
         function parsexmlwcf(d) {
-            alert('success');
+           
         };
 
         function errorparsexmlscf(e) {
-            alert('error' + e.status + ' ' + e.statusText);
+            //alert('error' + e.status + ' ' + e.statusText);
 
         };
 
 
         sites = [];
         function parseXml(xmlDoc) {
-            alert('parseXml');
+            alertdebug('parsexml');
             $(xmlDoc).find('spiaggia').each(function () {
                 //alert('a');
                 var spiaggia = $(this)
@@ -755,7 +778,7 @@
                 navigator.notification.activityStart("Calcolo", "Calcolo delle distanze in corso...");
             }
 
-            alert('UpdateMyPosition');
+           
             UpdateMyPosition();
         };
 
@@ -775,28 +798,184 @@
             lat5 = 0;
             lngt5 = 0;
             dist5 = 1000;
+
+            
             CleartBeachByDistance();
-            // alert('UpdateMyPosition');
+            $.mobile.showPageLoadingMsg("b", "Loading...");
             //LEggo le mie coordinate
             var Geo = {};
-            if (navigator.geolocation) {
-                //alert('navigator.geolocation on')
 
-                navigator.geolocation.getCurrentPosition(success, onError, { maximumAge: 60000, timeout: 60000, enableHighAccuracy: true });
+            //Se ho le mie coordiante in memoria chiamo queste
+            var Rfh = '0';
+            if (localStorage.getItem('RfhPos') != null) {
+                if (localStorage.getItem('RfhPos') == '1') {
+                    Rfh = '1';
+                }
+            }
+           
+             if (localStorage.getItem('MyLat') != null && localStorage.getItem('MyLong') != null && Rfh!='1') {
+               
+                var mylat = localStorage.getItem('MyLat');
+                var mylng = localStorage.getItem('MyLong');
+                alertdebug('calcpositbeachBywcf');
+                calcpositbeachBywcf(mylat, mylng);
+                //calcpositbeach(mylat, mylng);
+                $.mobile.hidePageLoadingMsg();
+            }
+            else
+            {
+                Rfh='1';
+            }
+           
+            
+            if (navigator.geolocation && Rfh == '1') {
+               // alert('navigator.geolocation on')
+                $('#OriginPosition').html('ricerca posizione in corso...');
+                $('#b1_descr').html('ricerca posizione in corso...');
+                $('#b2_descr').html('ricerca posizione in corso...');
+                $('#b3_descr').html('ricerca posizione in corso...');
+                $('#b4_descr').html('ricerca posizione in corso...');
+                $('#b5_descr').html('ricerca posizione in corso...');
+                navigator.geolocation.getCurrentPosition(success, onErrorMyPos, { maximumAge: 60000, timeout: 23000, enableHighAccuracy: true });
 
             }
             else {
-                alert('navigator.geolocation off')
+                if (!navigator.geolocation) {
+                    alert('Si consiglia di verificare nelle impostazioni del tuo dispositivo, che la geolocalizzazione sia abilitata');
+                }
             }
         };
+
+        function onErrorMyPos(error) {
+            window.location.href = '#Setting';
+            localStorage.setItem('ErrorGeo', '1');
+//            alert('Si è verificato un errore durante la ricerca della tua posizione. Si consiglia di verificare nelle impostazioni del tuo dispositivo, che la geolocalizzazione sia abilitata');
+        }
+
         //Get the latitude and the longitude;
         function success(position) {
             //alert('success');
             mylat = position.coords.latitude;
             mylng = position.coords.longitude;
+            
+            localStorage.setItem('MyLong', mylng);
+            localStorage.setItem('RfhPos', '0');
+            //alertdebug('calcpositbeach success');
+            calcpositbeachBywcf(mylat, mylng);
+            //calcpositbeach(mylat, mylng);
+            $.mobile.hidePageLoadingMsg();
+        }
+
+        function Search() {
+
+            var str = '';
+            for (var i = 0; i < sites.length; i++) {
+                var info = sites[i];
+                var nome = info[0];
+                alertdebug('nome' + nome);
+                var id = info[8];
+                var photo = info[13];
+                //alert(i + ' '  + nome);
+                var photoArray = photo.split(';');
+                var gallery = '';
+                var imgurl = 'http://www.icesoft.it/SardiniaBeachXml/SPIAGGE/SpiaggiaSArenaScoada1.jpg';
+                gallery = ' <img style="height:50px;width:50px"  alt="" src="http://www.icesoft.it/SardiniaBeachXml/SPIAGGE/SpiaggiaSArenaScoada1.jpg" />'
+                if (photo.toUpperCase().indexOf(';') != -1) {
+                    gallery = ' <img style="height:50px;width:50px"  alt="" src="' + photoArray[0] + '" />'
+                    imgurl = photoArray[0];
+                }
+                //gallery = '';
+
+
+
+                var href = '#div_redirect?id=' + id;
+                //href = "javascript:alert('ciao');"
+                str += '<li><a href="' + href + '" style="color:Black" id="test' + id + '" name="' + id + '" >' + gallery + ' ' + info[0] + '</a></li>';
+
+                var keyTitle = "f" + i;
+                var keyImage = "i" + i;
+
+                $('#' + keyTitle).html(nome);
+                $('#' + keyTitle).attr("href", "#Beach?id=" + id);
+                $('#' + keyImage).attr("src", imgurl);
+
+            }
+
+        }
+
+        function calcpositbeachBywcf(lat, long) {
+
+           
+            mylat = lat;
+            mylng = long;
             if (localStorage.getItem('Position') != null) {
+
                 var Position = localStorage.getItem('Position');
                 if (Position == 'NOAUTO') {
+                    //alert('manual');
+                    mylat = localStorage.getItem('lat');
+                    mylng = localStorage.getItem('lng');
+                }
+            }
+
+            if (sites5==null || sites5.length == 0) {
+                alertdebug('calcpositbeachBywcf ReadXml5Beach');
+                ReadXml5Beach(mylat, mylng);
+            }
+
+            var geocoder = null;
+            geocoder = new google.maps.Geocoder();
+            var latlng = new google.maps.LatLng(mylat, mylng);
+            geocoder.geocode({ 'latLng': latlng }, function (results, status) {
+                if (status == google.maps.GeocoderStatus.OK) {
+
+                    if (results[1]) {
+                        //                          map.setZoom(11);
+                        //                          marker = new google.maps.Marker({
+                        //                              position: latlng,
+                        //                              map: map
+                        //                          });
+                        markerMyPosition = new google.maps.Marker({
+                            position: latlng,
+                            map: map
+                        });
+                        OriginPosition = results[1].formatted_address;
+                        $('#OriginPosition').html(OriginPosition);
+
+                        navigator.splashscreen.hide()
+                        //alert(results[1].formatted_address);
+                        //infowindow.setContent(results[1].formatted_address);
+                        //infowindow.open(map, marker);
+
+
+                    }
+                } else {
+                    alert("Geocoder failed due to: " + status);
+                }
+            });
+            //alert('PopulateFirstBeachByDistance5');
+            PopulateFirstBeachByDistance5();
+
+            $.mobile.hidePageLoadingMsg('b');
+        }
+        function calcpositbeach(lat,long) {
+            alertdebug('calcpositbeach metod');
+            if (sites.length == 0) {
+                alertdebug('calcpositbeach ReadXmlBeach');
+                ReadXmlBeach();
+            }
+            $('#b1_descr').html('ricerca spiagge in corso...');
+            $('#b2_descr').html('ricerca spiagge in corso...');
+            $('#b3_descr').html('ricerca spiagge in corso...');
+            $('#b4_descr').html('ricerca spiagge in corso...');
+            $('#b5_descr').html('ricerca spiagge in corso...');
+            mylat = lat;
+            mylng = long;
+            if (localStorage.getItem('Position') != null) {
+               
+                var Position = localStorage.getItem('Position');
+                if (Position == 'NOAUTO') {
+                    //alert('manual');
                     mylat = localStorage.getItem('lat');
                     mylng = localStorage.getItem('lng');
                 }
@@ -836,13 +1015,25 @@
 
 
             count_tmp_beach = 0;
+            alertdebug(sites.length);
             for (var i = 0; i < sites.length; i++) {
                 var info = sites[i];
+                if (Math.abs(info[1] - mylat) < 1.2 && Math.abs(info[2] - mylng) < 1.2) {
+                    Calcdistance(info[1], info[2], mylat, mylng, info[0]);
 
-                Calcdistance(info[1], info[2], mylat, mylng, info[0]);
-                PopulateFirstBeachByDistance();
+                    PopulateFirstBeachByDistance();
+                }
+
+                var ds = 'analizzate ' + i + '/' + sites.length ;
+                $('#b1_descr').html(ds);
+                $('#b2_descr').html(ds);
+                $('#b3_descr').html(ds);
+                $('#b4_descr').html(ds);
+                $('#b5_descr').html(ds);
             }
             PopulateFirstBeachByDistance();
+
+           // Search();
 
             $.mobile.hidePageLoadingMsg();
             if (navigator != null && navigator.notification != null) {
@@ -851,8 +1042,8 @@
         }
 
         function onError(error) {
-            alert('code: ' + error.code + '\n' +
-                            'message: ' + error.message + '\n');
+//            alert('code: ' + error.code + '\n' +
+//                            'message: ' + error.message + '\n');
         }
 
 
@@ -1051,7 +1242,7 @@
 
             $("#forecast_list_ul").html(html);
             $("#forecast_list_data_").listview();
-
+            
             $.mobile.hidePageLoadingMsg();
         };
 
@@ -1071,7 +1262,7 @@
 
 
         function getHistoryData_chart(JSONtext) {
-            alert('getHistoryData_chart');
+           // alert('getHistoryData_chart');
             JSONobject = ParseJson(JSONtext);
             data = JSONobject.list;
             showBarsDouble('chart_container', data);
@@ -1079,7 +1270,7 @@
         }
 
         function getHistoryData_wind(JSONtext) {
-            alert('getHistoryData_wind');
+            //alert('getHistoryData_wind');
             JSONobject = ParseJson(JSONtext);
             data = JSONobject.list;
             showPolarSpeed('chart_container', data);
@@ -1088,7 +1279,7 @@
 
 
         function getHistoryData_pres(JSONtext) {
-            alert('getHistoryData_pres');
+//            alert('getHistoryData_pres');
             JSONobject = ParseJson(JSONtext);
             data = JSONobject.list;
             chartDoublePress('chart_container', data);
@@ -1128,7 +1319,7 @@
                 event.preventDefault();
                 var txt = $('#search-city').attr('value');
                 $.mobile.showPageLoadingMsg();
-                alert('search');
+                //alert('search');
                 $.get('http://api.openweathermap.org//data/2.1/find/name?q=' + txt + '&type=like&sort=population', showFind).error(errorHandler);
 
 
@@ -1181,7 +1372,7 @@
             var s = Math.round((d.getTime()) / 1000) - 3600 * 24;
 
             if ($(this).attr('href') == "#chart&1") {
-                alert('chart&1');
+                //alert('chart&1');
                 var jsonurl = "http://m.openweathermap.org/data/2.1/history/city/?id=" + current_city_id + "&cnt=80&start=" + s;
                 $.get(jsonurl, getHistoryData_chart).error(errorHandler);
             }
@@ -1214,14 +1405,38 @@
         $('#forecast').live('pageshow', function (event, ui) {
             minLast_forecast = (now - dt_Last_meteo) / 1000 / 60;
 
-            if (minLast_forecast > 10 || forecast_already_open == 0) {
-                UpdateForecast();
+
+            var Force = getUrlVars()["force"];
+
+            //alert(Force);
+
+            if (minLast_forecast > 10 || forecast_already_open == 0 || localStorage.getItem('forceMeteo')=='1') {
+                localStorage.setItem('forceMeteo', '0');
+                if (Force != undefined) {
+                    localStorage.setItem('ThisBeachNameForce', '1');
+                    UpdateForecast(localStorage.getItem('ThisBeachLat'), localStorage.getItem('ThisBeachLon'));
+                   
+                }
+                else {
+                    UpdateForecast(mylat,mylng);
+                }
             }
 
 
         });
 
-        function UpdateForecast() {
+        function getUrlVars() {
+            var vars = [], hash;
+            var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
+            for (var i = 0; i < hashes.length; i++) {
+                hash = hashes[i].split('=');
+                vars.push(hash[0]);
+                vars[hash[0]] = hash[1];
+            }
+            return vars;
+        }
+
+        function UpdateForecast(lat,lng) {
             forecast_already_open = 1;
             dt_Last_forecast = now;
             var units = 'metric';
@@ -1231,6 +1446,11 @@
             if (get_cookie('lang') == 'en') units = 'en';
 
             var myhref = "http://api.openweathermap.org/data/2.5/forecast?callback=?&id=" + current_city_id + '&units=' + units + '&lang=' + lang;
+
+
+             myhref = "http://api.openweathermap.org/data/2.5/forecast?callback=?&lat=" + lat + "&lon="+ lng +'&units=' + units + '&lang=' + lang;
+
+            //window.location.href = myhref;
             //alert(myhref);
             //$.mobile.showPageLoadingMsg();
             $.getJSON(myhref, getDataForecast);
@@ -1376,7 +1596,7 @@
                         <center>
                             <div style="vertical-align: middle;">
                                 <br />
-                                <a id="A1">Sardinia Beach Finder</a>
+                                <a id="A1">Sardegna Cerca Spiagge</a>
                             </div>
                         </center>
                         <!-- wrapper -->
@@ -1515,7 +1735,7 @@
                                         <option value="hand">Attrezzata per i disabili </option>
                                         <option value="rent">Con possibilità di noleggio straio e ombrelloni </option>
                                         <option value="camper">Adatta per i Camper </option>
-                                        <option value="sub">Addata ad attivita subacquee </option>
+                                        <option value="sub">Adatta ad attivita subacquee </option>
                                         <option value="surf">Adatta per fare surf </option>
                                         <option value="dB">Densità bassa </option>
                                         <option value="dM">Densità media </option>
@@ -1528,7 +1748,9 @@
                     <center>
                     </center>
                     <div data-role="content" id="Div1">
-                        <div id="mapmap" style="width: 100%; height: 450px;">
+                        <div id="mapmap" style="width: 100%; height: 450px;box-shadow: 0px 0px 7px 8px rgba(148, 199, 212, 0.67);
+-moz-box-shadow: 0px 0px 7px 8px rgba(148, 199, 212, 0.67);
+-webkit-box-shadow: 0px 0px 7px 8px rgba(148, 199, 212, 0.67);">
                         </div>
                         <center>
                             <div data-role="fieldcontain" style="width: 100% !important; visibility: collapse">
@@ -1704,6 +1926,7 @@
             <div class="banner" style="z-index: 99999" data-role="header" role="banner" data-theme="c">
                 <input type="image" style="position: relative; top: 10px; vertical-align: middle;
                     float: left; left: 10px" src="images/back_.png" id="bck1" />
+
                 <input type="image" id="go" style="float: right; top: 7px;position:relative; bottom: 30px; right:7px"  src="images/nav5.png" />
                 <center>
                     <div style="vertical-align: middle;">
@@ -1716,10 +1939,12 @@
             <div data-role="content" id="Div9">
                 <div id="divImg" style="width: 100%; height: 200px;">
                     <div id="wrapperBeach" style="height: 300px; width: 100%">
-                        <div id="rotating-item-wrapperBeach" style="height: 200px!Important;">
+                        <div id="rotating-item-wrapperBeach" style="height: 200px!Important;-webkit-box-shadow: 1px 7px 16px 15px rgba(160, 162, 242, 0.93);
+-moz-box-shadow:    1px 7px 16px 15px rgba(160, 162, 242, 0.93);
+box-shadow:         1px 7px 16px 15px rgba(160, 162, 242, 0.93);">
                             <div id="MyGallery1">
-                                <a href="#Gallery">
-                                    <img class="rotating-item swipe" alt="" src="images/beach/imagestest.jpg" /></a>
+                              
+                                    <img class="rotating-item swipe" alt="" src="images/beach/imagestest.jpg" />
                             </div>
                             <div id="Div31" style="visibility: hidden">
                             </div>
@@ -1733,38 +1958,46 @@
                     </div>
                 </div>
                 <center>
+                <!-- <div style="float:left">
+                     <img id="img_prevbeach" src="images/back_.png" />
+                    </div>
+                    <div style="float:right">
+                     <img id="img_nextbeach" src="images/next_.png"  />
+                    </div>-->
                     <div style="z-index: 99999">
                         <table style="z-index: 9999; border: 0; border-style: none; border-width: 0" cellpadding="2"
                             cellspacing="2">
                             <tr>
                                 <td id="td_parcheggio" style="visibility: visible">
-                                    <img id="img_parcheggio" src="images/parcheggio.gif" height="40px" width="40px" />
+                                    <img id="img_parcheggio" src="images/icone/parcheggio.png" height="40px" width="40px" />
                                 </td>
                                 <td id="td_bar" style="visibility: visible">
-                                    <img id="img_bar" src="images/bar.gif" height="40px" width="40px" />
+                                    <img id="img_bar" src="images/icone/bar.png" height="40px" width="40px" />
                                 </td>
                                 <td id="td_xbambini" style="visibility: visible">
-                                    <img id="img_bambini" src="images/xbambini.gif" height="40px" width="40px" />
+                                    <img id="img_bambini" src="images/icone/bambini.png" height="40px" width="40px" />
                                 </td>
                                 <td id="td_disabili" style="visibility: visible">
-                                    <img id="img_disabili" src="images/disabili.gif" height="40px" width="40px" />
+                                    <img id="img_disabili" src="images/icone/disabili.ico" height="40px" width="40px" />
                                 </td>
                                 <td id="td_attrezzata" style="visibility: visible">
-                                    <img id="img_noleggio" src="images/attrezzata.gif" height="40px" width="40px" />
+                                    <img id="img_noleggio" src="images/icone/attrezzatura.png" height="40px" width="40px" />
                                 </td>
                                 <td id="td_camper" style="visibility: visible">
-                                    <img id="img_camper" src="images/camper.gif" height="40px" width="40px" />
+                                    <img id="img_camper" src="images/icone/camper.png" height="40px" width="40px" />
                                 </td>
                                 <td id="td_ativsub" style="visibility: visible">
-                                    <img id="img_attivsub" src="images/attivsub.gif" height="40px" width="40px" />
+                                    <img id="img_attivsub" src="images/icone/attivitasub.png" height="40px" width="40px" />
                                 </td>
                                 <td id="td_densita" style="visibility: visible">
-                                    <img id="img_densita" src="images/densitaM.gif" height="40px" width="40px" />
+                                  
+                                    <img id="img_densita" src="images/icone/densita.png" height="40px" width="40px" />
                                     <input type="hidden" id="hdd_densita" />
                                 </td>
                             </tr>
                         </table>
                     </div>
+                   
                 </center>
                 <div data-role="collapsible-set" data-content-theme="a" data-iconpos="right" id="set">
                    <!-- <div data-role="collapsible" id="set1" data-collapsed="true">
@@ -1785,24 +2018,63 @@
                             <center>
                                 <div style="text-transform: lowercase; font-family: Arial; font-size: smaller;" id="Div16">
                                     <img src="images/palm_tree.png" class="pictureg" alt="winelovers420x260" />
-                                    <h2 id="city_nameg">
+                                   <table>
+                                        <tr>
+                                            <td>
+                                                <label style="font-size:16px;font-weight:bolder"><b>luogo</b></label>
+                                            </td>
+                                            <td>:</td>
+                                            <td><label style="font-size:14px;font-style:italic" id="city_nameg"></label></td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <label style="font-size:16px;font-weight:bolder"><b>meteo</b></label>
+                                            </td>
+                                            <td>:</td>
+                                            <td><label style="font-size:14px;font-style:italic" id="city_weatherg"></label></td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <label style="font-size:16px;font-weight:bolder"><b>temperatura</b></label>
+                                            </td>
+                                            <td>:</td>
+                                            <td><label style="font-size:14px;font-style:italic" id="city_tempg"></label></td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <label style="font-size:16px;font-weight:bolder"><b>vento</b></label>
+                                            </td>
+                                            <td>:</td>
+                                             <td><label style="font-size:14px;font-style:italic" id="city_wind_lblg"></label></td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <label style="font-size:16px;font-weight:bolder"><b>nuvolosità</b></label>
+                                            </td>
+                                            <td>:</td>
+                                             <td><label style="font-size:14px;font-style:italic" id="city_clouds_lblg"></label></td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <label style="font-size:16px;font-weight:bolder"><b>pressione</b></label>
+                                            </td>
+                                            <td>:</td>
+                                             <td><label style="font-size:14px;font-style:italic" id="city_pressure_lblg"></label></td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <label style="font-size:16px;font-weight:bolder"><b>umidita</b></label>
+                                            </td>
+                                            <td>:</td>
+                                             <td><label style="font-size:14px;font-style:italic" id="city_humidity_lblg"></label></td>
+                                        </tr>
+                                   </table>
+                                     <h2 style="font-size:12px!Important" id="city_last_upd">
                                     </h2>
-                                    <h2 id="city_tempg" class="grl">
-                                    </h2>
-                                    <h2 id="city_wind_lblg">
-                                        ...
-                                    </h2>
-                                    <h2 id="city_clouds_lblg">
-                                        ...
-                                    </h2>
-                                    <h2 id="city_pressure_lblg">
-                                        ...
-                                    </h2>
-                                    <h2 id="city_humidity_lblg">
-                                        ...
-                                    </h2>
-                                    <h2 class="likea" id="city_weatherg">
-                                    </h2>
+                                    
+                                     <a id="forecast_beach" style="font-size:14px!Important;color:White!Important;" href="">Meteo dei prossimi giorni in questa spiaggia
+                                    </a>
+                                    
                                 </div>
                             </center>
                         </p>
@@ -1812,6 +2084,7 @@
                     <hr />
                     <h3 style="color: Black">
                         Indicazioni Stradali</h3>
+                    <a id="TotDist" style="z-index: 999;">Calcolo in corso...</a>
                     <div style="height: 100%;" id="map_canvas">
                     </div>
                     <a id="beach_Drive" style="z-index: 999;">gira a destra </a>
@@ -1911,7 +2184,7 @@
                 <center>
                     <div style="vertical-align: middle;">
                         <br />
-                        <a id="A5">Forecast</a>
+                        <a id="A5">Meteo prossimi giorni</a>
                     </div>
                 </center>
             </div>
@@ -1939,8 +2212,11 @@
             alert('SearcgRedirect : ' + id);
         }
     </script>
-    <div data-role="page" id="search">
+      <div data-role="page" id="div_redirect" class="type-index">
+      </div>
+    <div data-role="page" id="search" class="type-index">
         <div id="Div17" class="perspective effect-airbnb">
+   
             <div class="banner" style="z-index: 99999" data-role="header" role="banner" data-theme="c">
                 <input type="image" style="position: relative; top: 10px; vertical-align: middle;
                     float: left; left: 10px" src="images/back_.png" id="bck8" />
@@ -1954,19 +2230,1639 @@
             <div data-role="content" id="Div18">
                 <!-- <input type="text" id="searchField" placeholder="Cerca...">-->
                 <br />
-                <ul id="suggestions" data-role="listview" data-inset="true" data-filter="true" data-filter-reveal="true"
+                <!--<ul id="suggestions"  data-role="listview" data-inset="true" data-filter="true" data-filter-reveal="true"
+                    data-filter-placeholder="Cerca la spiaggia..." >
+                </ul>-->
+                   <ul data-role="listview" data-inset="true" data-filter="true" data-filter-reveal="true"
                     data-filter-placeholder="Cerca la spiaggia...">
-                </ul>
-                <!--<ul data-role="listview" data-filter="true" data-filter-reveal="true" data-filter-placeholder="Search cars...">
+                             <li class="indpr-1 myindpr"><a id="f1" href="#Beach?id=1" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i1" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="af1" class="grl">
+                                </h3>
+                            </a></li>
+                             <li class="indpr-1 myindpr"><a id="f2" href="#Beach?id=2" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i2" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="af2" class="grl">
+                                </h3>
+                            </a></li>
+                             <li class="indpr-1 myindpr"><a id="f3" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i3" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="af3" class="grl">
+                                </h3>
+                            </a></li>
+                             <li class="indpr-1 myindpr"><a id="f4" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i4" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="af4" class="grl">
+                                </h3>
+                            </a></li>
+                             <li class="indpr-1 myindpr"><a id="f5" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i5" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="af5" class="grl">
+                                </h3>
+                            </a></li>
+                             <li class="indpr-1 myindpr"><a id="f6" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i6" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="af6" class="grl">
+                                </h3>
+                            </a></li> <li class="indpr-1 myindpr"><a id="f7" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i7" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="af7" class="grl">
+                                </h3>
+                            </a></li> <li class="indpr-1 myindpr"><a id="f8" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i8" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="af8" class="grl">
+                                </h3>
+                            </a></li> <li class="indpr-1 myindpr"><a id="f9" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i9" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="af9" class="grl">
+                                </h3>
+                            </a></li> <li class="indpr-1 myindpr"><a id="f10" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i10" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="af10" class="grl">
+                                </h3>
+                            </a></li> <li class="indpr-1 myindpr"><a id="f11" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i11" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="af11" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f12" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i12" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="H1" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f13" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i13" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="H2" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f14" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i14" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="H4" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f15" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i15" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="H5" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f16" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i16" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="H6" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f17" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i17" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="H7" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f18" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i18" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="H8" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f19" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i19" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="H9" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f20" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i20" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="H10" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f21" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i21" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="f21" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f22" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i22" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="f22" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f23" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i23" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="f23" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f24" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i24" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="f24" class="grl">
+                                </h3>
+                            </a></li>
+                            
+                            <li class="indpr-1 myindpr"><a id="f25" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i25" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="f25" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f26" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i26" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="f26" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f27" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i27" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="f27" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f28" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i28" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="f28" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f29" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i29" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="f29" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f30" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i30" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="f30" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f31" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i31" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="f31" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f32" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i32" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="f32" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f33" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i33" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="f33" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f34" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i34" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="f34" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f35" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i35" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="f35" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f36" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i36" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="f36" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f37" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i37" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="f37" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f38" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i38" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="f38" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f39" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i39" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="f39" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f40" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i40" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="f40" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f41" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i41" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="f41" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f42" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i42" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="f42" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f43" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i43" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="f43" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f44" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i44" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="f44" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f45" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i45" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="f45" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f46" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i46" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="f46" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f47" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i47" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="f47" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f48" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i48" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="f48" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f49" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i49" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="f49" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f50" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i50" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="H11" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f51" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i51" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="H12" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f52" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i52" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="H13" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f53" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i53" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="H14" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f54" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i54" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="H15" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f55" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i55" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="H16" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f56" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i56" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="H17" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f57" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i57" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="H18" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f58" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i58" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="H19" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f59" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i59" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="H20" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f60" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i60" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="H21" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f61" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i61" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="H22" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f62" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i62" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="H23" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f63" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i63" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="H24" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f64" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i64" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="H25" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f65" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i65" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="H26" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f66" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i66" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="H27" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f67" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i67" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="H28" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f68" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i68" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="H29" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f69" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i69" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="H30" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f70" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i70" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="H31" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f71" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i71" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="H32" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f72" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i72" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="H33" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f73" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i73" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="H34" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f74" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i74" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="H35" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f75" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i75" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="H36" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f76" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i76" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="H37" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f77" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i77" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="H38" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f78" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i78" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="H39" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f79" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i79" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="H40" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f80" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i80" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="H41" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f81" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i81" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="H42" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f82" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i82" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="H43" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f83" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i83" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="H44" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f84" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i84" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="H45" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f85" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i85" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="H46" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f86" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i86" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="H47" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f87" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i87" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="H48" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f88" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i88" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="H49" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f89" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i89" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="H50" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f90" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i90" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="H51" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f91" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i91" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="H52" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f92" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i92" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="H53" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f93" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i93" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="H54" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f94" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i94" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="H55" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f95" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i95" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="H56" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f96" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i96" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="H57" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f97" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i97" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="H58" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f98" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i98" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="H59" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f99" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i99" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="H60" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f100" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i100" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="H61" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f101" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i101" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="H62" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f102" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i102" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="H63" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f103" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i103" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="H64" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f104" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i104" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="H65" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f105" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i105" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="H66" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f106" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i106" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="H67" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f107" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i107" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="H68" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f108" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i108" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="H69" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f109" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i109" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="H70" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f110" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i110" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="H71" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f111" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i111" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="H72" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f112" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i112" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="H73" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f113" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i113" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="H74" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f114" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i114" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="H75" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f115" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i115" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="H76" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f116" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i116" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="H77" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f117" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i117" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="H78" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f118" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i118" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="H79" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f119" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i119" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="H80" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f120" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i120" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="H81" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f121" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i121" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="H82" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f122" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i122" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="H83" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f123" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i123" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="H84" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f124" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i124" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="H85" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f125" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i125" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="H86" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f126" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i126" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="H87" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f127" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i127" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="H88" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f128" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i128" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="H89" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f129" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i129" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="H90" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f130" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i130" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="H91" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f131" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i131" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="H92" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f132" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i132" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="H93" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f133" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i133" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="H94" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f134" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i134" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="H95" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f135" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i135" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="H96" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f136" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i136" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="H97" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f137" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i137" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="H98" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f138" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i138" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="H99" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f139" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i139" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="H100" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f140" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i140" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="H101" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f141" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i141" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="H102" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f142" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i142" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="H103" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f143" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i143" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="H104" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f144" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i144" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="H105" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f145" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i145" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="H106" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f146" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i146" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="H107" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f147" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i147" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="H108" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f148" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i148" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="H109" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f149" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i149" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="H110" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f150" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i150" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="H111" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f151" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i151" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="H112" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f152" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i152" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="H113" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f153" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i153" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="H114" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f154" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i154" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="H115" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f155" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i155" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="H116" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f156" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i156" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="H117" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f157" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i157" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="H118" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f158" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i158" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="H119" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f159" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i159" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="H120" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f160" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i160" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="H121" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f161" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i161" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="H122" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f162" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i162" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="H123" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f163" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i163" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="H124" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f164" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i164" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="H125" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f165" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i165" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="H126" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f166" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i166" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="H127" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f167" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i167" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="H128" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f168" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i168" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="H129" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f169" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i169" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="H130" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f170" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i170" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="H131" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f171" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i171" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="H132" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f172" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i172" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="H133" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f173" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i173" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="H134" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f174" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i174" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="H135" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f175" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i175" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="H136" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f176" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i176" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="H137" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f177" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i177" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="H138" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f178" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i178" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="H139" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f179" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i179" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="H140" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f180" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i180" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="H141" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f181" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i181" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="H142" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f182" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i182" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="H143" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f183" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i183" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="H144" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f184" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i184" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="H145" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f185" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i185" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="H146" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f186" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i186" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="H147" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f187" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i187" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="H148" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f188" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i188" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="H149" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f189" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i189" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="H150" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f190" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i190" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="H151" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f191" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i191" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="H152" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f192" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i192" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="H153" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f193" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i193" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="H154" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f194" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i194" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="H155" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f195" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i195" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="H156" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f196" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i196" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="H157" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f197" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i197" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="H158" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f198" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i198" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="H159" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f199" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i199" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="H160" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f200" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i200" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="H161" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f201" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i201" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="H162" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f202" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i202" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="H163" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f203" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i203" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="H164" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f204" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i204" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="H165" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f205" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i205" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="H166" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f206" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i206" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="H167" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f207" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i207" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="H168" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f208" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i208" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="H169" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f209" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i209" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="H170" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f210" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i210" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="H171" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f211" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i211" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="H172" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f212" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i212" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="H173" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f213" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i213" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="H174" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f214" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i214" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="H175" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f215" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i215" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="H176" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f216" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i216" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="H177" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f217" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i217" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="H178" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f218" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i218" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="H179" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f219" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i219" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="H180" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f220" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i220" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="H181" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f221" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i221" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="H182" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f222" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i222" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="H183" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f223" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i223" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="H184" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f224" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i224" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="H185" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f225" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i225" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="H186" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f226" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i226" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="H187" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f227" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i227" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="H188" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f228" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i228" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="H189" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f229" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i229" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="H190" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f230" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i230" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="H191" class="grl">
+                                </h3>
+                            </a></li>
+                            <li class="indpr-1 myindpr"><a id="f231" href="#Beach?id=3" class="nomar"
+                                data-ajax="false">
+                                <img style="height:50px;width:50px"  src="images/palm_tree.png" id="i231" alt="winelovers420x260" />
+                                <h3 style="vertical-align: middle; padding-top: 20px!important; padding-left: 8px!Important"
+                                    id="H192" class="grl">
+                                </h3>
+                            </a></li>
+
+                           
+                           
+                    </ul>
+                <!--
+               
+                <ul data-role="listview" data-filter="true" data-filter-reveal="true" data-filter-placeholder="Search cars...">
 					<li><a style="vertical-align:middle!Important;top:30px!Important; href="#Beach?id"><img style="height:50px;width:50px"  alt="http://www.icesoft.it/SardiniaBeachXml/SPIAGGE/SpiaggiaLisciaRuia1.jpg" src="" /><div style="height:100% ;width:60%"><center>Spiaggia 1</center></div></a></li>
 					
 				</ul>-->
                 <
             </div>
             <!-- /content -->
-            <div id="Div23">
-                <img id="Img3" src="images/footer_wave.png">
-            </div>
+          
+            
         </div>
     </div>
     <div data-role="page" id="Setting" class="type-index">
@@ -1983,7 +3879,7 @@
             </div>
             <div data-role="content" id="Div21" data-theme="a">
                 <ul data-role="listview" data-inset="true">
-                    <li id="Li2"><span id="Span3">La tua posizione</span><span id="Span4"></span></li>
+                    <li id="Li2"><span id="Span3">La tua posizione</span><span style="color:Red;" id="Span4"></span></li>
                     <li class="indpr-1 myindpr">
                         <table>
                             <tr>
@@ -1995,10 +3891,10 @@
                                         <input style="width: 100%" type="radio" name="radio-mini" id="radio-mini-1" value="auto"
                                             checked="checked" />
                                         <label for="radio-mini-1" style="width: 100%">
-                                            Letta in automatico</label>
+                                            Uso la geolocalizzazione del tuo dispositivo</label>
                                         <input type="radio" name="radio-mini" id="radio-mini-2" value="other" />
                                         <label for="radio-mini-2">
-                                            Specifica</label>
+                                            Specifica la tua posizione</label>
                                         <table>
                                             <tr>
                                                 <td>

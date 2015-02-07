@@ -1,4 +1,69 @@
-﻿function ReadXmlBeach() {
+﻿function ReadXml5Beach(mylat,mylong) {
+    jQuery.support.cors = true;
+    /*http://localhost:52136/Service1.svc/getbeach*/
+    /*http://localhost:1844/Service1.svc/beach */
+    /*https://igweb.meridiana.it/wcfRestIGWEB/IBookService.svc/Getcompany/IGPAD*/
+    var urltmp = 'http://localhost:1844/Service1.svc' + '/BeachNear/' + mylat + "/" + mylong
+    alertdebug('urltmp:' + urltmp);
+    $.ajax({
+        type: "POST",
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'text/plain'
+        },
+        dataType: "jsonp",
+        async: false,
+        cache: false,
+        crossDomain: true,
+        url: "http://localhost:1844/Service1.svc/BeachNear/41.026752/9.5",
+        jsonpCallback: "localJsonpCallback",
+        success: function (msg) {
+            // server response
+            sites5 = [];
+            var i = 0;
+            jQuery.each(msg, function (rec) {
+
+                var id = this.ID;
+                var nome = this.nome;
+                var lat = this.lat;
+                var lon = this.lon;
+                var descrizione = this.descrizione;
+                var windNO = this.windNO;
+                var parking = this.parcheggio;
+                var bar = this.bar;
+                var disabili = this.disabili;
+                var xbambini = this.xbambini;
+                var surf = this.surf;
+                var rent = this.rent;
+                var photo = this.foto;
+                var camper = this.camper;
+                var attivsub = this.attivsub;
+                var densita = this.densita;
+                var Info1 = this.Info1;
+                var Info2= this.Info2;
+                var Info3 = this.Info3;
+                var Info4 = this.Info4;
+                //   
+                var beach = [nome, lat, lon, 1, descrizione, windNO, parking, bar, id, disabili, xbambini, surf, rent, photo, camper, attivsub, densita, Info1, Info2, Info3, Info4]
+                sites5.push(beach);
+
+                i = i + 1;
+                //sites.push(beach);
+            });
+            //alert('sites5 populated');
+            UpdateMyPosition();
+        },
+        error: function (msg) {
+            // debugger;
+            //alert('Service call failed: ' + msg.status + ' Type :' + msg.statusText);
+        }
+    });
+
+  
+
+}
+
+function ReadXmlBeach() {
     jQuery.support.cors = true;
 
 
@@ -70,7 +135,7 @@
 function ReadXmlBeachById(Beach_ID) {
     jQuery.support.cors = true;
 
-
+    alertdebug('ReadXmlBeachById');
     $.ajax({
         type: "POST",
         contentType: "application/json; charset=utf-8",
@@ -188,15 +253,15 @@ function ReadXmlBeachById(Beach_ID) {
                     }
                     $('#td_densita').hide();
                     if (densita == 'B') {
-                        $('#img_densita').attr('src', 'images/densitaB.gif');
+                        $('#img_densita').attr('src', 'images/icone/densitab.png');
                         $('#td_densita').show();
                     }
                     if (densita == 'M') {
-                        $('#img_densita').attr('src', 'images/densitaM.gif');
+                        $('#img_densita').attr('src', 'images/icone/densita.png');
                         $('#td_densita').show();
                     }
                     if (densita == 'A') {
-                        $('#img_densita').attr('src', 'images/densitaB.gif');
+                        $('#img_densita').attr('src', 'images/icone/densita.png');
                         $('#td_densita').show();
                     }
 

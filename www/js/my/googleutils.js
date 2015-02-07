@@ -10,7 +10,8 @@ function sleep(milliseconds) {
     }
 }
 
-function Calcdistance(lat_1, lon_1, lat_2, lon_2,beach) {
+function Calcdistance(lat_1, lon_1, lat_2, lon_2, beach) {
+    //alert('ciao');
     //alert(lat_1 + ' - ' + lon_1 + '\n>' + lat2 + ' -' + lon2);
     var R = 6371; // km (change this constant to get miles)
     var dLat = (lat_2 - lat_1) * Math.PI / 180;
@@ -88,7 +89,7 @@ function Calcdistance(lat_1, lon_1, lat_2, lon_2,beach) {
 function calcRoute(lat, long) {
     var start = mylat + "," + mylng;
     var end = lat + "," + long;
-    //alert(start + '\n' + end);
+    alert('calcRoute');
     //var distanceInput = document.getElementById("distance");
 
     var request = {
@@ -146,6 +147,7 @@ function calcRoute(lat, long) {
     });
 }
 function CleartBeachByDistance() {
+
     $('#b1_descr').html('Ricerca in corso');
     $('#lnkBeachID4').attr("href", "#");
     $('#b2_descr').html('Ricerca in corso');
@@ -158,10 +160,61 @@ function CleartBeachByDistance() {
     $('#lnkBeachID2').slideUp(300).delay(400).fadeIn(400);
     $('#lnkBeachID3').slideUp(300).delay(500).fadeIn(400);
     $('#lnkBeachID4').slideUp(300).delay(600).fadeIn(400);
+
+}
+
+function PopulateFirstBeachByDistance5() {
+    alertdebug('PopulateFirstBeachByDistance5 ' + sites5.length);
+    for (var i = 0; i < sites5.length; i++) {
+        //sleep(3);
+       
+        var info = sites5[i];
+        if (i==0) {
+            lat1 = info[1];
+            lngt1 = info[2];
+            dist1=info[17];
+            $('#b1_descr').html(dist1 + 'km - ' + info[0]);
+            $('#lnkBeachID1').attr("href", "#Beach?id=" + info[8]);
+            //alert('pop');
+        }
+        if (i == 1) {
+            lat2 = info[1];
+            lngt2 = info[2];
+            dist2=info[17];
+            $('#b2_descr').html(dist2 + 'km - ' + info[0]);
+            $('#lnkBeachID2').attr("href", "#Beach?id=" + info[8]);
+        }
+        if (i == 2) {
+            lat3 = info[1];
+            lngt3 = info[2];
+            dist3=info[17];
+            $('#b3_descr').html(dist3 + 'km - ' + info[0]);
+            $('#lnkBeachID3').attr("href", "#Beach?id=" + info[8]);
+        }
+        if (i==3) {
+            lat4 = info[1];
+            lngt4 = info[2];
+            dist4=info[17];
+            $('#b4_descr').html(dist4 + 'km - ' + info[0]);
+            $('#lnkBeachID4').attr("href", "#Beach?id=" + info[8]);
+        }
+        if (i == 4) {
+            lat5 = info[1];
+            lngt5 = info[2];
+            dist5=info[17];
+            $('#b5_descr').html(dist5 + 'km - ' + info[0]);
+            $('#lnkBeachID5').attr("href", "#Beach?id=" + info[8]);
+        }
+
+
+
+    }
+
+
 }
 
 function PopulateFirstBeachByDistance() {
-
+//    alertdebug('PopulateFirstBeachByDistance');
     for (var i = 0; i < sites.length; i++) {
         //sleep(3);
         var info = sites[i];

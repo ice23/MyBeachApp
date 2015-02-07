@@ -2,39 +2,85 @@
 //  alert( "This page was just inserted into the dom!" );
 //});
 
+
 $(document).ready(function () {
+
+    //    $('#img_nextbeach').click(function () {
+
+    //        var Beach_ID = getURLParameter('id');
+    //        // alert('next ' + id);
+    //        Beach_ID = parseInt(Beach_ID) + 1;
+
+    //        window.location.href = "#Beach?id=" + Beach_ID;
+    //        window.location.reload();
+    //    });
+    //    $('#img_prevbeach').click(function () {
+    //        var Beach_ID = getURLParameter('id');
+    //        Beach_ID = parseInt(Beach_ID) - 1;
+    //        //alert('prev ' + Beach_ID);
+    //        window.location.href = "#Beach?id=" + Beach_ID;
+    //        window.location.reload();
+
+    //    });
     $('#img_parcheggio').click(function () {
-        alert('Ampio Parcheggio');
+        alertify.alert("Ampio Parcheggio");
     });
     $('#img_bar').click(function () {
-        alert('Prensenza di un bar');
+        alertify.alert("Prensenza di un bar");
     });
     $('#img_bambini').click(function () {
-        alert('Adatta ai bambini');
+        alertify.alert('Adatta ai bambini');
     });
     $('#img_disabili').click(function () {
-        alert('Attrezzata per i disabili');
+        alertify.alert('Attrezzata per i disabili');
     });
     $('#img_attrezzata').click(function () {
-        alert('Possibilità di noleggio sdraio e ombrelloni');
+        alertify.alert('Possibilità di noleggio sdraio e ombrelloni');
     });
     $('#img_camper').click(function () {
-        alert('Adatta ai camper');
+        alertify.alert('Adatta ai camper');
     });
     $('#img_attivsub').click(function () {
-        alert('Possibilità di fare attivita subacquee');
+        alertify.alert('Possibilità di fare attivita subacquee');
     });
     $('#img_densita').click(function () {
         var densita = $('#hdd_densita').val();
-        alert('Livello di densità ' + densita);
+        alertify.alert('Livello di densità ' + densita);
     });
+
+
+
+
+
+
+
+    $('#likethisbeach').click(function () {
+        var Beach_ID = getURLParameter('id');
+        if (localStorage.getItem('like_beach_' + Beach_ID) != null) {
+            localStorage.removeItem('like_beach_' + Beach_ID);
+            $('#likethisbeach').attr('src', 'images/notlike.png');
+            alertify.alert("Spiaggia rimossa dalle preferite");
+        }
+        else {
+            localStorage.setItem('like_beach_' + Beach_ID, 'like');
+            $('#likethisbeach').attr('src', 'images/like.png');
+            alertify.alert("Spiaggia aggiunta alle preferite");
+        }
+    });
+
 });
 
 $('#Beach').live('pageshow', function (event, ui) {
     var Beach_ID = getURLParameter('id');
+   // $.mobile.showPageLoadingMsg("b", "Caricamento in corso...");
 
 
-    //alert(Beach_ID + ' - ' + sites.length);
+    $('#likethisbeach').attr('src', 'images/notlike.png');
+    if (localStorage.getItem('like_beach_' + Beach_ID) != null) {
+        $('#likethisbeach').attr('src', 'images/like.png');
+    }
+
+    //alert(Beach_ID);
     if (sites.length == 0) {
         ReadXmlBeachById(Beach_ID);
     }
@@ -62,13 +108,23 @@ $('#Beach').live('pageshow', function (event, ui) {
             //alert('Beach_ID ' + Beach_ID + ' - 6:' + info[6] + ' - 7:' + info[7] + ' - 8:' + info[8] + ' - 9:' + info[9] + ' - 10:' + info[10] + ' - ');
             ThisBeachLat = info[1];
             ThisBeachLon = info[2];
-            localStorage.setItem('ThisBeachLat', ThisBeachLat);
-            localStorage.setItem('ThisBeachLon', ThisBeachLon);
+ localStorage.setItem('ThisBeachLat', ThisBeachLat);
+ localStorage.setItem('ThisBeachLon', ThisBeachLon);
+ 
+            var url = "http://api.openweathermap.org/data/2.5/weather?lat=" + ThisBeachLat + "&lon=" + ThisBeachLon + "&mode=json&lang=it&units=metric";
+            // alert(url);
+            $.getJSON(url, showCurrentweather).error(errorWeather);
+
+
+           
 
             photo = info[13];
             var nome = info[0];
             var ds = info[4];
-            //alert('info1 ' + info);
+            localStorage.setItem('ThisBeachName', nome);
+            $("#forecast_title").html(localStorage.getItem('ThisBeachName'));
+            //alert('forecast_title4');
+//            alert('info1 ' + info);
             $('#beach_Name').html(nome);
             $('#beach_Ds').html(ds);
 
@@ -119,17 +175,17 @@ $('#Beach').live('pageshow', function (event, ui) {
             }
             $('#td_densita').hide();
             if (densita == 'B') {
-                $('#img_densita').attr('src', 'images/densitaB.gif');
+                $('#img_densita').attr('src', 'images/icone/densitab.png');
                 $('#td_densita').show();
                 $('#hdd_densita').val('Bassa');
             }
             if (densita == 'M') {
-                $('#img_densita').attr('src', 'images/densitaM.gif');
+                $('#img_densita').attr('src', 'images/icone/densita.png');
                 $('#td_densita').show();
                 $('#hdd_densita').val('Medio');
             }
             if (densita == 'A') {
-                $('#img_densita').attr('src', 'images/densitaA.gif');
+                $('#img_densita').attr('src', 'images/icone/densita.png');
                 $('#td_densita').show();
                 $('#hdd_densita').val('Alta');
             }
@@ -187,6 +243,7 @@ $('#Beach').live('pageshow', function (event, ui) {
 
 
                     $('#beach_Drive').html(instr);
+                    $.mobile.hidePageLoadingMsg();
                 }
 
             });
@@ -203,9 +260,105 @@ $('#Beach').live('pageshow', function (event, ui) {
 
 });
 
+function errorWeather(e) {
+    alert('status : ' + e.status + ' Status.text ' + e.statusText);
+ 
+}
+
+function showCurrentweather(d) {
+    //alert('showCurrentCity :' + d.main.temp);
+   
+    $('#city_tempg').html('' + Math.round((d.main.temp) * 100) / 100 + '°C');
+    var dt = new Date(d.dt * 1000);
+    var hr = dt.getHours();
+    if (hr < 10) hr = '0' + hr;
+    var mn = dt.getMinutes();
+    if (mn < 10) mn = '0' + mn;
+    var mon = dt.getMonth() + 1;
+    if (mon < 10) mon = '0' + mon;
+    var day = dt.getDate();
+    if (day < 10) day = '0' + day;
+    var year = dt.getFullYear();
+    $('#city_last_upd').html(" <i>Ult. agg. :" + day + ' ' + hr + ':' + mn + '</i>');
+    $('#forecast_beach').attr('href', '#forecast?force=1');
+
+    //$("#forecast_title").html(d.name + ', ' + d.sys.country);
+    //alert('forecast_title5');
+    localStorage.setItem('forceMeteo', '1');
+
+    $('#city_nameg').html(d.name.toUpperCase() + ', ' + d.sys.country.toUpperCase());
+    WindDir = '';
+    WindSpeed = d.wind.speed;
+    if (d.wind.deg >= 348.75 || d.wind.deg < 11.25) {
+        WindDir = 'N';
+    }
+    if (d.wind.deg >= 11.25 && d.wind.deg < 33.75) {
+        WindDir = 'NNE';
+    }
+    if (d.wind.deg >= 33.75 && d.wind.deg < 56.25) {
+        WindDir = 'NE';
+    }
+    if (d.wind.deg >= 56.25 && d.wind.deg < 78.75) {
+        WindDir = 'ENE';
+    }
+    if (d.wind.deg >= 78.75 && d.wind.deg < 101.25) {
+        WindDir = 'E';
+    }
+    if (d.wind.deg >= 101.25 && d.wind.deg < 123.75) {
+        WindDir = 'ESE';
+    }
+    if (d.wind.deg >= 123.75 && d.wind.deg < 146.25) {
+        WindDir = 'SE';
+    }
+    if (d.wind.deg >= 146.25 && d.wind.deg < 168.75) {
+        WindDir = 'SSE';
+    }
+    if (d.wind.deg >= 168.75 && d.wind.deg < 191.25) {
+        WindDir = 'S';
+    }
+    if (d.wind.deg >= 191.25 && d.wind.deg < 213.75) {
+        WindDir = 'SSW';
+    }
+    if (d.wind.deg >= 213.75 && d.wind.deg < 236.25) {
+        WindDir = 'SW';
+    }
+    if (d.wind.deg >= 236.25 && d.wind.deg < 258.75) {
+        WindDir = 'WSW';
+    }
+    if (d.wind.deg >= 258.75 && d.wind.deg < 281.25) {
+        WindDir = 'W';
+    }
+    if (d.wind.deg >= 281.25 && d.wind.deg < 303.75) {
+        WindDir = 'WW';
+    }
+    if (d.wind.deg >= 303.75 && d.wind.deg < 326.25) {
+        WindDir = 'NW';
+    }
+    if (d.wind.deg >= 348.75 && d.wind.deg < 326.25) {
+        WindDir = 'NW';
+    }
+    var KM_HR = Math.round(d.wind.speed * 3.6);
+    var nod = Math.round(d.wind.speed / 0.514444);
+    $('#city_windg').html();
+    $('#city_cloudsg').html();
+    $('#city_pressureg').html();
+    Hpa = d.main.pressure;
+
+    $('#city_wind_lblg').html('' + KM_HR + 'Km/hr  (' + nod + 'nodi) ' + d.wind.deg + '° (' + WindDir + ')');
+    $('#city_clouds_lblg').html('' + d.clouds.all + ' %');
+    $('#city_pressure_lblg').html('' + d.main.pressure + ' hpa');
+    $('#city_humidity_lblg').html('' + d.main.humidity + ' %');
+    if (d.weather[0]) {
+        //$('li.picture').css('background', "#fff url(http://openweathermap.org/img/w/" + d.weather[0].icon + ".png) no-repeat");
+        $('img.pictureg').attr("src", "images/" + d.weather[0].icon + ".png");
+        //$('img.picture').css('background', "#fff url(images/" + d.weather[0].icon + ".png) no-repeat");
+        $('#city_weatherg').html('<b>' + d.weather[0].description + '</b>');
+    }
+}
+
 $('#Beach').live("pageshow", function (event) {
     var Beach_ID = getURLParameter('id');
-
+    $('#TotDist').html('calcolo in corso...');
 
     //alert(Beach_ID + ' - ' + sites.length);
     if (sites.length == 0) {
@@ -239,7 +392,7 @@ $('#Beach').live("pageshow", function (event) {
             $('#beach_Ds').html(ds);
 
 
-            
+
 
 
             //Direzione
@@ -285,21 +438,22 @@ $('#Beach').live("pageshow", function (event) {
                     var destinations = request.destination.split(',');
 
                     var myRoute = response.routes[0].legs[0];
-                    var instr = '<b> Distanza Totale : ' + distancekm + 'km <b/></br>';
+                    var DistTot = '<b> Distanza Totale : ' + distancekm + 'km <b/></br>'
+                    var instr = '';
                     for (var i = 0; i < myRoute.steps.length; i++) {
                         var km = myRoute.steps[i].distance.text;
                         instr = instr + '<br/> ' + km + ' -' + myRoute.steps[i].instructions;
                     }
 
-
+                    $('#TotDist').html(DistTot);
                     $('#beach_Drive').html(instr);
                 }
 
             });
         }
     }
-    
-    
+
+
     //alert('photos : ' + photo);
     //alert(lastBeachID + " - " + Beach_ID);
     $("#MyGallery1").html('');
@@ -397,11 +551,11 @@ $('#Beach').live("pageshow", function (event) {
 
         });
 
-        
+
 
     }
     else {
-        alert('no foto');
+        //alert('no foto');
     }
 
 
@@ -421,4 +575,83 @@ function getURLParameter(name) {
     }
     return vars[name];
 }
+function getUrlVars() {
+    var vars = [], hash;
+    var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
+    for (var i = 0; i < hashes.length; i++) {
+        hash = hashes[i].split('=');
+        vars.push(hash[0]);
+        vars[hash[0]] = hash[1];
+    }
+    return vars;
+}
 
+$(document).on("pageshow", "#div_redirect", function (event) {
+    $(document).ready(function () {
+        alert('div_redirect');
+        alert(getUrlVars()["id"]);
+        //        $("a[id^='test']").click(function () {
+        //            //             alert('..this.val()');
+        //            var id = $(this).attr('name');
+        //            var name = $(this).attr('id');
+        //            alert('..id' + id);
+        //            window.location.href = "#Beach?id=" + id;
+        //            // $.mobile.changePage("#Beach?id=" + id);
+        //        });
+
+
+    });
+});
+$(document).on("pageshow", "#search", function (event) {
+
+    $(document).ready(function () {
+        //alert('pageshow');
+//        $("a[id^='test']").click(function () {
+//            //             alert('..this.val()');
+//            var id = $(this).attr('name');
+//            var name = $(this).attr('id');
+//            alert('..id' + id);
+//            window.location.href = "#Beach?id=" + id;
+//            // $.mobile.changePage("#Beach?id=" + id);
+//        });
+
+
+    });
+});
+
+//$('#search').on('pageshow', function (event, ui) {
+//    //alert('search');
+//    $(document).ready(function () {
+
+//        $("a[id^='test']").click(function () {
+//            alert('this.val()');
+//            var id = $(this).attr('name');
+//            var name = $(this).attr('id');
+//            alert('id' + id );
+//            window.location.href = "#Beach?id=" + id;
+//            // $.mobile.changePage("#Beach?id=" + id);
+//        });
+
+
+//    });
+
+//});
+
+
+$('#likes').on('pageshow', function (event, ui) {
+    //alert('search');
+    $(document).ready(function () {
+
+        $("a[id^='test']").click(function () {
+            //alert('this.val()');
+            var id = $(this).attr('name');
+            var name = $(this).attr('id');
+            // alert('id' + id + name);
+            window.location.href = "#Beach?id=" + id;
+            // $.mobile.changePage("#Beach?id=" + id);
+        });
+
+
+    });
+
+});

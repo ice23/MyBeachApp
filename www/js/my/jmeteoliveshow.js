@@ -5,7 +5,8 @@ $('#meteo').live('pageshow', function (event, ui) {
 
     minLast_meteo = 0; (now - dt_Last_meteo) / 1000 / 60;
    // alert(minLast_meteo + ' - ' + meteo_already_open);
-    if (minLast_meteo > 10 || meteo_already_open == 0) {
+    if (minLast_meteo > 10 || meteo_already_open == 0 || localStorage.getItem('forceMeteo') == '1') {
+        localStorage.setItem('forceMeteo', '0');
         UpdateMeteo();
     }
 
@@ -39,17 +40,19 @@ function UpdateMeteo() {
 
         //http://api.openweathermap.org/data/2.5/weather?callback=?&id=3172087&units=metric&lang=it
         //http://api.openweathermap.org/data/2.5/weather?callback=?&id=3172087&units=metric
-
+        //http://api.openweathermap.org/data/2.5/weather?lat=41.026752&lon=9.532471&mode=xml&lang=it&units=metric
 
         var lang = 'it';
         if (get_cookie('lang') == 'en') lang = 'en';
         $('#city_wind_lbl').html('2');
 
         // alert(current_city_id + '1');
-        if (current_city_id)
-            $.getJSON("http://api.openweathermap.org/data/2.5/weather?callback=?&id=" + current_city_id + '&units=' + units + '&lang=it', showCurrentCity).error(errorHandler);
-        else
-            $.getJSON("http://api.openweathermap.org/data/2.5/weather?callback=?&id=auto" + '&units=' + units + '&lang=it', showCurrentCity).error(errorHandler);
+//        if (current_city_id) {
+           // $.getJSON("http://api.openweathermap.org/data/2.5/weather?callback=?&id=" + current_city_id + '&units=' + units + '&lang=it', showCurrentCity).error(errorHandler);
+            $.getJSON("http://api.openweathermap.org/data/2.5/weather?callback=?&lat=" + mylat + '&lon=' + mylng + '&units=' + units + '&lang=it', showCurrentCity).error(errorHandler);
+//        }
+//        else
+//            $.getJSON("http://api.openweathermap.org/data/2.5/weather?callback=?&id=auto" + '&units=' + units + '&lang=it', showCurrentCity).error(errorHandler);
 
 
     }
@@ -61,7 +64,7 @@ function UpdateMeteo() {
 
 function showCurrentCity(d) {
 
-
+    //alert(d.id);
     current_city_id = d.id;
     if (navigator != null && navigator.notification != null) {
         navigator.notification.activityStop();
@@ -71,6 +74,14 @@ function showCurrentCity(d) {
     //	$('#city_temp').html( 'Temperature  17 °C' );
 
     $("#forecast_title").html(d.name + ', ' + d.sys.country);
+    //alert('forecast_title1');
+    //alert('info2 ' + d.name);
+
+//    if (localStorage.getItem('ThisBeachNameForce') == '1') {
+//        $("#forecast_title").html(localStorage.getItem('ThisBeachName'));
+//        alert('forecast_title2');
+//        localStorage.setItem('ThisBeachNameForce', '0');
+//    }
 
     var dt = new Date(d.dt * 1000);
     var hr = dt.getHours();

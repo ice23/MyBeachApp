@@ -451,7 +451,7 @@ opacity:0.75;
 
 .banner .ui-btn {
 background: -webkit-gradient(linear, 0 0, 0 100%, from(#f8b045), to(#cb6e2c));
-background: -webkit-linear-gradient(top, #f8b045, #cb6e2c);
+background: -webkit-linear-gradient(top, #FCFCFC, rgba(160, 218, 236, 0.64));
 background: -moz-linear-gradient(top, #f8b045, #cb6e2c);
 background: linear-gradient(top, #f8b045, #cb6e2c);
 background: -o-linear-gradient(top, #f8b045, #cb6e2c);

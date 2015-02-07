@@ -60,13 +60,13 @@ a .icon-rotate-90:before,a .icon-rotate-180:before,a .icon-rotate-270:before,a .
 .icon-signal:before{content:"\f012";}
 .icon-gear:before,.icon-cog:before{content:"\f013";}
 .icon-trash:before{content:"\f014";}
-.icon-home:before{content:"\f015";}
+.icon-home:before{background: url("../../images/flip_flops.png") no-repeat;}
 .icon-file-alt:before{content:"\f016";}
 .icon-time:before{content:"\f017";}
 .icon-road:before{content:"\f018";}
 .icon-download-alt:before{content:"\f019";}
 .icon-download:before{content:"\f01a";}
-.icon-upload:before{content:"\f01b";}
+.icon-upload:before{background: url("../images/flip_flops.png") no-repeat;}
 .icon-inbox:before{content:"\f01c";}
 .icon-play-circle:before{content:"\f01d";}
 .icon-rotate-right:before,.icon-repeat:before{content:"\f01e";}
