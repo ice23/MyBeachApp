@@ -3,7 +3,7 @@
     /*http://localhost:52136/Service1.svc/getbeach*/
     /*http://localhost:1844/Service1.svc/beach */
     /*https://igweb.meridiana.it/wcfRestIGWEB/IBookService.svc/Getcompany/IGPAD*/
-    var urltmp = 'http://localhost:1844/Service1.svc' + '/BeachNear/' + mylat + "/" + mylong
+    var urltmp = 'http://www.icesoft.it/service1.svc' + '/BeachNear/' + mylat + "/" + mylong
     alertdebug('urltmp:' + urltmp);
     $.ajax({
         type: "POST",
@@ -15,7 +15,7 @@
         async: false,
         cache: false,
         crossDomain: true,
-        url: "http://localhost:1844/Service1.svc/BeachNear/41.026752/9.5",
+        url: urltmp,
         jsonpCallback: "localJsonpCallback",
         success: function (msg) {
             // server response
@@ -70,7 +70,7 @@ function ReadXmlBeach() {
     $.ajax({
         type: "POST",
         contentType: "application/json; charset=utf-8",
-        url: 'http://www.icesoft.it/service1.svc' + '/GetBeach',
+        url: 'http://www.icesoft.it/service1.svc' + '/Beach',
         data: '',
         dataType: 'jsonp',
         crossDomain: true,
@@ -135,11 +135,11 @@ function ReadXmlBeach() {
 function ReadXmlBeachById(Beach_ID) {
     jQuery.support.cors = true;
 
-    alertdebug('ReadXmlBeachById');
+    alert('ReadXmlBeachById');
     $.ajax({
         type: "POST",
         contentType: "application/json; charset=utf-8",
-        url: 'http://www.icesoft.it/service1.svc' + '/GetBeach',
+        url: 'http://www.icesoft.it/service1.svc' + '/Beach',
         data: '',
         dataType: 'jsonp',
         crossDomain: true,
